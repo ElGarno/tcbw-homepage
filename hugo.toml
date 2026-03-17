@@ -14,7 +14,7 @@ title = "TC Blau-Weiss Attendorn"
   instagram = "https://instagram.com/tcbwattendorn/"
   instagramHandle = "@tcbwattendorn"
   facebook = "https://facebook.com/tc.blauweiss.attendorn.de"
-  courtbookingURL = "#"
+  courtbookingURL = "https://tc-bw-attendorn.courtbooking.de/login?standard=true"
   courtbookingLabel = "Platz buchen"
 
 [menus]
