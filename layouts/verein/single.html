@@ -1,0 +1,16 @@
+{{ define "main" }}
+<article class="section" style="padding-top: 120px;">
+  <div class="container" style="max-width: 760px;">
+    <p class="label-upper section-eyebrow">Verein</p>
+    <h1 class="heading-display section-title" style="margin-bottom: 32px;">{{ .Title }}</h1>
+  </div>
+  <div class="container article-full-bleed" style="max-width: 760px;">
+    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
+      {{ .Content }}
+    </div>
+  </div>
+  <div class="container" style="max-width: 760px; margin-top: 48px;">
+    <a href="/verein/" class="btn-secondary">&larr; Zurueck zum Verein</a>
+  </div>
+</article>
+{{ end }}
