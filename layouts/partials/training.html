@@ -22,7 +22,11 @@
       <div class="trainer-cards reveal">
         {{ range .Params.trainers }}
         <div class="trainer-card">
-          <div class="trainer-avatar">{{ .initials }}</div>
+          {{ with .image }}
+            <img src="{{ . }}" alt="{{ $.name }}" style="width:56px;height:56px;border-radius:14px;object-fit:cover;flex-shrink:0;">
+          {{ else }}
+            <div class="trainer-avatar">{{ .initials }}</div>
+          {{ end }}
           <div>
             <p class="trainer-name">{{ .name }}</p>
             <p class="trainer-role">{{ .role }}</p>

@@ -21,6 +21,7 @@ trainers:
   - name: "Vladislav Hupertz"
     initials: "VH"
     role: "Tennistrainer"
+    image: "/images/trainer/Mico.jpg"
 trainer_description: |
   Mit 20 Jahren bestand er die Berufspruefung und Zertifizierung zum Tennistrainer. Seit Jahren unterrichtet Vladislav Hupertz (Spitzname Mitzo) in Attendorn auf der Anlage des TC Blau-Weiss Attendorn e.V. an der Burg Schnellenberg.
 
