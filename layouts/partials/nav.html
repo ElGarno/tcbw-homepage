@@ -1,0 +1,21 @@
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">{{ .Site.Params.clubNameShort }}</div>
+      <span>{{ .Site.Params.clubName }}</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Menue oeffnen">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      {{ range .Site.Menus.main }}
+        <a href="{{ .URL }}" class="nav-link">{{ .Name }}</a>
+      {{ end }}
+      {{ with .Site.Params.courtbookingURL }}
+        <a href="{{ . }}" class="nav-cta" target="_blank" rel="noopener">{{ $.Site.Params.courtbookingLabel }}</a>
+      {{ end }}
+    </div>
+  </div>
+</nav>

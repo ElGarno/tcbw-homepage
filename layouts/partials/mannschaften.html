@@ -1,0 +1,22 @@
+{{ $teams := where .Site.RegularPages "Section" "mannschaften" }}
+{{ if $teams }}
+<section class="section" id="mannschaften">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="label-upper section-eyebrow">Mannschaften</p>
+      <h2 class="heading-display section-title">Unsere Teams</h2>
+      <p class="section-subtitle">{{ len $teams }} Mannschaften vertreten unseren Verein in verschiedenen Ligen.</p>
+    </div>
+
+    <div class="teams-grid">
+      {{ range $teams.ByWeight }}
+      <a href="{{ .RelPermalink }}" class="team-card reveal">
+        <div class="team-card-icon">&#127934;</div>
+        <p class="team-card-name">{{ .Title }}</p>
+        <p class="team-card-league">{{ .Params.league }}</p>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

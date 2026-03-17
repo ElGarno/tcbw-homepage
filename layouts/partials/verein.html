@@ -1,0 +1,32 @@
+{{ with .Params.verein }}
+<section class="section" id="verein">
+  <div class="container">
+    <div class="verein-grid">
+      <div class="verein-text reveal">
+        <p class="label-upper section-eyebrow">Unser Verein</p>
+        <h2 class="heading-display section-title" style="margin-bottom: 24px;">{{ .title }}</h2>
+        {{ .text | markdownify }}
+
+        {{ with .stats }}
+        <div class="verein-stats">
+          {{ range . }}
+          <div class="stat-item">
+            <p class="stat-number">{{ .number }}</p>
+            <p class="stat-label">{{ .label }}</p>
+          </div>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+
+      <div class="verein-image-block reveal">
+        {{ with .image }}
+          <img src="{{ . }}" alt="{{ $.image_alt }}" style="width:100%; height:400px; object-fit:cover; border-radius: var(--radius-lg);">
+        {{ else }}
+          <div class="verein-image-placeholder">Bild: {{ .image_alt }}</div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,15 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container" style="max-width: 760px;">
+    <p class="label-upper section-eyebrow">Mannschaften</p>
+    <h1 class="heading-display section-title">{{ .Title }}</h1>
+    <p class="section-subtitle" style="margin-bottom: 32px;">{{ .Params.league }}</p>
+    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
+      {{ .Content }}
+    </div>
+    <div style="margin-top: 48px;">
+      <a href="/mannschaften/" class="btn-secondary">&larr; Alle Mannschaften</a>
+    </div>
+  </div>
+</section>
+{{ end }}

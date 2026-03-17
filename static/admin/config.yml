@@ -1,0 +1,126 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "static/images"
+public_folder: "/images"
+
+locale: "de"
+
+collections:
+  - name: "aktuelles"
+    label: "Aktuelles"
+    folder: "content/aktuelles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime" }
+      - { label: "Beschreibung", name: "description", widget: "text" }
+      - { label: "Bild", name: "image", widget: "image", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Inhalt", name: "body", widget: "markdown" }
+
+  - name: "mannschaften"
+    label: "Mannschaften"
+    folder: "content/mannschaften"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "title", widget: "string" }
+      - { label: "Liga", name: "league", widget: "string" }
+      - { label: "Reihenfolge", name: "weight", widget: "number" }
+      - { label: "Inhalt", name: "body", widget: "markdown" }
+
+  - name: "termine"
+    label: "Termine"
+    file: "content/termine/_index.md"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Beschreibung", name: "description", widget: "string" }
+      - label: "Veranstaltungen"
+        name: "events"
+        widget: "list"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Datum", name: "date", widget: "datetime" }
+          - { label: "Uhrzeit", name: "time", widget: "string" }
+          - { label: "Details", name: "detail", widget: "string" }
+
+  - name: "training"
+    label: "Training"
+    file: "content/training/_index.md"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Beschreibung", name: "description", widget: "string" }
+      - label: "Trainingszeiten"
+        name: "schedule"
+        widget: "list"
+        fields:
+          - { label: "Tag", name: "day", widget: "string" }
+          - { label: "Zeit", name: "time", widget: "string" }
+          - { label: "Gruppe", name: "group", widget: "string" }
+      - label: "Trainer"
+        name: "trainers"
+        widget: "list"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Kuerzel", name: "initials", widget: "string" }
+          - { label: "Rolle", name: "role", widget: "string" }
+
+  - name: "seiten"
+    label: "Seiten"
+    folder: "content/seiten"
+    create: false
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Inhalt", name: "body", widget: "markdown" }
+
+  - name: "homepage"
+    label: "Startseite"
+    file: "content/_index.md"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Beschreibung", name: "description", widget: "string" }
+      - label: "Hero"
+        name: "hero"
+        widget: "object"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Untertitel", name: "subtitle", widget: "string" }
+          - label: "CTA Primaer"
+            name: "cta_primary"
+            widget: "object"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "CTA Sekundaer"
+            name: "cta_secondary"
+            widget: "object"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+      - label: "Verein"
+        name: "verein"
+        widget: "object"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Text", name: "text", widget: "markdown" }
+          - label: "Statistiken"
+            name: "stats"
+            widget: "list"
+            fields:
+              - { label: "Zahl", name: "number", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+          - { label: "Bild", name: "image", widget: "image", required: false }
+          - { label: "Bild Alt-Text", name: "image_alt", widget: "string", required: false }
+      - label: "CTA"
+        name: "cta"
+        widget: "object"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+          - { label: "Text", name: "text", widget: "string" }
+          - { label: "Button Text", name: "button_text", widget: "string" }
+          - { label: "Button URL", name: "button_url", widget: "string" }

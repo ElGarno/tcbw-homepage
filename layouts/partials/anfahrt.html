@@ -1,0 +1,25 @@
+<section class="section" id="anfahrt" style="background: var(--gray-50);">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="label-upper section-eyebrow">Anfahrt</p>
+      <h2 class="heading-display section-title">So findest du uns</h2>
+    </div>
+
+    <div class="anfahrt-grid">
+      <div class="map-placeholder reveal">
+        <span class="map-pin">&#128205;</span>
+        <span>Google Maps Einbettung</span>
+        <span style="font-size: 0.8rem; color: var(--gray-300);">Tennisanlage {{ .Site.Params.address }}</span>
+      </div>
+      <div class="anfahrt-details reveal">
+        <h3>Tennisanlage {{ .Site.Params.address }}</h3>
+        <address>
+          {{ .Site.Params.clubName }} e.V.<br>
+          {{ .Site.Params.address }}<br>
+          {{ .Site.Params.zip }} {{ .Site.Params.city }}
+        </address>
+        <p style="margin-top: 24px;">Die Tennisanlage befindet sich auf dem Gelaende der Burg Schnellenberg, oberhalb von Attendorn. Parkmoeglichkeiten sind direkt an der Anlage vorhanden.</p>
+      </div>
+    </div>
+  </div>
+</section>

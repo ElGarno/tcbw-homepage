@@ -1,0 +1,14 @@
+<section class="quick-info">
+  <div class="container">
+    <div class="quick-info-grid">
+      {{ range .Site.Data.quickinfo }}
+      <div class="quick-card reveal">
+        <p class="label-upper quick-card-label">{{ .label }}</p>
+        <p class="quick-card-title">{{ .title }}</p>
+        {{ with .detail }}<p class="quick-card-detail">{{ . }}</p>{{ end }}
+        {{ if .link_text }}<a href="{{ .link_url }}" class="quick-card-link">{{ .link_text }}</a>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

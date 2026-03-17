@@ -1,0 +1,36 @@
+{{ $news := where .Site.RegularPages "Section" "aktuelles" }}
+{{ $latest := first 2 $news }}
+{{ if $latest }}
+<section class="section news-section" id="aktuelles">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="label-upper section-eyebrow">Aktuelles</p>
+      <h2 class="heading-display section-title">Neuigkeiten vom Platz</h2>
+      <p class="section-subtitle">Spielberichte, Events und alles rund um unseren Verein.</p>
+    </div>
+
+    <div class="news-grid">
+      {{ range $latest }}
+      <a href="{{ .RelPermalink }}" class="news-card reveal">
+        <div class="news-card-image">
+          {{ with .Params.image }}
+            <img src="{{ . }}" alt="{{ $.Title }}" style="width:100%;height:100%;object-fit:cover;">
+          {{ else }}
+            <span class="news-card-image-placeholder">{{ .Title }}</span>
+          {{ end }}
+        </div>
+        <div class="news-card-body">
+          <p class="news-card-date">{{ .Date.Format "2. January 2006" }}</p>
+          <h3 class="news-card-title">{{ .Title }}</h3>
+          <p class="news-card-excerpt">{{ .Description }}</p>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+
+    <div class="news-more reveal">
+      <a href="/aktuelles/" class="btn-secondary">Alle Berichte ansehen</a>
+    </div>
+  </div>
+</section>
+{{ end }}

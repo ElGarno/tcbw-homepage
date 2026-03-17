@@ -1,0 +1,36 @@
+{{ $training := .Site.GetPage "/training" }}
+{{ with $training }}
+<section class="section training-section" id="training">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="label-upper section-eyebrow">Training</p>
+      <h2 class="heading-display section-title">Trainingszeiten &amp; Trainer</h2>
+      <p class="section-subtitle">Training fuer Anfaenger und Fortgeschrittene, Kinder und Erwachsene.</p>
+    </div>
+
+    <div class="training-grid">
+      <div class="training-schedule reveal">
+        {{ range .Params.schedule }}
+        <div class="schedule-item">
+          <span class="schedule-day">{{ .day }}</span>
+          <span class="schedule-time">{{ .time }}</span>
+          <span class="schedule-group">{{ .group }}</span>
+        </div>
+        {{ end }}
+      </div>
+
+      <div class="trainer-cards reveal">
+        {{ range .Params.trainers }}
+        <div class="trainer-card">
+          <div class="trainer-avatar">{{ .initials }}</div>
+          <div>
+            <p class="trainer-name">{{ .name }}</p>
+            <p class="trainer-role">{{ .role }}</p>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

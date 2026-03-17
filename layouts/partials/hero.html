@@ -1,0 +1,15 @@
+{{ with .Params.hero }}
+<section class="hero">
+  <div class="hero-court-lines"></div>
+  <div class="hero-content">
+    <p class="label-upper hero-eyebrow">{{ .eyebrow }}</p>
+    <h1 class="heading-display hero-title">TC Blau-Weiss<br>Attendorn</h1>
+    <p class="hero-subtitle">{{ .subtitle }}</p>
+    <p class="hero-year">Seit {{ $.Site.Params.founded }}</p>
+    <div class="hero-actions">
+      {{ with .cta_primary }}<a href="{{ .url }}" class="btn btn-primary">{{ .text }}</a>{{ end }}
+      {{ with .cta_secondary }}<a href="{{ .url }}" class="btn btn-outline">{{ .text }}</a>{{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

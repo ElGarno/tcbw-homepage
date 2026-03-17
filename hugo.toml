@@ -1,0 +1,46 @@
+baseURL = "https://tc-bw-attendorn.de/"
+languageCode = "de"
+title = "TC Blau-Weiss Attendorn"
+
+[params]
+  description = "Tennisclub Blau-Weiss Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
+  clubName = "TC Blau-Weiss Attendorn"
+  clubNameShort = "TC"
+  tagline = "Tennis an der Burg Schnellenberg"
+  founded = "1931"
+  address = "Burg Schnellenberg"
+  zip = "57439"
+  city = "Attendorn"
+  instagram = "https://instagram.com/tcbwattendorn/"
+  instagramHandle = "@tcbwattendorn"
+  facebook = "https://facebook.com/tc.blauweiss.attendorn.de"
+  courtbookingURL = "#"
+  courtbookingLabel = "Platz buchen"
+
+[menus]
+  [[menus.main]]
+    name = "Verein"
+    url = "/verein/"
+    weight = 10
+  [[menus.main]]
+    name = "Mannschaften"
+    url = "/mannschaften/"
+    weight = 20
+  [[menus.main]]
+    name = "Training"
+    url = "/training/"
+    weight = 30
+  [[menus.main]]
+    name = "Termine"
+    url = "/termine/"
+    weight = 40
+  [[menus.main]]
+    name = "Galerie"
+    url = "/galerie/"
+    weight = 50
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[outputs]
+  home = ["HTML"]

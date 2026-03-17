@@ -1,0 +1,22 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header">
+      <h1 class="heading-display section-title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="section-subtitle">{{ . }}</p>{{ end }}
+    </div>
+    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
+      {{ .Content }}
+    </div>
+    {{ if .Pages }}
+    <ul style="margin-top: 24px;">
+      {{ range .Pages }}
+      <li style="margin-bottom: 12px;">
+        <a href="{{ .RelPermalink }}" style="color: var(--blue-600); font-weight: 600;">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
