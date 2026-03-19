@@ -9,8 +9,8 @@ hero:
     text: "Mitglied werden"
     url: "/verein/mitgliedschaft/"
   cta_secondary:
-    text: "Platz buchen"
-    url: "#"
+    text: "Termine ansehen"
+    url: "#termine"
 verein:
   title: "Tradition trifft Leidenschaft"
   text: |
