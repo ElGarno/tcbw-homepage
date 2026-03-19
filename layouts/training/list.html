@@ -1,0 +1,42 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header">
+      <h1 class="heading-display section-title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="section-subtitle">{{ . }}</p>{{ end }}
+    </div>
+
+    {{ with .Params.schedule }}
+    <div class="training-grid" style="margin-bottom: 48px;">
+      <div class="training-schedule">
+        {{ range . }}
+        <div class="schedule-item">
+          <span class="schedule-day">{{ .day }}</span>
+          <span class="schedule-time">{{ .time }}</span>
+          <span class="schedule-group">{{ .group }}</span>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
+    {{ range .Params.trainers }}
+    <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px;">
+      {{ if .image }}
+        <img src="{{ .image }}" alt="{{ .name }}" style="width: 120px; height: 120px; border-radius: 16px; object-fit: cover; flex-shrink: 0;">
+      {{ end }}
+      <div>
+        <h3 style="margin: 0 0 4px 0;">{{ .name }}</h3>
+        <p style="color: var(--blue-600); font-weight: 600; margin: 0 0 16px 0;">{{ .role }}</p>
+      </div>
+    </div>
+    {{ end }}
+
+    {{ with .Params.trainer_description }}
+    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600); max-width: 720px;">
+      {{ . | markdownify }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
