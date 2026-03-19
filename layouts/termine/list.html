@@ -1,0 +1,29 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header">
+      <p class="label-upper section-eyebrow">Termine</p>
+      <h2 class="heading-display section-title">Alle Veranstaltungen &amp; Heimspiele</h2>
+      <p class="section-subtitle">Saison Sommer 2026</p>
+    </div>
+
+    <div class="termine-list">
+      {{ range .Params.events }}
+      {{ $d := time .date }}
+      <div class="termin-item reveal">
+        <div class="termin-date-block">
+          <p class="termin-day">{{ $d.Day }}</p>
+          <p class="termin-month">{{ index (slice "" "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez") (int $d.Month) }}</p>
+        </div>
+        <div class="termin-divider"></div>
+        <div>
+          <p class="termin-title">{{ .title }}</p>
+          <p class="termin-detail">{{ .detail }}</p>
+        </div>
+        <p class="termin-time">{{ .time }}</p>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
