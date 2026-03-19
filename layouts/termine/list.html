@@ -7,10 +7,27 @@
       <p class="section-subtitle">Saison Sommer 2026</p>
     </div>
 
-    <div class="termine-list">
+    <div class="termine-legend">
+      <div class="termine-legend-item">
+        <div class="termine-legend-dot" style="background: var(--blue-500);"></div>
+        <span>Medenspiel</span>
+      </div>
+      <div class="termine-legend-item">
+        <div class="termine-legend-dot" style="background: var(--green-500);"></div>
+        <span>Vereinsevent</span>
+      </div>
+    </div>
+
+    <div class="termine-filters" id="termineFilters">
+      <button class="termine-filter-btn active" data-filter="alle">Alle</button>
+      <button class="termine-filter-btn" data-filter="medenspiel">Medenspiele</button>
+      <button class="termine-filter-btn" data-filter="event">Vereinsevents</button>
+    </div>
+
+    <div class="termine-list" id="termineList">
       {{ range .Params.events }}
       {{ $d := time .date }}
-      <div class="termin-item reveal">
+      <div class="termin-item reveal" data-category="{{ .category }}">
         <div class="termin-date-block">
           <p class="termin-day">{{ $d.Day }}</p>
           <p class="termin-month">{{ index (slice "" "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez") (int $d.Month) }}</p>
@@ -19,6 +36,9 @@
         <div>
           <p class="termin-title">{{ .title }}</p>
           <p class="termin-detail">{{ .detail }}</p>
+          <span class="termin-badge termin-badge-{{ .category }}">
+            {{ if eq .category "medenspiel" }}Medenspiel{{ else }}Event{{ end }}
+          </span>
         </div>
         <p class="termin-time">{{ .time }}</p>
       </div>
@@ -26,4 +46,28 @@
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+  const filters = document.getElementById('termineFilters');
+  const items = document.querySelectorAll('#termineList .termin-item');
+
+  filters.addEventListener('click', function(e) {
+    const btn = e.target.closest('.termine-filter-btn');
+    if (!btn) return;
+
+    filters.querySelectorAll('.termine-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    items.forEach(item => {
+      if (filter === 'alle' || item.dataset.category === filter) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+})();
+</script>
 {{ end }}

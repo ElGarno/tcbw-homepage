@@ -16,10 +16,21 @@
       <h2 class="heading-display section-title">Kommende Veranstaltungen</h2>
     </div>
 
+    <div class="termine-legend reveal">
+      <div class="termine-legend-item">
+        <div class="termine-legend-dot" style="background: var(--blue-500);"></div>
+        <span>Medenspiel</span>
+      </div>
+      <div class="termine-legend-item">
+        <div class="termine-legend-dot" style="background: var(--green-500);"></div>
+        <span>Vereinsevent</span>
+      </div>
+    </div>
+
     <div class="termine-list">
       {{ range first 6 $upcoming }}
       {{ $d := time .date }}
-      <div class="termin-item reveal">
+      <div class="termin-item reveal" data-category="{{ .category }}">
         <div class="termin-date-block">
           <p class="termin-day">{{ $d.Day }}</p>
           <p class="termin-month">{{ index (slice "" "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez") (int $d.Month) }}</p>
