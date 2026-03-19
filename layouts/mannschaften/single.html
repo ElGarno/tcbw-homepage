@@ -7,7 +7,14 @@
     <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
       {{ .Content }}
     </div>
-    <div style="margin-top: 48px;">
+    {{ with .Params.liga_url }}
+    <div style="margin-top: 32px;">
+      <a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-primary" style="background: var(--blue-600); color: var(--white);">
+        Ergebnisse &amp; Tabelle auf liga.nu &#8599;
+      </a>
+    </div>
+    {{ end }}
+    <div style="margin-top: 24px;">
       <a href="/mannschaften/" class="btn-secondary">&larr; Alle Mannschaften</a>
     </div>
   </div>
