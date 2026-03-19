@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design C: Bold &amp; Sporty — TC Blau-Weiss Attendorn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --orange: #ff6b35;
+      --orange-dark: #e05520;
+      --yellow: #f7c948;
+      --yellow-light: #fef3c7;
+      --navy: #0f172a;
+      --navy-light: #1e293b;
+      --blue: #2563eb;
+      --white: #fff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --transition: 0.25s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      color: var(--gray-800);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    .label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+
+    .back-link {
+      position: fixed; top: 16px; left: 16px; z-index: 200;
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: 100px; padding: 8px 16px;
+      font-size: 0.8rem; font-weight: 600; color: var(--gray-600);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .back-link:hover { background: var(--gray-50); }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--navy);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      font-weight: 800; font-size: 1rem; color: var(--white);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 0.75rem; color: var(--navy);
+    }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link {
+      padding: 6px 14px; font-size: 0.85rem; font-weight: 500;
+      color: var(--gray-400); transition: var(--transition); border-radius: 6px;
+    }
+    .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+    .nav-cta {
+      margin-left: 12px; padding: 10px 24px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: var(--white); font-size: 0.85rem; font-weight: 700;
+      border-radius: 8px; transition: var(--transition);
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,107,53,0.4); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 95vh;
+      background: var(--navy);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 70% at 80% 30%, rgba(255,107,53,0.12), transparent),
+        radial-gradient(ellipse 40% 50% at 20% 70%, rgba(247,201,72,0.08), transparent);
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to top, var(--white), transparent);
+    }
+    /* Diagonal stripe decoration */
+    .hero-stripe {
+      position: absolute; top: -20%; right: -10%;
+      width: 600px; height: 200%;
+      background: linear-gradient(135deg, rgba(255,107,53,0.04), rgba(247,201,72,0.04));
+      transform: rotate(-15deg);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 140px 0 160px;
+    }
+    .hero-eyebrow {
+      color: var(--orange);
+      margin-bottom: 16px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 32px; height: 2px;
+      background: var(--orange);
+    }
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 0.95;
+      margin-bottom: 24px;
+      letter-spacing: -0.03em;
+    }
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem; color: var(--gray-400);
+      font-weight: 400; margin-bottom: 40px;
+      max-width: 500px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 16px 36px; font-size: 0.9rem; font-weight: 700;
+      font-family: inherit; cursor: pointer; border: none;
+      transition: var(--transition); border-radius: 10px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,107,53,0.4); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); }
+
+    /* ── Quick Info ── */
+    .quick-section { padding: 80px 0; }
+    .quick-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .quick-card {
+      background: var(--gray-50);
+      border-radius: 12px; padding: 24px;
+      border-left: 4px solid var(--orange);
+      transition: var(--transition);
+    }
+    .quick-card:nth-child(2) { border-left-color: var(--yellow); }
+    .quick-card:nth-child(3) { border-left-color: var(--blue); }
+    .quick-card:nth-child(4) { border-left-color: #10b981; }
+    .quick-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .quick-card-label { color: var(--gray-400); margin-bottom: 8px; }
+    .quick-card-title { font-size: 1.1rem; font-weight: 800; color: var(--navy); }
+    .quick-card-detail { font-size: 0.85rem; color: var(--gray-500); margin-top: 2px; }
+    .quick-card-link { font-size: 0.8rem; font-weight: 700; color: var(--orange); margin-top: 8px; display: inline-block; }
+
+    /* ── Section ── */
+    .section { padding: 100px 0; }
+    .section-alt { background: var(--gray-50); }
+    .section-dark { background: var(--navy); color: var(--white); }
+    .section-header { margin-bottom: 48px; }
+    .section-eyebrow {
+      color: var(--orange); margin-bottom: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .section-eyebrow::before {
+      content: ''; width: 24px; height: 2px;
+      background: var(--orange);
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; color: var(--navy);
+      line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .section-dark .section-title { color: var(--white); }
+    .section-subtitle { font-size: 1rem; color: var(--gray-500); margin-top: 8px; }
+    .section-dark .section-subtitle { color: var(--gray-400); }
+
+    /* ── News ── */
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .news-card {
+      border-radius: 16px; overflow: hidden;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: var(--transition);
+    }
+    .news-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .news-card-image {
+      height: 200px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--white); font-weight: 600;
+    }
+    .news-card:nth-child(2) .news-card-image {
+      background: linear-gradient(135deg, var(--blue), #6366f1);
+    }
+    .news-card-body { padding: 24px; }
+    .news-card-date { font-size: 0.75rem; color: var(--gray-400); font-weight: 600; }
+    .news-card-title { font-size: 1.2rem; font-weight: 800; margin: 6px 0; letter-spacing: -0.01em; }
+    .news-card-excerpt { font-size: 0.88rem; color: var(--gray-500); }
+
+    /* ── Teams ── */
+    .teams-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .team-card {
+      background: var(--white); border-radius: 12px;
+      padding: 28px 20px; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .team-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+      transform: scaleX(0); transform-origin: left;
+      transition: var(--transition);
+    }
+    .team-card:hover::before { transform: scaleX(1); }
+    .team-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .team-emoji { font-size: 2rem; margin-bottom: 12px; }
+    .team-name { font-size: 1.05rem; font-weight: 800; }
+    .team-league { font-size: 0.8rem; color: var(--gray-400); margin-top: 4px; }
+
+    /* ── Training ── */
+    .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .schedule-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 20px; margin-bottom: 8px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.9rem;
+    }
+    .schedule-day { font-weight: 800; color: var(--orange); min-width: 32px; }
+    .schedule-time { color: var(--gray-400); min-width: 110px; }
+    .schedule-group { color: var(--white); font-weight: 500; }
+    .trainer-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px; background: rgba(255,255,255,0.04);
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
+    }
+    .trainer-avatar {
+      width: 56px; height: 56px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; color: var(--navy); font-size: 0.9rem;
+    }
+    .trainer-name { font-weight: 700; color: var(--white); }
+    .trainer-role { font-size: 0.85rem; color: var(--gray-400); }
+
+    /* ── Termine ── */
+    .termine-list { max-width: 700px; }
+    .termin-item {
+      display: flex; align-items: center; gap: 20px;
+      padding: 20px; margin-bottom: 12px;
+      background: var(--white); border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: var(--transition);
+    }
+    .termin-item:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .termin-date {
+      text-align: center; min-width: 56px; flex-shrink: 0;
+      background: var(--navy); border-radius: 10px; padding: 10px 8px;
+    }
+    .termin-day { font-size: 1.5rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .termin-month { font-size: 0.65rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em; }
+    .termin-title { font-weight: 700; font-size: 1rem; }
+    .termin-detail { font-size: 0.82rem; color: var(--gray-400); }
+    .termin-time { margin-left: auto; font-weight: 800; color: var(--orange); font-size: 0.9rem; }
+
+    /* ── Verein ── */
+    .verein-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .verein-text p { font-size: 1rem; color: var(--gray-500); line-height: 1.8; margin-bottom: 16px; }
+    .verein-stats { display: flex; gap: 36px; margin-top: 36px; }
+    .stat-number { font-size: 2.8rem; font-weight: 900; color: var(--navy); line-height: 1; letter-spacing: -0.03em; }
+    .stat-label { font-size: 0.7rem; color: var(--gray-400); font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .verein-image {
+      width: 100%; height: 400px;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 0.9rem; font-weight: 600;
+    }
+
+    /* ── CTA ── */
+    .cta-section { padding: 100px 0; }
+    .cta-banner {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      border-radius: 20px; padding: 72px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(247,201,72,0.2), transparent);
+    }
+    .cta-title { font-size: 2.2rem; font-weight: 900; color: var(--white); margin-bottom: 12px; position: relative; letter-spacing: -0.02em; }
+    .cta-text { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 32px; position: relative; }
+    .cta-banner .btn-primary {
+      background: var(--white); color: var(--orange-dark);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    /* ── Footer ── */
+    .footer { background: var(--navy); color: var(--white); padding: 64px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand { font-weight: 800; font-size: 1.1rem; margin-bottom: 12px; }
+    .footer-info { font-size: 0.85rem; color: var(--gray-400); line-height: 1.8; }
+    .footer-heading { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 16px; color: var(--orange); }
+    .footer-links li { margin-bottom: 8px; }
+    .footer-links a { font-size: 0.85rem; color: var(--gray-400); transition: var(--transition); }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--gray-500);
+    }
+    .footer-bottom a { color: var(--gray-500); }
+    .footer-bottom a:hover { color: var(--white); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .quick-grid { grid-template-columns: repeat(2,1fr); }
+      .teams-grid { grid-template-columns: repeat(2,1fr); }
+      .training-grid, .verein-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .quick-grid, .news-grid, .teams-grid { grid-template-columns: 1fr; }
+      .section { padding: 64px 0; }
+      .hero { min-height: 80vh; }
+      .cta-banner { padding: 48px 24px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .verein-stats { flex-wrap: wrap; gap: 24px; }
+    }
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link">&larr; Alle Designs</a>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">TC</div>
+        TC BW Attendorn
+      </a>
+      <div class="nav-links">
+        <a href="#verein" class="nav-link">Verein</a>
+        <a href="#mannschaften" class="nav-link">Mannschaften</a>
+        <a href="#training" class="nav-link">Training</a>
+        <a href="#termine" class="nav-link">Termine</a>
+        <a href="#" class="nav-cta">Platz buchen</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-stripe"></div>
+    <div class="container hero-content">
+      <p class="label hero-eyebrow">Tennisclub seit 1931</p>
+      <h1 class="hero-title">TC <span class="accent">Blau-Weiss</span><br>Attendorn</h1>
+      <p class="hero-subtitle">Tennis an der Burg Schnellenberg — sieben Mannschaften, Training fuer alle, ein Verein mit Herz.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">Mitglied werden</a>
+        <a href="#" class="btn btn-outline">Termine ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-section">
+    <div class="container">
+      <div class="quick-grid">
+        <div class="quick-card">
+          <p class="label quick-card-label">Naechster Termin</p>
+          <p class="quick-card-title">Saisoneroeffnung</p>
+          <p class="quick-card-detail">28. April 2026, 14 Uhr</p>
+        </div>
+        <div class="quick-card">
+          <p class="label quick-card-label">Mannschaften</p>
+          <p class="quick-card-title">7 Teams aktiv</p>
+          <a href="#" class="quick-card-link">Alle ansehen &rarr;</a>
+        </div>
+        <div class="quick-card">
+          <p class="label quick-card-label">Training</p>
+          <p class="quick-card-title">Alle Altersklassen</p>
+          <a href="#" class="quick-card-link">Mehr erfahren &rarr;</a>
+        </div>
+        <div class="quick-card">
+          <p class="label quick-card-label">Platzbuchung</p>
+          <p class="quick-card-title">Courtbooking</p>
+          <a href="#" class="quick-card-link">Jetzt buchen &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="aktuelles">
+    <div class="container">
+      <div class="section-header">
+        <p class="label section-eyebrow">Aktuelles</p>
+        <h2 class="section-title">Neuigkeiten<br>vom Platz</h2>
+      </div>
+      <div class="news-grid">
+        <a href="#" class="news-card">
+          <div class="news-card-image">Spielbericht</div>
+          <div class="news-card-body">
+            <p class="news-card-date">15. Mai 2026</p>
+            <h3 class="news-card-title">Herren 40 gewinnen Auftaktspiel</h3>
+            <p class="news-card-excerpt">5:1 Sieg gegen TC Olpe in der Suedwestfalenliga.</p>
+          </div>
+        </a>
+        <a href="#" class="news-card">
+          <div class="news-card-image">Event</div>
+          <div class="news-card-body">
+            <p class="news-card-date">28. April 2026</p>
+            <h3 class="news-card-title">Saisoneroeffnung 2026</h3>
+            <p class="news-card-excerpt">Eindruecke vom Saisonstart an der Burg Schnellenberg.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mannschaften">
+    <div class="container">
+      <div class="section-header">
+        <p class="label section-eyebrow">Mannschaften</p>
+        <h2 class="section-title">Unsere Teams</h2>
+      </div>
+      <div class="teams-grid">
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Herren 30</p><p class="team-league">Bezirksliga</p></a>
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Herren 40</p><p class="team-league">Suedwestfalenliga</p></a>
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Herren 60</p><p class="team-league">Kreisliga</p></a>
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Damen</p><p class="team-league">6er Mannschaft</p></a>
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Gemischt 1</p><p class="team-league">Mixed</p></a>
+        <a href="#" class="team-card"><div class="team-emoji">&#127934;</div><p class="team-name">Mixed U12</p><p class="team-league">Jugend</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark" id="training">
+    <div class="container">
+      <div class="section-header">
+        <p class="label section-eyebrow">Training</p>
+        <h2 class="section-title">Trainingszeiten &amp; Trainer</h2>
+      </div>
+      <div class="training-grid">
+        <div>
+          <div class="schedule-item"><span class="schedule-day">Mo</span><span class="schedule-time">16:00 – 18:00</span><span class="schedule-group">Jugendtraining</span></div>
+          <div class="schedule-item"><span class="schedule-day">Di</span><span class="schedule-time">18:00 – 20:00</span><span class="schedule-group">Erwachsene Anfaenger</span></div>
+          <div class="schedule-item"><span class="schedule-day">Mi</span><span class="schedule-time">16:00 – 18:00</span><span class="schedule-group">Kinder (6–10 J.)</span></div>
+          <div class="schedule-item"><span class="schedule-day">Do</span><span class="schedule-time">18:00 – 20:00</span><span class="schedule-group">Fortgeschrittene</span></div>
+          <div class="schedule-item"><span class="schedule-day">Fr</span><span class="schedule-time">15:00 – 17:00</span><span class="schedule-group">Matchtraining</span></div>
+        </div>
+        <div>
+          <div class="trainer-card">
+            <div class="trainer-avatar">VH</div>
+            <div><p class="trainer-name">Vladislav Hupertz</p><p class="trainer-role">Tennistrainer</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="termine">
+    <div class="container">
+      <div class="section-header">
+        <p class="label section-eyebrow">Termine</p>
+        <h2 class="section-title">Kommende Events</h2>
+      </div>
+      <div class="termine-list">
+        <div class="termin-item">
+          <div class="termin-date"><p class="termin-day">28</p><p class="termin-month">Apr</p></div>
+          <div><p class="termin-title">Saisoneroeffnung 2026</p><p class="termin-detail">Alle Mitglieder willkommen</p></div>
+          <p class="termin-time">14:00</p>
+        </div>
+        <div class="termin-item">
+          <div class="termin-date"><p class="termin-day">10</p><p class="termin-month">Mai</p></div>
+          <div><p class="termin-title">Herren 40 vs. TC Olpe</p><p class="termin-detail">Suedwestfalenliga, Heimspiel</p></div>
+          <p class="termin-time">10:00</p>
+        </div>
+        <div class="termin-item">
+          <div class="termin-date"><p class="termin-day">14</p><p class="termin-month">Jun</p></div>
+          <div><p class="termin-title">Vereinsmeisterschaften</p><p class="termin-detail">Einzel & Doppel</p></div>
+          <p class="termin-time">09:00</p>
+        </div>
+        <div class="termin-item">
+          <div class="termin-date"><p class="termin-day">23</p><p class="termin-month">Aug</p></div>
+          <div><p class="termin-title">Sommerfest</p><p class="termin-detail">Familienprogramm, Schleifchenturnier</p></div>
+          <p class="termin-time">15:00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="verein">
+    <div class="container">
+      <div class="verein-grid">
+        <div class="verein-text">
+          <p class="label section-eyebrow" style="margin-bottom: 12px;">Unser Verein</p>
+          <h2 class="section-title" style="margin-bottom: 24px;">Tradition trifft<br>Leidenschaft</h2>
+          <p>Seit 1931 ist der TC Blau-Weiss Attendorn ein fester Bestandteil des sportlichen Lebens. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen.</p>
+          <p>Ob Anfaenger oder erfahrener Spieler — bei uns findet jeder seinen Platz.</p>
+          <div class="verein-stats">
+            <div><p class="stat-number">1931</p><p class="stat-label">Gegruendet</p></div>
+            <div><p class="stat-number">7</p><p class="stat-label">Teams</p></div>
+            <div><p class="stat-number">4</p><p class="stat-label">Plaetze</p></div>
+          </div>
+        </div>
+        <div class="verein-image">Tennisanlage</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" style="background: var(--gray-50);">
+    <div class="container">
+      <div class="cta-banner">
+        <h2 class="cta-title">Werde Teil des Teams!</h2>
+        <p class="cta-text">Schnuppermitgliedschaft, Familienbeitraege und flexible Optionen.</p>
+        <a href="#" class="btn btn-primary">Mitgliedschaft anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-brand">TC BW Attendorn</p>
+          <p class="footer-info">Burg Schnellenberg<br>57439 Attendorn<br>Gegr. 1931</p>
+        </div>
+        <div>
+          <p class="footer-heading">Links</p>
+          <ul class="footer-links">
+            <li><a href="#">Mannschaften</a></li>
+            <li><a href="#">Training</a></li>
+            <li><a href="#">Mitglied werden</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-heading">Rechtliches</p>
+          <ul class="footer-links">
+            <li><a href="#">Impressum</a></li>
+            <li><a href="#">Datenschutz</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 TC Blau-Weiss Attendorn e.V.</p>
+        <div><a href="#">Impressum</a> &middot; <a href="#">Datenschutz</a></div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TC BW Attendorn — Design-Auswahl fuer den Vorstand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #f5f5f7;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+    .header {
+      background: #0a1628;
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: #8ba3c7;
+      font-size: 1rem;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: #a8ccf5;
+      margin-top: 16px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .intro h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .intro p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 32px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .card-preview {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-preview .label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .card-body {
+      padding: 24px;
+    }
+    .card-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card-body .subtitle {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .card-body p {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    .card-body .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+    .card-body .tag {
+      background: #f0f2f5;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #555;
+    }
+    /* Preview colors per design */
+    .preview-a {
+      background: linear-gradient(160deg, #153266, #0a1628);
+    }
+    .preview-a .mock-text { color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
+    .preview-b {
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
+    .preview-b .mock-text { color: #1a1a2e; font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; }
+    .preview-c {
+      background: linear-gradient(135deg, #ff6b35, #f7c948);
+    }
+    .preview-c .mock-text { color: white; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .preview-d {
+      background: linear-gradient(160deg, #1a3c34, #2d6a4f);
+    }
+    .preview-d .mock-text { color: #d4edda; font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+    .preview-e {
+      background: linear-gradient(160deg, #0d0d0d, #1a1a2e);
+    }
+    .preview-e .mock-text { color: #c0a062; font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+    .footer-note {
+      text-align: center;
+      padding: 48px 24px;
+      color: #999;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>TC Blau-Weiss Attendorn</h1>
+    <p>Design-Auswahl fuer die neue Homepage</p>
+    <span class="badge">5 Entwuerfe zur Auswahl</span>
+  </div>
+
+  <div class="container">
+    <div class="intro">
+      <h2>Welches Design passt am besten zum Verein?</h2>
+      <p>Jeder Entwurf zeigt die gleichen Inhalte in einem anderen visuellen Stil. Klickt auf ein Design, um die vollstaendige Vorschau zu oeffnen.</p>
+    </div>
+
+    <div class="grid">
+
+      <a href="design-a-classic-elegant.html" class="card">
+        <div class="card-preview preview-a">
+          <span class="label" style="color: #153266;">Design A</span>
+          <span class="mock-text">TC Blau-Weiss</span>
+        </div>
+        <div class="card-body">
+          <h3>Classic Elegant</h3>
+          <div class="subtitle">Klassisch, serioes, vereinstypisch</div>
+          <p>Traditionelles Design mit Serif-Schriften, dunkelblauen Toenen und eleganten Akzenten. Strahlt Bestaendigkeit und Vereinsgeschichte aus.</p>
+          <div class="tags">
+            <span class="tag">Serif-Schrift</span>
+            <span class="tag">Dunkelblau</span>
+            <span class="tag">Elegant</span>
+            <span class="tag">Klassisch</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="design-b-modern-minimal.html" class="card">
+        <div class="card-preview preview-b">
+          <span class="label" style="color: #1a1a2e;">Design B</span>
+          <span class="mock-text">TC Blau-Weiss</span>
+        </div>
+        <div class="card-body">
+          <h3>Modern Minimal</h3>
+          <div class="subtitle">Aufgeraeumt, modern, viel Weissraum</div>
+          <p>Reduziertes Design mit klarer Typografie, viel Weissraum und subtilen Akzenten. Wirkt professionell und zeitgemaess.</p>
+          <div class="tags">
+            <span class="tag">Sans-Serif</span>
+            <span class="tag">Weissraum</span>
+            <span class="tag">Clean</span>
+            <span class="tag">Modern</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="design-c-bold-sporty.html" class="card">
+        <div class="card-preview preview-c">
+          <span class="label" style="color: #ff6b35;">Design C</span>
+          <span class="mock-text">TC BW Attendorn</span>
+        </div>
+        <div class="card-body">
+          <h3>Bold &amp; Sporty</h3>
+          <div class="subtitle">Dynamisch, energiegeladen, sportlich</div>
+          <p>Kraeftige Farben, mutige Typografie und dynamische Layouts. Vermittelt Sportlichkeit und Teamgeist.</p>
+          <div class="tags">
+            <span class="tag">Warm-Toene</span>
+            <span class="tag">Dynamisch</span>
+            <span class="tag">Bold</span>
+            <span class="tag">Sportlich</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="design-d-nature-tradition.html" class="card">
+        <div class="card-preview preview-d">
+          <span class="label" style="color: #2d6a4f;">Design D</span>
+          <span class="mock-text">Burg Schnellenberg</span>
+        </div>
+        <div class="card-body">
+          <h3>Nature &amp; Tradition</h3>
+          <div class="subtitle">Natuerlich, gruene Toene, standortbezogen</div>
+          <p>Inspiriert von der Lage an der Burg Schnellenberg. Gruene Farbpalette, organische Formen und Bezug zur Natur.</p>
+          <div class="tags">
+            <span class="tag">Gruentoene</span>
+            <span class="tag">Organisch</span>
+            <span class="tag">Natur</span>
+            <span class="tag">Tradition</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="design-e-dark-premium.html" class="card">
+        <div class="card-preview preview-e">
+          <span class="label" style="color: #c0a062;">Design E</span>
+          <span class="mock-text">TC Blau-Weiss</span>
+        </div>
+        <div class="card-body">
+          <h3>Dark Premium</h3>
+          <div class="subtitle">Exklusiv, dunkel, hochwertig</div>
+          <p>Dunkler Hintergrund mit goldenen Akzenten. Vermittelt Exklusivitaet und gehobenem Anspruch — wie ein Premium-Sportclub.</p>
+          <div class="tags">
+            <span class="tag">Dark Mode</span>
+            <span class="tag">Gold-Akzente</span>
+            <span class="tag">Premium</span>
+            <span class="tag">Exklusiv</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <p>Alle Designs sind vollstaendig responsive und funktionieren auf Desktop, Tablet und Smartphone.<br>
+    Die endgueltige Umsetzung wird mit dem gewaehlten Design als Grundlage erstellt.</p>
+  </div>
+
+</body>
+</html>
