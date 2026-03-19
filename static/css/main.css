@@ -255,77 +255,74 @@
       position: absolute;
       inset: 0;
       overflow: hidden;
-      opacity: 0.12;
+      opacity: 0.18;
       pointer-events: none;
     }
 
-    /* Singles court outline */
-    .court-outline {
+    .hero-court-lines > div {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 540px;
-      height: 280px;
+    }
+
+    /* Doubles court outline (outermost rectangle) */
+    .court-doubles {
+      width: 600px;
+      height: 340px;
       border: 2px solid white;
       transform: translate(-50%, -50%);
     }
 
-    /* Net / center vertical line */
-    .court-net {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
+    /* Singles sidelines (horizontal lines inside doubles) */
+    .court-singles {
+      width: 600px;
       height: 280px;
-      border-left: 2px solid white;
-      transform: translate(-50%, -50%);
-    }
-
-    /* Service line (horizontal, connects both T-fields) */
-    .court-service-line {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 540px;
-      height: 180px;
       border-top: 2px solid white;
       border-bottom: 2px solid white;
       transform: translate(-50%, -50%);
     }
 
-    /* Center service line (vertical T-line between service boxes) */
-    .court-center-mark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
+    /* Net (vertical center line, full doubles width) */
+    .court-net {
       width: 0;
-      height: 180px;
+      height: 340px;
       border-left: 2px solid white;
       transform: translate(-50%, -50%);
     }
 
-    /* Doubles alley left */
-    .court-doubles-left {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 600px;
+    /* Service line left (vertical, inside singles court) */
+    .court-service-left {
+      width: 0;
       height: 280px;
       border-left: 2px solid white;
-      border-right: none;
+      margin-left: -150px;
       transform: translate(-50%, -50%);
     }
 
-    /* Doubles alley right */
-    .court-doubles-right {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 600px;
+    /* Service line right (vertical, inside singles court) */
+    .court-service-right {
+      width: 0;
       height: 280px;
-      border-right: 2px solid white;
-      border-left: none;
+      border-left: 2px solid white;
+      margin-left: 150px;
       transform: translate(-50%, -50%);
+    }
+
+    /* Center service line left half (horizontal T-line, service line to net) */
+    .court-center-left {
+      width: 150px;
+      height: 0;
+      border-top: 2px solid white;
+      margin-left: -150px;
+      transform: translate(0%, -50%);
+    }
+
+    /* Center service line right half (horizontal T-line, net to service line) */
+    .court-center-right {
+      width: 150px;
+      height: 0;
+      border-top: 2px solid white;
+      transform: translate(0%, -50%);
     }
 
     .hero-content {

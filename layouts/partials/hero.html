@@ -1,18 +1,13 @@
 {{ with .Params.hero }}
 <section class="hero">
   <div class="hero-court-lines">
-    <!-- Outer singles court -->
-    <div class="court-outline"></div>
-    <!-- Center service line (horizontal) -->
-    <div class="court-service-line"></div>
-    <!-- Center mark (short vertical at baseline center) -->
-    <div class="court-center-mark"></div>
-    <!-- Net / center line (vertical) -->
+    <div class="court-doubles"></div>
+    <div class="court-singles"></div>
     <div class="court-net"></div>
-    <!-- Left doubles alley -->
-    <div class="court-doubles-left"></div>
-    <!-- Right doubles alley -->
-    <div class="court-doubles-right"></div>
+    <div class="court-service-left"></div>
+    <div class="court-service-right"></div>
+    <div class="court-center-left"></div>
+    <div class="court-center-right"></div>
   </div>
   <div class="hero-content">
     <p class="label-upper hero-eyebrow">{{ .eyebrow }}</p>
