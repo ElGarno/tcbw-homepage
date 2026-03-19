@@ -1,7 +1,8 @@
 ---
 title: "Herren 40"
-league: "Bezirksliga"
-weight: 20
+league: "Suedwestfalenliga"
+weight: 30
+captain: "Heimes Carsten"
 ---
 
-Informationen zur Herren 40 Mannschaft folgen.
+Herren 40 6er Mannschaft in der Suedwestfalenliga (Gr. 077), Saison Sommer 2026.

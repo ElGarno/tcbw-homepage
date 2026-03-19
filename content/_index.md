@@ -16,18 +16,18 @@ verein:
   text: |
     Seit 1931 ist der TC Blau-Weiss Attendorn ein fester Bestandteil des sportlichen Lebens in Attendorn. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen fuer Tennis in jeder Altersklasse.
 
-    Ob Anfaenger oder erfahrener Spieler, ob jung oder alt — bei uns findet jeder seinen Platz. Mit sechs aktiven Mannschaften, qualifizierten Trainern und einem lebendigen Vereinsleben sind wir mehr als nur ein Tennisclub.
+    Ob Anfaenger oder erfahrener Spieler, ob jung oder alt — bei uns findet jeder seinen Platz. Mit sieben aktiven Mannschaften, qualifizierten Trainern und einem lebendigen Vereinsleben sind wir mehr als nur ein Tennisclub.
   stats:
     - number: "1931"
       label: "Gegruendet"
-    - number: "6"
+    - number: "7"
       label: "Mannschaften"
     - number: "4"
       label: "Plaetze"
   image_alt: "Tennisanlage Burg Schnellenberg"
 cta:
   title: "Werde Teil unseres Vereins"
-  text: "Schnuppermitgliedschaft, Familienbeitraege und flexible Optionen — finde die passende Mitgliedschaft fuer dich."
+  text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft fuer dich."
   button_text: "Mitgliedschaft anfragen"
   button_url: "/verein/mitgliedschaft/"
 ---

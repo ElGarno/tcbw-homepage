@@ -9,13 +9,11 @@ Schnellenberg 1
 57439 Attendorn
 
 **Vertreten durch:**
-Stefan Hütte
-Auf den Peulen 38
-57439 Attendorn
+Bastian Gerlach und Felix Kersting (Geschaeftsfuehrung)
 
 **Kontakt:**
-Telefon: +49 171 2696763
 E-Mail: vorstand@tc-bw-attendorn.de
+Telefon Clubhaus: 0151-43168187
 
 ## Haftungsausschluss (Disclaimer)
 
