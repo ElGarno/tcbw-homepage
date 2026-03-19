@@ -15,5 +15,5 @@
 - label: "Platzbuchung"
   title: "Courtbooking"
   link_text: "Jetzt buchen"
-  link_url: "#"
+  link_url: "https://tc-bw-attendorn.courtbooking.de/login?standard=true"
   accent: "green"
