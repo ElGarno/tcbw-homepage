@@ -9,8 +9,9 @@
     </div>
 
     <div class="training-grid">
+      {{ with .Params.schedule }}
       <div class="training-schedule reveal">
-        {{ range .Params.schedule }}
+        {{ range . }}
         <div class="schedule-item">
           <span class="schedule-day">{{ .day }}</span>
           <span class="schedule-time">{{ .time }}</span>
@@ -18,6 +19,7 @@
         </div>
         {{ end }}
       </div>
+      {{ end }}
 
       <div class="trainer-cards reveal">
         {{ range .Params.trainers }}

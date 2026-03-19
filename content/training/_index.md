@@ -1,22 +1,6 @@
 ---
 title: "Training"
 description: "Trainingszeiten und Trainer beim TC Blau-Weiss Attendorn."
-schedule:
-  - day: "Mo"
-    time: "16:00 – 18:00"
-    group: "Jugendtraining"
-  - day: "Di"
-    time: "18:00 – 20:00"
-    group: "Erwachsene Anfaenger"
-  - day: "Mi"
-    time: "16:00 – 18:00"
-    group: "Kinder (6–10 J.)"
-  - day: "Do"
-    time: "18:00 – 20:00"
-    group: "Erwachsene Fortgeschr."
-  - day: "Fr"
-    time: "15:00 – 17:00"
-    group: "Matchtraining"
 trainers:
   - name: "Vladislav Hupertz"
     initials: "VH"
