@@ -2,10 +2,15 @@
 title: "Termine"
 description: "Kommende Veranstaltungen und Heimspiele."
 events:
-  - title: "Saisoneroeffnung 2026"
-    date: 2026-04-28
-    time: "14:00 Uhr"
-    detail: "Clubhaus, alle Mitglieder willkommen"
+  - title: "Fruehjahrsarbeitseinsatz"
+    date: 2026-03-28
+    time: "10:30 Uhr"
+    detail: "Anlage fit fuer die Sommersaison machen — viele helfende Haende willkommen!"
+    category: "event"
+  - title: "Jahreshauptversammlung"
+    date: 2026-04-26
+    time: "TBA"
+    detail: "Offizielle Einladung folgt in Kuerze"
     category: "event"
   - title: "Herren 30 vs. Olper TC"
     date: 2026-05-09
