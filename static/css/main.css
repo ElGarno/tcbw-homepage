@@ -255,29 +255,76 @@
       position: absolute;
       inset: 0;
       overflow: hidden;
-      opacity: 0.04;
+      opacity: 0.12;
       pointer-events: none;
     }
 
-    .hero-court-lines::before {
-      content: '';
+    /* Singles court outline */
+    .court-outline {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 500px;
-      height: 260px;
+      width: 540px;
+      height: 280px;
       border: 2px solid white;
       transform: translate(-50%, -50%);
     }
 
-    .hero-court-lines::after {
-      content: '';
+    /* Net / center vertical line */
+    .court-net {
       position: absolute;
       top: 50%;
       left: 50%;
       width: 0;
-      height: 260px;
+      height: 280px;
       border-left: 2px solid white;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Service line (horizontal, connects both T-fields) */
+    .court-service-line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 540px;
+      height: 180px;
+      border-top: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Center service line (vertical T-line between service boxes) */
+    .court-center-mark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 180px;
+      border-left: 2px solid white;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Doubles alley left */
+    .court-doubles-left {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 280px;
+      border-left: 2px solid white;
+      border-right: none;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Doubles alley right */
+    .court-doubles-right {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 280px;
+      border-right: 2px solid white;
+      border-left: none;
       transform: translate(-50%, -50%);
     }
 
