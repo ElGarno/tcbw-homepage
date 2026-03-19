@@ -9,7 +9,7 @@ Schnellenberg 1
 57439 Attendorn
 
 **Vertreten durch:**
-Bastian Gerlach und Felix Kersting (Geschaeftsfuehrung)
+Stefan Huette und Christian Feldmann (Geschaeftsfuehrung)
 
 **Kontakt:**
 E-Mail: vorstand@tc-bw-attendorn.de

@@ -6,8 +6,8 @@ weight: 10
 
 ## Geschaeftsfuehrung
 
-- **Bastian Gerlach**
-- **Felix Kersting**
+- **Stefan Huette**
+- **Christian Feldmann**
 
 ## Finanzen
 
