@@ -1,5 +1,14 @@
 {{ $termine := .Site.GetPage "/termine" }}
 {{ with $termine }}
+{{ $now := now }}
+{{ $upcoming := slice }}
+{{ range .Params.events }}
+  {{ $d := time .date }}
+  {{ if ge $d.Unix $now.Unix }}
+    {{ $upcoming = $upcoming | append . }}
+  {{ end }}
+{{ end }}
+{{ if $upcoming }}
 <section class="section" id="termine">
   <div class="container">
     <div class="section-header reveal">
@@ -8,7 +17,7 @@
     </div>
 
     <div class="termine-list">
-      {{ range .Params.events }}
+      {{ range first 6 $upcoming }}
       {{ $d := time .date }}
       <div class="termin-item reveal">
         <div class="termin-date-block">
@@ -24,6 +33,13 @@
       </div>
       {{ end }}
     </div>
+
+    {{ if gt (len $upcoming) 6 }}
+    <div class="news-more reveal" style="margin-top: 32px;">
+      <a href="/termine/" class="btn-secondary">Alle {{ len $upcoming }} Termine ansehen</a>
+    </div>
+    {{ end }}
   </div>
 </section>
+{{ end }}
 {{ end }}
