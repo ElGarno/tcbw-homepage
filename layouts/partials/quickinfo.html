@@ -1,13 +1,42 @@
 <section class="quick-info">
   <div class="container">
     <div class="quick-info-grid">
-      {{ range .Site.Data.quickinfo }}
-      <div class="quick-card reveal">
+      {{/* Dynamic next event card */}}
+      {{ $termine := .Site.GetPage "/termine" }}
+      {{ $nextEvent := false }}
+      {{ with $termine }}
+        {{ $now := now.Format "2006-01-02" }}
+        {{ range .Params.events }}
+          {{ if not $nextEvent }}
+            {{ $eventDate := time .date }}
+            {{ if ge ($eventDate.Format "2006-01-02") $now }}
+              {{ $nextEvent = . }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      <a href="/termine/" class="quick-card reveal" style="text-decoration: none; color: inherit;">
+        <p class="label-upper quick-card-label">Naechster Termin</p>
+        {{ if $nextEvent }}
+          <p class="quick-card-title">{{ $nextEvent.title }}</p>
+          {{ $months := slice "" "Januar" "Februar" "Maerz" "April" "Mai" "Juni" "Juli" "August" "September" "Oktober" "November" "Dezember" }}
+          {{ $d := time $nextEvent.date }}
+          <p class="quick-card-detail">{{ $d.Day }}. {{ index $months (int $d.Month) }} {{ $d.Year }}{{ with $nextEvent.time }}, {{ . }}{{ end }}</p>
+        {{ else }}
+          <p class="quick-card-title">Keine Termine</p>
+          <p class="quick-card-detail">Aktuell stehen keine Termine an</p>
+        {{ end }}
+        <span class="quick-card-link">Alle Termine &rarr;</span>
+      </a>
+
+      {{/* Remaining static cards */}}
+      {{ range after 1 .Site.Data.quickinfo }}
+      <a href="{{ .link_url }}" class="quick-card reveal" style="text-decoration: none; color: inherit;"{{ if strings.HasPrefix .link_url "http" }} target="_blank" rel="noopener"{{ end }}>
         <p class="label-upper quick-card-label">{{ .label }}</p>
         <p class="quick-card-title">{{ .title }}</p>
         {{ with .detail }}<p class="quick-card-detail">{{ . }}</p>{{ end }}
-        {{ if .link_text }}<a href="{{ .link_url }}" class="quick-card-link">{{ .link_text }}</a>{{ end }}
-      </div>
+        {{ if .link_text }}<span class="quick-card-link">{{ .link_text }} &rarr;</span>{{ end }}
+      </a>
       {{ end }}
     </div>
   </div>
