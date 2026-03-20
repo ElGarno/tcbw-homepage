@@ -24,7 +24,8 @@ verein:
       label: "Mannschaften"
     - number: "4"
       label: "Plaetze"
-  image_alt: "Tennisanlage Burg Schnellenberg"
+  image: "/images/historie/tcbw_1931.jpg"
+  image_alt: "Gruendung TC Blau-Weiss Attendorn 1931"
 cta:
   title: "Werde Teil unseres Vereins"
   text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft fuer dich."
