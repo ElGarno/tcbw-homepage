@@ -1,0 +1,46 @@
+{{ define "main" }}
+<article class="section" style="padding-top: 120px;">
+  <div class="container" style="max-width: 900px;">
+    <p class="label-upper section-eyebrow">Verein</p>
+    <h1 class="heading-display section-title" style="margin-bottom: 48px;">{{ .Title }}</h1>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; margin-bottom: 48px;">
+      {{ range .Params.departments }}
+      <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <p class="label-upper" style="color: var(--blue-600); margin-bottom: 12px;">{{ .name }}</p>
+        {{ range .members }}
+          {{ if reflect.IsMap . }}
+            <p style="margin: 0 0 6px 0; font-size: 1.05rem;">
+              <strong style="color: var(--blue-800);">{{ .name }}</strong>
+              {{ with .role }}<span style="color: var(--gray-500); font-size: 0.9rem;"> — {{ . }}</span>{{ end }}
+            </p>
+          {{ else }}
+            <p style="margin: 0 0 6px 0; font-size: 1.05rem; color: var(--blue-800);">{{ . }}</p>
+          {{ end }}
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+
+    {{ with .Params.contact }}
+    <div style="background: var(--blue-50); border-radius: var(--radius-lg); padding: 28px 32px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center;">
+      <p class="label-upper" style="color: var(--blue-600); margin: 0; width: 100%;">Kontakt</p>
+      {{ with .email }}
+      <p style="margin: 0; font-size: 1.05rem;">
+        <strong>E-Mail:</strong> <a href="mailto:{{ . }}" style="color: var(--blue-600);">{{ . }}</a>
+      </p>
+      {{ end }}
+      {{ with .phone }}
+      <p style="margin: 0; font-size: 1.05rem;">
+        <strong>{{ $.Params.contact.phone_label }}:</strong> <a href="tel:{{ . }}" style="color: var(--blue-600);">{{ . }}</a>
+      </p>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <div style="margin-top: 48px;">
+      <a href="/verein/" class="btn-secondary">&larr; Zurueck zum Verein</a>
+    </div>
+  </div>
+</article>
+{{ end }}
