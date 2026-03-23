@@ -1,9 +1,9 @@
 ---
-title: "TC Blau-Weiss Attendorn"
-description: "Tennisclub Blau-Weiss Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
+title: "TC Blau-Weiß Attendorn"
+description: "Tennisclub Blau-Weiß Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
 hero:
   eyebrow: "Willkommen beim"
-  title: "TC Blau-Weiss Attendorn"
+  title: "TC Blau-Weiß Attendorn"
   subtitle: "Tennis an der Burg Schnellenberg"
   cta_primary:
     text: "Mitglied werden"
@@ -14,21 +14,21 @@ hero:
 verein:
   title: "Tradition trifft Leidenschaft"
   text: |
-    Seit 1931 ist der TC Blau-Weiss Attendorn ein fester Bestandteil des sportlichen Lebens in Attendorn. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen fuer Tennis in jeder Altersklasse.
+    Seit 1931 ist der TC Blau-Weiß Attendorn ein fester Bestandteil des sportlichen Lebens in Attendorn. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen für Tennis in jeder Altersklasse.
 
-    Ob Anfaenger oder erfahrener Spieler, ob jung oder alt — bei uns findet jeder seinen Platz. Mit sieben aktiven Mannschaften, qualifizierten Trainern und einem lebendigen Vereinsleben sind wir mehr als nur ein Tennisclub.
+    Ob Anfänger oder erfahrener Spieler, ob jung oder alt — bei uns findet jeder seinen Platz. Mit sieben aktiven Mannschaften, qualifizierten Trainern und einem lebendigen Vereinsleben sind wir mehr als nur ein Tennisclub.
   stats:
     - number: "1931"
-      label: "Gegruendet"
+      label: "Gegründet"
     - number: "7"
       label: "Mannschaften"
     - number: "4"
-      label: "Plaetze"
+      label: "Plätze"
   image: "/images/historie/tcbw_1931.jpg"
-  image_alt: "Gruendung TC Blau-Weiss Attendorn 1931"
+  image_alt: "Gründung TC Blau-Weiß Attendorn 1931"
 cta:
   title: "Werde Teil unseres Vereins"
-  text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft fuer dich."
+  text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft für dich."
   button_text: "Mitgliedschaft anfragen"
   button_url: "/verein/mitgliedschaft/"
 ---

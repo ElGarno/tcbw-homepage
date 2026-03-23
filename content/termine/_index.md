@@ -2,15 +2,15 @@
 title: "Termine"
 description: "Kommende Veranstaltungen und Heimspiele."
 events:
-  - title: "Fruehjahrsarbeitseinsatz"
+  - title: "Frühjahrsarbeitseinsatz"
     date: 2026-03-28
     time: "10:30 Uhr"
-    detail: "Anlage fit fuer die Sommersaison machen — viele helfende Haende willkommen!"
+    detail: "Anlage fit für die Sommersaison machen — viele helfende Hände willkommen!"
     category: "event"
   - title: "Jahreshauptversammlung"
     date: 2026-04-26
     time: "TBA"
-    detail: "Offizielle Einladung folgt in Kuerze"
+    detail: "Offizielle Einladung folgt in Kürze"
     category: "event"
   - title: "Herren 30 vs. Olper TC"
     date: 2026-05-09
@@ -25,12 +25,12 @@ events:
   - title: "Herren 40 vs. TC Iserlohn"
     date: 2026-05-30
     time: "13:00 Uhr"
-    detail: "Suedwestfalenliga, Heimspiel"
+    detail: "Südwestfalenliga, Heimspiel"
     category: "medenspiel"
   - title: "Herren 40 vs. Hagener TC Blau-Gold"
     date: 2026-06-13
     time: "13:00 Uhr"
-    detail: "Suedwestfalenliga, Heimspiel"
+    detail: "Südwestfalenliga, Heimspiel"
     category: "medenspiel"
   - title: "Herren 60 vs. TC SSV Elspe 2"
     date: 2026-06-13
@@ -45,7 +45,7 @@ events:
   - title: "Herren 40 vs. TV Plettenberg"
     date: 2026-06-20
     time: "13:00 Uhr"
-    detail: "Suedwestfalenliga, Heimspiel"
+    detail: "Südwestfalenliga, Heimspiel"
     category: "medenspiel"
   - title: "Mixed U12 vs. TC 71 Netphen"
     date: 2026-06-26

@@ -1,4 +1,4 @@
 ---
 title: "Mannschaften"
-description: "Unsere aktiven Teams im Ueberblick."
+description: "Unsere aktiven Teams im Überblick."
 ---

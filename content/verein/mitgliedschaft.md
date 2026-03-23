@@ -1,22 +1,22 @@
 ---
-title: "Mitgliedschaft & Beitraege"
-description: "Mitglied werden beim TC Blau-Weiss Attendorn — Beitraege und Infos."
+title: "Mitgliedschaft & Beiträge"
+description: "Mitglied werden beim TC Blau-Weiß Attendorn — Beiträge und Infos."
 weight: 30
 ---
 
-## Mitgliedsbeitraege
+## Mitgliedsbeiträge
 
 | Kategorie | Jahresbeitrag |
 |-----------|--------------|
 | Erwachsene | 150 EUR |
-| Kinder in weiterfuehrenden Schulen / Studenten | 60 EUR |
+| Kinder in weiterführenden Schulen / Studenten | 60 EUR |
 | Kinder, deren Eltern Clubmitglieder sind | 50 EUR |
 | Vorschul- und Grundschulkinder | 40 EUR |
 
 ## Downloads
 
 - [Einwilligung in die Datenverarbeitung (PDF)](/downloads/Einwilligung-in-die-Datenverarbeitung.pdf)
-- [Einverstaendniserklaerung TC BW Attendorn (PDF)](/downloads/Einverstaendniserklaaerung-TC-BW-ATTENDORN.pdf)
+- [Einverständniserklärung TC BW Attendorn (PDF)](/downloads/Einverständniserklärung-TC-BW-ATTENDORN.pdf)
 
 ## Mitglied werden
 

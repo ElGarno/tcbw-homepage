@@ -1,10 +1,10 @@
 baseURL = "https://tc-bw-attendorn.de/"
 languageCode = "de"
-title = "TC Blau-Weiss Attendorn"
+title = "TC Blau-Weiß Attendorn"
 
 [params]
-  description = "Tennisclub Blau-Weiss Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
-  clubName = "TC Blau-Weiss Attendorn"
+  description = "Tennisclub Blau-Weiß Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
+  clubName = "TC Blau-Weiß Attendorn"
   clubNameShort = "TC"
   tagline = "Tennis an der Burg Schnellenberg"
   founded = "1931"
