@@ -133,10 +133,6 @@
       width: 40px;
       height: auto;
       object-fit: contain;
-      border: 2px solid var(--blue-200);
-      border-radius: 8px;
-      padding: 2px;
-      background: #000;
     }
 
     .nav-links {
