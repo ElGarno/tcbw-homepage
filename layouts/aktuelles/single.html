@@ -1,18 +1,36 @@
 {{ define "main" }}
-<article class="section" style="padding-top: 120px;">
+<article class="article-detail">
+  <div class="article-detail-header">
+    <div class="container" style="max-width: 760px;">
+      <a href="/aktuelles/" class="article-detail-back">&larr; Alle Berichte</a>
+      <div class="article-detail-meta">
+        <time class="article-detail-date">{{ .Date.Format "2. January 2006" }}</time>
+        {{ with .Params.tags }}
+        <div class="article-detail-tags">
+          {{ range . }}<span class="article-detail-tag">{{ . }}</span>{{ end }}
+        </div>
+        {{ end }}
+      </div>
+      <h1 class="article-detail-title">{{ .Title }}</h1>
+      {{ with .Description }}
+      <p class="article-detail-description">{{ . }}</p>
+      {{ end }}
+    </div>
+  </div>
+
   <div class="container" style="max-width: 760px;">
-    <p class="news-card-date">{{ .Date.Format "2. January 2006" }}</p>
-    <h1 class="heading-display section-title" style="margin-bottom: 24px;">{{ .Title }}</h1>
     {{ with .Params.image }}
-    <div style="border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 32px;">
-      <img src="{{ . }}" alt="{{ $.Title }}" style="width:100%; display:block;">
+    <div class="article-detail-image">
+      <img src="{{ . }}" alt="{{ $.Title }}">
     </div>
     {{ end }}
-    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
+
+    <div class="article-detail-content">
       {{ .Content }}
     </div>
-    <div style="margin-top: 48px;">
-      <a href="/aktuelles/" class="btn-secondary">&larr; Zurueck zu Aktuelles</a>
+
+    <div class="article-detail-footer">
+      <a href="/aktuelles/" class="btn-secondary">&larr; Zurück zu Aktuelles</a>
     </div>
   </div>
 </article>
