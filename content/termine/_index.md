@@ -97,4 +97,9 @@ events:
     time: "13:00 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
+  - title: "Frühjahrsarbeitseinsatz"
+    date: 2026-03-28
+    time: "10:30 Uhr"
+    detail: "Wir freuen uns über viele helfende Hände, damit unsere Anlage fit für die Sommersaison wird."
+    category: "event"
 ---
