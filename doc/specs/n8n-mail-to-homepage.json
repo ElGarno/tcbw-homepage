@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "// Extract plain text from email\n// Support both field naming conventions (textHtml/textPlain and html/text)\nconst data = $input.first().json;\nlet text = '';\nconst html = data.textHtml || data.html || '';\nconst textBody = data.textPlain || data.text || '';\n\n// Fix encoding: GMX sometimes delivers UTF-8 bytes misread as Latin-1\nfunction fixEncoding(str) {\n  if (!str) return '';\n  return str\n    .replace(/Ã¤/g, 'ä').replace(/Ã/g, 'Ä')\n    .replace(/Ã¶/g, 'ö').replace(/Ã/g, 'Ö')\n    .replace(/Ã¼/g, 'ü').replace(/Ã/g, 'Ü')\n    .replace(/Ã/g, 'ß')\n    .replace(/â/g, '—').replace(/â/g, '–')\n    .replace(/â/g, \"'\").replace(/â/g, \"'\")\n    .replace(/â/g, '„').replace(/â/g, '“')\n    .replace(/â¦/g, '…');\n}\n\nif (textBody && textBody.trim().length > 0) {\n  text = fixEncoding(textBody);\n} else if (html) {\n  text = fixEncoding(\n    html\n      .replace(/<style[^>]*>[\\s\\S]*?<\\/style>/gi, '')\n      .replace(/<script[^>]*>[\\s\\S]*?<\\/script>/gi, '')\n      .replace(/<br\\s*\\/?>/gi, '\\n')\n      .replace(/<\\/p>/gi, '\\n\\n')\n      .replace(/<\\/div>/gi, '\\n')\n      .replace(/<\\/li>/gi, '\\n')\n      .replace(/<[^>]+>/g, '')\n      .replace(/&nbsp;/g, ' ')\n      .replace(/&amp;/g, '&')\n      .replace(/&lt;/g, '<')\n      .replace(/&gt;/g, '>')\n      .replace(/&quot;/g, '\"')\n      .replace(/&auml;/g, 'ä').replace(/&Auml;/g, 'Ä')\n      .replace(/&ouml;/g, 'ö').replace(/&Ouml;/g, 'Ö')\n      .replace(/&uuml;/g, 'ü').replace(/&Uuml;/g, 'Ü')\n      .replace(/&szlig;/g, 'ß')\n      .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')\n      .replace(/&#\\d+;/g, '')\n      .replace(/\\n{3,}/g, '\\n\\n')\n      .trim()\n  );\n}\n\nconst subject = fixEncoding(data.subject || 'Kein Betreff');\nconst date = data.date;\nconst from = data.from;\n\nconst mailDate = new Date(date);\nconst dateStr = mailDate.toISOString().split('T')[0];\n\nconst slug = subject\n  .toLowerCase()\n  .replace(/[äÄ]/g, 'ae')\n  .replace(/[öÖ]/g, 'oe')\n  .replace(/[üÜ]/g, 'ue')\n  .replace(/ß/g, 'ss')\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-|-$/g, '')\n  .substring(0, 40);\n\nreturn {\n  json: {\n    text,\n    subject,\n    date: dateStr,\n    from,\n    slug,\n    branchName: `aktuelles/${\"${dateStr}\"}-${\"${slug}\"}`\n  }\n};"
+        "jsCode": "// Extract plain text from email\n// Support both field naming conventions (textHtml/textPlain and html/text)\nconst data = $input.first().json;\nlet text = '';\nconst html = data.textHtml || data.html || '';\nconst textBody = data.textPlain || data.text || '';\n\n// Fix encoding: GMX sometimes delivers UTF-8 bytes misread as Latin-1\nfunction fixEncoding(str) {\n  if (!str) return '';\n  return str\n    .replace(/Ã¤/g, 'ä').replace(/Ã/g, 'Ä')\n    .replace(/Ã¶/g, 'ö').replace(/Ã/g, 'Ö')\n    .replace(/Ã¼/g, 'ü').replace(/Ã/g, 'Ü')\n    .replace(/Ã/g, 'ß')\n    .replace(/â/g, '—').replace(/â/g, '–')\n    .replace(/â/g, \"'\").replace(/â/g, \"'\")\n    .replace(/â/g, '„').replace(/â/g, '“')\n    .replace(/â¦/g, '…');\n}\n\nif (textBody && textBody.trim().length > 0) {\n  text = fixEncoding(textBody);\n} else if (html) {\n  text = fixEncoding(\n    html\n      .replace(/<style[^>]*>[\\s\\S]*?<\\/style>/gi, '')\n      .replace(/<script[^>]*>[\\s\\S]*?<\\/script>/gi, '')\n      .replace(/<br\\s*\\/?>/gi, '\\n')\n      .replace(/<\\/p>/gi, '\\n\\n')\n      .replace(/<\\/div>/gi, '\\n')\n      .replace(/<\\/li>/gi, '\\n')\n      .replace(/<[^>]+>/g, '')\n      .replace(/&nbsp;/g, ' ')\n      .replace(/&amp;/g, '&')\n      .replace(/&lt;/g, '<')\n      .replace(/&gt;/g, '>')\n      .replace(/&quot;/g, '\"')\n      .replace(/&auml;/g, 'ä').replace(/&Auml;/g, 'Ä')\n      .replace(/&ouml;/g, 'ö').replace(/&Ouml;/g, 'Ö')\n      .replace(/&uuml;/g, 'ü').replace(/&Uuml;/g, 'Ü')\n      .replace(/&szlig;/g, 'ß')\n      .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')\n      .replace(/&#\\d+;/g, '')\n      .replace(/\\n{3,}/g, '\\n\\n')\n      .trim()\n  );\n}\n\nconst subject = fixEncoding(data.subject || 'Kein Betreff');\nconst date = data.date;\nconst from = data.from;\n\nconst mailDate = new Date(date);\nconst dateStr = mailDate.toISOString().split('T')[0];\n\nconst slug = subject\n  .toLowerCase()\n  .replace(/[äÄ]/g, 'ae')\n  .replace(/[öÖ]/g, 'oe')\n  .replace(/[üÜ]/g, 'ue')\n  .replace(/ß/g, 'ss')\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-|-$/g, '')\n  .substring(0, 40);\n\nreturn {\n  json: {\n    text,\n    subject,\n    date: dateStr,\n    from,\n    slug,\n    branchName: `aktuelles/${dateStr}-${slug}`\n  }\n};"
       },
       "id": "extract-text",
       "name": "Text extrahieren",
@@ -85,7 +85,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Parse AI Agent response - extract JSON from output\nconst response = $input.first().json;\nconst output = response.output || response.text || '';\n\n// Extract JSON from response (might be wrapped in markdown code block)\nlet jsonStr = output;\nconst jsonMatch = output.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\nif (jsonMatch) {\n  jsonStr = jsonMatch[1].trim();\n} else {\n  const objMatch = output.match(/(\\{[\\s\\S]*\\})/);\n  if (objMatch) {\n    jsonStr = objMatch[1];\n  }\n}\n\nlet items = [];\ntry {\n  const parsed = JSON.parse(jsonStr);\n  items = parsed.items || [];\n} catch (e) {\n  // If JSON parsing fails, continue with empty items\n  items = [];\n}\n\nconst mailDate = $('Text extrahieren').first().json.date;\nconst branchName = $('Text extrahieren').first().json.branchName;\nconst subject = $('Text extrahieren').first().json.subject;\n\nconst beitraege = items.filter(i => i.type === 'beitrag');\nconst quickinfos = items.filter(i => i.type === 'quickinfo');\nconst termine = items.filter(i => i.type === 'termin');\n\nconst files = [];\n\nfor (const item of [...beitraege, ...quickinfos]) {\n  const frontmatter = [\n    '---',\n    `title: \"${item.title}\"`,\n    `date: ${mailDate}`,\n    `description: \"${item.description || ''}\"`,\n    `tags: [${(item.tags || []).map(t => `\"${t}\"`).join(', ')}]`\n  ];\n  if (item.type === 'quickinfo') {\n    frontmatter.push('quickinfo: true');\n  }\n  frontmatter.push('---');\n  frontmatter.push('');\n  frontmatter.push(item.body || '');\n  frontmatter.push('');\n\n  files.push({\n    path: `content/aktuelles/${mailDate}-${item.slug}.md`,\n    content: frontmatter.join('\\n'),\n    type: item.type,\n    title: item.title\n  });\n}\n\nlet prBody = '## Neue Inhalte\\n\\n';\nprBody += '| Typ | Datei | Titel |\\n|-----|-------|-------|\\n';\nfor (const f of files) {\n  prBody += `| ${f.type} | \\`${f.path}\\` | ${f.title} |\\n`;\n}\nfor (const t of termine) {\n  prBody += `| termin | \\`content/termine/_index.md\\` | ${t.title} |\\n`;\n}\nprBody += '\\n---\\nAutomatisch erstellt aus Mail vom ' + mailDate;\n\nreturn {\n  json: {\n    files,\n    termine,\n    branchName,\n    mailDate,\n    subject,\n    prBody,\n    stats: {\n      beitraege: beitraege.length,\n      quickinfos: quickinfos.length,\n      termine: termine.length\n    }\n  }\n};"
+        "jsCode": "// Parse AI Agent response - extract JSON from output\nconst response = $input.first().json;\nconst output = response.output || response.text || '';\n\n// Extract JSON from response (might be wrapped in markdown code block)\nlet jsonStr = output;\nconst jsonMatch = output.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\nif (jsonMatch) {\n  jsonStr = jsonMatch[1].trim();\n} else {\n  const objMatch = output.match(/(\\{[\\s\\S]*\\})/);\n  if (objMatch) {\n    jsonStr = objMatch[1];\n  }\n}\n\nlet items = [];\ntry {\n  const parsed = JSON.parse(jsonStr);\n  items = parsed.items || [];\n} catch (e) {\n  // If JSON parsing fails, continue with empty items\n  items = [];\n}\n\nconst mailDate = $('Text extrahieren').first().json.date;\nconst branchName = $('Text extrahieren').first().json.branchName;\nconst subject = $('Text extrahieren').first().json.subject;\n\nconst beitraege = items.filter(i => i.type === 'beitrag');\nconst quickinfos = items.filter(i => i.type === 'quickinfo');\nconst termine = items.filter(i => i.type === 'termin');\n\nconst files = [];\n\nfor (const item of [...beitraege, ...quickinfos]) {\n  const frontmatter = [\n    '---',\n    'title: \"' + item.title + '\"',\n    'date: ' + mailDate,\n    'description: \"' + (item.description || '') + '\"',\n    'tags: [' + (item.tags || []).map(t => '\"' + t + '\"').join(', ') + ']'\n  ];\n  if (item.type === 'quickinfo') {\n    frontmatter.push('quickinfo: true');\n  }\n  frontmatter.push('---');\n  frontmatter.push('');\n  frontmatter.push(item.body || '');\n  frontmatter.push('');\n\n  files.push({\n    path: 'content/aktuelles/' + mailDate + '-' + item.slug + '.md',\n    content: frontmatter.join('\\n'),\n    type: item.type,\n    title: item.title\n  });\n}\n\nlet prBody = '## Neue Inhalte\\n\\n';\nprBody += '| Typ | Datei | Titel |\\n|-----|-------|-------|\\n';\nfor (const f of files) {\n  prBody += '| ' + f.type + ' | `' + f.path + '` | ' + f.title + ' |\\n';\n}\nfor (const t of termine) {\n  prBody += '| termin | `content/termine/_index.md` | ' + t.title + ' |\\n';\n}\nprBody += '\\n---\\nAutomatisch erstellt aus Mail vom ' + mailDate;\n\nreturn {\n  json: {\n    files,\n    termine,\n    branchName,\n    mailDate,\n    subject,\n    prBody,\n    stats: {\n      beitraege: beitraege.length,\n      quickinfos: quickinfos.length,\n      termine: termine.length\n    }\n  }\n};"
       },
       "id": "parse-response",
       "name": "Antwort verarbeiten",
@@ -126,7 +126,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Get existing termine file content and merge with new termine\nconst termineFile = $('Termine laden').first().json;\nconst existingContent = Buffer.from(termineFile.content, 'base64').toString('utf-8');\nconst existingSha = termineFile.sha;\n\nconst parsed = $('Antwort verarbeiten').first().json;\nconst newTermine = parsed.termine;\nconst files = parsed.files;\nconst branchName = parsed.branchName;\n\n// Parse existing YAML events from frontmatter\nconst frontmatterMatch = existingContent.match(/^---\\n([\\s\\S]*?)\\n---/);\nlet yamlContent = frontmatterMatch ? frontmatterMatch[1] : '';\n\n// Simple duplicate check: extract existing event dates+titles\nconst existingEvents = [];\nconst eventRegex = /- title: \"([^\"]*)\"|  date: (\\d{4}-\\d{2}-\\d{2})/g;\nlet match;\nlet currentTitle = '';\nwhile ((match = eventRegex.exec(yamlContent)) !== null) {\n  if (match[1]) currentTitle = match[1];\n  if (match[2]) existingEvents.push({ title: currentTitle.toLowerCase(), date: match[2] });\n}\n\n// Filter out duplicate termine\nconst uniqueTermine = newTermine.filter(t => {\n  const isDuplicate = existingEvents.some(e =>\n    e.date === t.date &&\n    (e.title.includes(t.title.toLowerCase().substring(0, 10)) ||\n     t.title.toLowerCase().includes(e.title.substring(0, 10)))\n  );\n  return !isDuplicate;\n});\n\n// Append new termine to YAML\nlet updatedContent = existingContent;\nif (uniqueTermine.length > 0) {\n  const closingIndex = existingContent.lastIndexOf('---');\n  let newYaml = '';\n  for (const t of uniqueTermine) {\n    newYaml += `  - title: \"${t.title}\"\\n`;\n    newYaml += `    date: ${t.date}\\n`;\n    if (t.time) newYaml += `    time: \"${t.time}\"\\n`;\n    if (t.detail) newYaml += `    detail: \"${t.detail}\"\\n`;\n    newYaml += `    category: \"${t.category || 'event'}\"\\n`;\n  }\n  updatedContent = existingContent.substring(0, closingIndex) + newYaml + '---';\n}\n\nreturn {\n  json: {\n    files,\n    branchName,\n    mailDate: parsed.mailDate,\n    subject: parsed.subject,\n    prBody: parsed.prBody,\n    stats: parsed.stats,\n    termineContent: updatedContent,\n    termineSha: existingSha,\n    hasNewTermine: uniqueTermine.length > 0,\n    skippedTermine: newTermine.length - uniqueTermine.length\n  }\n};"
+        "jsCode": "// Get existing termine file content and merge with new termine\nconst termineFile = $('Termine laden').first().json;\nconst existingContent = Buffer.from(termineFile.content, 'base64').toString('utf-8');\nconst existingSha = termineFile.sha;\n\nconst parsed = $('Antwort verarbeiten').first().json;\nconst newTermine = parsed.termine;\nconst files = parsed.files;\nconst branchName = parsed.branchName;\n\n// Parse existing YAML events from frontmatter\nconst frontmatterMatch = existingContent.match(/^---\\n([\\s\\S]*?)\\n---/);\nlet yamlContent = frontmatterMatch ? frontmatterMatch[1] : '';\n\n// Simple duplicate check: extract existing event dates+titles\nconst existingEvents = [];\nconst eventRegex = /- title: \"([^\"]*)\"|  date: (\\d{4}-\\d{2}-\\d{2})/g;\nlet match;\nlet currentTitle = '';\nwhile ((match = eventRegex.exec(yamlContent)) !== null) {\n  if (match[1]) currentTitle = match[1];\n  if (match[2]) existingEvents.push({ title: currentTitle.toLowerCase(), date: match[2] });\n}\n\n// Filter out duplicate termine\nconst uniqueTermine = newTermine.filter(t => {\n  const isDuplicate = existingEvents.some(e =>\n    e.date === t.date &&\n    (e.title.includes(t.title.toLowerCase().substring(0, 10)) ||\n     t.title.toLowerCase().includes(e.title.substring(0, 10)))\n  );\n  return !isDuplicate;\n});\n\n// Append new termine to YAML\nlet updatedContent = existingContent;\nif (uniqueTermine.length > 0) {\n  const closingIndex = existingContent.lastIndexOf('---');\n  let newYaml = '';\n  for (const t of uniqueTermine) {\n    newYaml += '  - title: \"' + t.title + '\"\\n';\n    newYaml += '    date: ' + t.date + '\\n';\n    if (t.time) newYaml += '    time: \"' + t.time + '\"\\n';\n    if (t.detail) newYaml += '    detail: \"' + t.detail + '\"\\n';\n    newYaml += '    category: \"' + (t.category || 'event') + '\"\\n';\n  }\n  updatedContent = existingContent.substring(0, closingIndex) + newYaml + '---';\n}\n\nreturn {\n  json: {\n    files,\n    branchName,\n    mailDate: parsed.mailDate,\n    subject: parsed.subject,\n    prBody: parsed.prBody,\n    stats: parsed.stats,\n    termineContent: updatedContent,\n    termineSha: existingSha,\n    hasNewTermine: uniqueTermine.length > 0,\n    skippedTermine: newTermine.length - uniqueTermine.length\n  }\n};"
       },
       "id": "merge-termine",
       "name": "Termine zusammenfuehren",
@@ -256,45 +256,6 @@
     },
     {
       "parameters": {
-        "jsCode": "// Create all GitHub file creation API calls\nconst data = $('Termine zusammenfuehren').first().json;\nconst items = [];\n\nfor (const file of data.files) {\n  items.push({\n    json: {\n      path: file.path,\n      content: Buffer.from(file.content).toString('base64'),\n      message: 'feat(aktuelles): add ' + file.type + ' - ' + file.title,\n      branch: data.branchName\n    }\n  });\n}\n\nif (data.hasNewTermine) {\n  items.push({\n    json: {\n      path: 'content/termine/_index.md',\n      content: Buffer.from(data.termineContent).toString('base64'),\n      message: 'feat(termine): add events from mail',\n      branch: data.branchName,\n      sha: data.termineSha\n    }\n  });\n}\n\nif (items.length === 0) {\n  items.push({ json: { empty: true } });\n}\n\nreturn items;"
-      },
-      "id": "prepare-files",
-      "name": "Dateien vorbereiten",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2400,
-        400
-      ]
-    },
-    {
-      "parameters": {
-        "method": "PUT",
-        "url": "=https://api.github.com/repos/ElGarno/tcbw-homepage/contents/{{ $json.path }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "token DEIN_GITHUB_TOKEN"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ message: $json.message, content: $json.content, branch: $json.branch, ...(($json.sha) ? { sha: $json.sha } : {}) }) }}"
-      },
-      "id": "create-files",
-      "name": "Dateien erstellen",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2620,
-        400
-      ]
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/pulls",
         "sendHeaders": true,
@@ -315,7 +276,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2840,
+        3280,
         400
       ]
     },
@@ -356,6 +317,97 @@
       },
       "id": "pushover-success",
       "name": "Pushover Benachrichtigung",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3500,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build a single Git tree with all files\nconst data = $('Termine zusammenfuehren').first().json;\nconst tree = [];\n\n// Add article/quickinfo files\nfor (const file of data.files) {\n  tree.push({\n    path: file.path,\n    mode: '100644',\n    type: 'blob',\n    content: file.content\n  });\n}\n\n// Add updated termine file if needed\nif (data.hasNewTermine) {\n  tree.push({\n    path: 'content/termine/_index.md',\n    mode: '100644',\n    type: 'blob',\n    content: data.termineContent\n  });\n}\n\n// Get the base tree SHA from the branch\nconst branchSha = $('Branch erstellen').first().json.object.sha;\n\nreturn {\n  json: {\n    tree,\n    base_tree: branchSha,\n    branchName: data.branchName,\n    mailDate: data.mailDate,\n    prBody: data.prBody,\n    stats: data.stats\n  }\n};"
+      },
+      "id": "prepare-tree",
+      "name": "Tree vorbereiten",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/git/trees",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ base_tree: $json.base_tree, tree: $json.tree }) }}"
+      },
+      "id": "create-tree",
+      "name": "Tree erstellen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2620,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/git/commits",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: 'feat(aktuelles): add content from mail ' + $('Tree vorbereiten').first().json.mailDate, tree: $json.sha, parents: [$('Tree vorbereiten').first().json.base_tree] }) }}"
+      },
+      "id": "create-commit",
+      "name": "Commit erstellen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2840,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://api.github.com/repos/ElGarno/tcbw-homepage/git/refs/heads/' + $('Tree vorbereiten').first().json.branchName }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ sha: $json.sha }) }}"
+      },
+      "id": "update-ref",
+      "name": "Branch aktualisieren",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -475,29 +527,7 @@
       "main": [
         [
           {
-            "node": "Dateien vorbereiten",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Dateien vorbereiten": {
-      "main": [
-        [
-          {
-            "node": "Dateien erstellen",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Dateien erstellen": {
-      "main": [
-        [
-          {
-            "node": "Draft-PR erstellen",
+            "node": "Tree vorbereiten",
             "type": "main",
             "index": 0
           }
@@ -509,6 +539,50 @@
         [
           {
             "node": "Pushover Benachrichtigung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tree vorbereiten": {
+      "main": [
+        [
+          {
+            "node": "Tree erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tree erstellen": {
+      "main": [
+        [
+          {
+            "node": "Commit erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commit erstellen": {
+      "main": [
+        [
+          {
+            "node": "Branch aktualisieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Branch aktualisieren": {
+      "main": [
+        [
+          {
+            "node": "Draft-PR erstellen",
             "type": "main",
             "index": 0
           }
