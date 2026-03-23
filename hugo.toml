@@ -26,10 +26,10 @@ title = "TC Blau-Weiss Attendorn"
     name = "Mannschaften"
     url = "/mannschaften/"
     weight = 20
-  [[menus.main]]
-    name = "Training"
-    url = "/training/"
-    weight = 30
+  # [[menus.main]]
+  #   name = "Training"
+  #   url = "/training/"
+  #   weight = 30
   [[menus.main]]
     name = "Termine"
     url = "/termine/"
