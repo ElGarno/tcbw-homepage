@@ -1,0 +1,160 @@
+{
+  "name": "TC-BW Homepage Daily Rebuild",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Taeglich 06:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/DEIN_DEPLOY_HOOK_ID_HIER",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "deploy-hook",
+      "name": "Cloudflare Deploy Hook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-success",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "error-check",
+      "name": "Fehler?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [690, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pushover.net/1/messages.json",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "DEIN_PUSHOVER_APP_TOKEN"
+            },
+            {
+              "name": "user",
+              "value": "DEIN_PUSHOVER_USER_KEY"
+            },
+            {
+              "name": "title",
+              "value": "Homepage Deploy fehlgeschlagen"
+            },
+            {
+              "name": "message",
+              "value": "={{ 'Cloudflare Deploy Hook Fehler: ' + $json.statusCode }}"
+            },
+            {
+              "name": "priority",
+              "value": "0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "pushover-error",
+      "name": "Pushover Fehler",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [910, 200]
+    },
+    {
+      "parameters": {},
+      "id": "noop-ok",
+      "name": "OK",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [910, 400]
+    }
+  ],
+  "connections": {
+    "Taeglich 06:00": {
+      "main": [
+        [
+          {
+            "node": "Cloudflare Deploy Hook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cloudflare Deploy Hook": {
+      "main": [
+        [
+          {
+            "node": "Fehler?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fehler?": {
+      "main": [
+        [
+          {
+            "node": "Pushover Fehler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin"
+  },
+  "tags": [
+    {
+      "name": "tc-bw-homepage"
+    }
+  ]
+}

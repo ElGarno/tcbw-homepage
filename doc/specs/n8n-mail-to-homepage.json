@@ -1,0 +1,406 @@
+{
+  "name": "TC-BW Mail to Homepage",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Extract plain text from email\nlet text = '';\nconst html = $input.first().json.html;\nconst textBody = $input.first().json.text;\n\nif (textBody && textBody.trim().length > 0) {\n  text = textBody;\n} else if (html) {\n  text = html\n    .replace(/<style[^>]*>[\\s\\S]*?<\\/style>/gi, '')\n    .replace(/<script[^>]*>[\\s\\S]*?<\\/script>/gi, '')\n    .replace(/<br\\s*\\/?>/gi, '\\n')\n    .replace(/<\\/p>/gi, '\\n\\n')\n    .replace(/<\\/div>/gi, '\\n')\n    .replace(/<\\/li>/gi, '\\n')\n    .replace(/<[^>]+>/g, '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&lt;/g, '<')\n    .replace(/&gt;/g, '>')\n    .replace(/&quot;/g, '\"')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\nconst subject = $input.first().json.subject || 'Kein Betreff';\nconst date = $input.first().json.date;\nconst from = $input.first().json.from;\n\nconst mailDate = new Date(date);\nconst dateStr = mailDate.toISOString().split('T')[0];\n\nconst slug = subject\n  .toLowerCase()\n  .replace(/[äÄ]/g, 'ae')\n  .replace(/[öÖ]/g, 'oe')\n  .replace(/[üÜ]/g, 'ue')\n  .replace(/ß/g, 'ss')\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-|-$/g, '')\n  .substring(0, 40);\n\nreturn {\n  json: {\n    text,\n    subject,\n    date: dateStr,\n    from,\n    slug,\n    branchName: `aktuelles/${dateStr}-${slug}`\n  }\n};"
+      },
+      "id": "extract-text",
+      "name": "Text extrahieren",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "chatInput-field",
+              "name": "chatInput",
+              "value": "={{ 'Analysiere diese Vereins-E-Mail und extrahiere die Inhalte als JSON.\\n\\nBetreff: ' + $json.subject + '\\nDatum: ' + $json.date + '\\n\\n' + $json.text + '\\n\\nAntworte NUR mit einem JSON-Objekt im folgenden Format, ohne zusaetzlichen Text:\\n{\\n  \"items\": [\\n    {\\n      \"type\": \"beitrag\" oder \"quickinfo\" oder \"termin\",\\n      \"slug\": \"url-safe-slug\",\\n      \"title\": \"Titel\",\\n      \"description\": \"Ein-Satz-Zusammenfassung\",\\n      \"tags\": [\"Tag1\", \"Tag2\"],\\n      \"body\": \"Artikel-Text in Markdown\",\\n      \"date\": \"YYYY-MM-DD (nur bei termin)\",\\n      \"time\": \"HH:MM Uhr (nur bei termin)\",\\n      \"detail\": \"Kurzbeschreibung (nur bei termin)\",\\n      \"category\": \"event oder medenspiel (nur bei termin)\"\\n    }\\n  ]\\n}' }}",
+              "type": "string"
+            },
+            {
+              "id": "sessionId-field",
+              "name": "sessionId",
+              "value": "mail-to-homepage",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-prompt",
+      "name": "Prompt vorbereiten",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [640, 400]
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Du bist ein Content-Assistent für die Homepage des Tennisvereins TC Blau-Weiß Attendorn.\n\nDu erhältst den Text einer Vereins-E-Mail und sollst daraus strukturierte Inhalte für die Hugo-Website extrahieren.\n\n## Regeln\n\n1. Entferne Begrüßung, Verabschiedung, Emojis und Fülltext komplett\n2. Behalte alle faktischen Informationen (Ergebnisse, Namen, Daten, Orte)\n3. Schreibe in sachlichem, informativem Ton — passend für eine Vereinswebseite\n4. Verwende keine Emojis in der Ausgabe\n5. Alle Texte auf Deutsch mit korrekten Umlauten (ä, ö, ü, ß) — NICHT ae, oe, ue, ss\n6. Nur in Slugs/Dateinamen Umlaute durch ae/oe/ue/ss ersetzen\n7. Strukturiere Beiträge gut lesbar mit Absätzen. Verwende Markdown-Formatierung (fett für Ergebnisse, Aufzählungen wo sinnvoll)\n8. Schreibe aus der Perspektive des Vereins (\"unsere Damen\", \"wir\"), nicht aus der Perspektive des Mail-Absenders\n\n## Inhaltliche Aufbereitung\n\n- Spielberichte: Ergebnis prominent nennen, Gegner, Liga, kurze Einordnung\n- Saisonrückblicke: Abschlusstabelle/Platzierung, Highlights, Ausblick\n- Ankündigungen: Kerninfo (was, wann, wo), Aufruf zum Mitmachen wenn passend\n- Jeder Beitrag soll eigenständig verständlich sein (nicht auf die Mail verweisen)\n\n## Entscheidungskriterien\n\n- **beitrag**: Genügend Substanz für eigenständigen Artikel (mehr als 3 Sätze faktischer Inhalt). Beispiele: Spielberichte, Saisonrückblicke, große Ankündigungen.\n- **quickinfo**: Zu kurz für eigenen Artikel, aber erwähnenswert (1-2 Sätze). Beispiele: Einzelergebnis, kurzes Update.\n- **termin**: Konkretes Datum mit Veranstaltungsname. Kategorie \"event\" für Vereinsveranstaltungen, \"medenspiel\" für Ligaspiele.\n\n## Hinweise zum Verein\n\n- TC Blau-Weiß Attendorn e.V., gegründet 1931\n- Standort: Burg Schnellenberg, Attendorn\n- Teams: Damen, Herren 30, Herren 40, Herren 60, Gemischt 1, Gemischt 2, Mixed U12\n\nAntworte IMMER und AUSSCHLIESSLICH mit einem validen JSON-Objekt. Kein zusätzlicher Text, keine Erklärungen, nur JSON."
+        }
+      },
+      "id": "ai-agent",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [860, 400]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-haiku-4-5-20251001",
+          "cachedResultName": "Claude Haiku 4.5"
+        },
+        "options": {}
+      },
+      "id": "anthropic-model",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [760, 600],
+      "credentials": {
+        "anthropicApi": {
+          "id": "bfPeI9Ato8OfI8mv",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse AI Agent response — extract JSON from output\nconst response = $input.first().json;\nconst output = response.output || response.text || '';\n\n// Extract JSON from response (might be wrapped in markdown code block)\nlet jsonStr = output;\nconst jsonMatch = output.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\nif (jsonMatch) {\n  jsonStr = jsonMatch[1].trim();\n} else {\n  // Try to find raw JSON object\n  const objMatch = output.match(/(\\{[\\s\\S]*\\})/);\n  if (objMatch) {\n    jsonStr = objMatch[1];\n  }\n}\n\nlet items;\ntry {\n  const parsed = JSON.parse(jsonStr);\n  items = parsed.items || [];\n} catch (e) {\n  throw new Error('Could not parse AI response as JSON: ' + e.message + '\\nResponse: ' + output.substring(0, 500));\n}\n\nconst mailDate = $('Text extrahieren').first().json.date;\nconst branchName = $('Text extrahieren').first().json.branchName;\nconst subject = $('Text extrahieren').first().json.subject;\n\nconst beitraege = items.filter(i => i.type === 'beitrag');\nconst quickinfos = items.filter(i => i.type === 'quickinfo');\nconst termine = items.filter(i => i.type === 'termin');\n\nconst files = [];\n\nfor (const item of [...beitraege, ...quickinfos]) {\n  const frontmatter = [\n    '---',\n    `title: \"${item.title}\"`,\n    `date: ${mailDate}`,\n    `description: \"${item.description || ''}\"`,\n    `tags: [${(item.tags || []).map(t => `\"${t}\"`).join(', ')}]`\n  ];\n  if (item.type === 'quickinfo') {\n    frontmatter.push('quickinfo: true');\n  }\n  frontmatter.push('---');\n  frontmatter.push('');\n  frontmatter.push(item.body || '');\n  frontmatter.push('');\n\n  files.push({\n    path: `content/aktuelles/${mailDate}-${item.slug}.md`,\n    content: frontmatter.join('\\n'),\n    type: item.type,\n    title: item.title\n  });\n}\n\nlet prBody = '## Neue Inhalte\\n\\n';\nprBody += '| Typ | Datei | Titel |\\n|-----|-------|-------|\\n';\nfor (const f of files) {\n  prBody += `| ${f.type} | \\`${f.path}\\` | ${f.title} |\\n`;\n}\nfor (const t of termine) {\n  prBody += `| termin | \\`content/termine/_index.md\\` | ${t.title} |\\n`;\n}\nprBody += '\\n---\\nAutomatisch erstellt aus Mail vom ' + mailDate;\n\nreturn {\n  json: {\n    files,\n    termine,\n    branchName,\n    mailDate,\n    subject,\n    prBody,\n    stats: {\n      beitraege: beitraege.length,\n      quickinfos: quickinfos.length,\n      termine: termine.length\n    }\n  }\n};"
+      },
+      "id": "parse-response",
+      "name": "Antwort verarbeiten",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.github.com/repos/ElGarno/tcbw-homepage/contents/content/termine/_index.md?ref=main",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            },
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.v3+json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-termine",
+      "name": "Termine laden",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1300, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get existing termine file content and merge with new termine\nconst termineFile = $('Termine laden').first().json;\nconst existingContent = Buffer.from(termineFile.content, 'base64').toString('utf-8');\nconst existingSha = termineFile.sha;\n\nconst parsed = $('Antwort verarbeiten').first().json;\nconst newTermine = parsed.termine;\nconst files = parsed.files;\nconst branchName = parsed.branchName;\n\n// Parse existing YAML events from frontmatter\nconst frontmatterMatch = existingContent.match(/^---\\n([\\s\\S]*?)\\n---/);\nlet yamlContent = frontmatterMatch ? frontmatterMatch[1] : '';\n\n// Simple duplicate check: extract existing event dates+titles\nconst existingEvents = [];\nconst eventRegex = /- title: \"([^\"]*)\"|  date: (\\d{4}-\\d{2}-\\d{2})/g;\nlet match;\nlet currentTitle = '';\nwhile ((match = eventRegex.exec(yamlContent)) !== null) {\n  if (match[1]) currentTitle = match[1];\n  if (match[2]) existingEvents.push({ title: currentTitle.toLowerCase(), date: match[2] });\n}\n\n// Filter out duplicate termine\nconst uniqueTermine = newTermine.filter(t => {\n  const isDuplicate = existingEvents.some(e => \n    e.date === t.date && \n    (e.title.includes(t.title.toLowerCase().substring(0, 10)) || \n     t.title.toLowerCase().includes(e.title.substring(0, 10)))\n  );\n  return !isDuplicate;\n});\n\n// Append new termine to YAML\nlet updatedContent = existingContent;\nif (uniqueTermine.length > 0) {\n  const closingIndex = existingContent.lastIndexOf('---');\n  let newYaml = '';\n  for (const t of uniqueTermine) {\n    newYaml += `  - title: \"${t.title}\"\\n`;\n    newYaml += `    date: ${t.date}\\n`;\n    if (t.time) newYaml += `    time: \"${t.time}\"\\n`;\n    if (t.detail) newYaml += `    detail: \"${t.detail}\"\\n`;\n    newYaml += `    category: \"${t.category || 'event'}\"\\n`;\n  }\n  updatedContent = existingContent.substring(0, closingIndex) + newYaml + '---';\n}\n\nreturn {\n  json: {\n    files,\n    branchName,\n    mailDate: parsed.mailDate,\n    subject: parsed.subject,\n    prBody: parsed.prBody,\n    stats: parsed.stats,\n    termineContent: updatedContent,\n    termineSha: existingSha,\n    hasNewTermine: uniqueTermine.length > 0,\n    skippedTermine: newTermine.length - uniqueTermine.length\n  }\n};"
+      },
+      "id": "merge-termine",
+      "name": "Termine zusammenfuehren",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1520, 400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/git/ref/heads/main",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-main-sha",
+      "name": "Main SHA holen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1740, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/git/refs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ref: 'refs/heads/' + $('Termine zusammenfuehren').first().json.branchName, sha: $json.object.sha }) }}"
+      },
+      "id": "create-branch",
+      "name": "Branch erstellen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1960, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Create all GitHub file creation API calls\nconst data = $('Termine zusammenfuehren').first().json;\nconst items = [];\n\nfor (const file of data.files) {\n  items.push({\n    json: {\n      path: file.path,\n      content: Buffer.from(file.content).toString('base64'),\n      message: `feat(aktuelles): add ${file.type} — ${file.title}`,\n      branch: data.branchName\n    }\n  });\n}\n\nif (data.hasNewTermine) {\n  items.push({\n    json: {\n      path: 'content/termine/_index.md',\n      content: Buffer.from(data.termineContent).toString('base64'),\n      message: 'feat(termine): add events from mail',\n      branch: data.branchName,\n      sha: data.termineSha\n    }\n  });\n}\n\nreturn items;"
+      },
+      "id": "prepare-files",
+      "name": "Dateien vorbereiten",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2180, 400]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/ElGarno/tcbw-homepage/contents/{{ $json.path }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: $json.message, content: $json.content, branch: $json.branch, ...(($json.sha) ? { sha: $json.sha } : {}) }) }}"
+      },
+      "id": "create-files",
+      "name": "Dateien erstellen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2400, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/ElGarno/tcbw-homepage/pulls",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token DEIN_GITHUB_TOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ title: '[Aktuelles] Neue Inhalte aus Mail vom ' + $('Termine zusammenfuehren').first().json.mailDate, body: $('Termine zusammenfuehren').first().json.prBody, head: $('Termine zusammenfuehren').first().json.branchName, base: 'main', draft: true }) }}"
+      },
+      "id": "create-pr",
+      "name": "Draft-PR erstellen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2620, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pushover.net/1/messages.json",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "DEIN_PUSHOVER_APP_TOKEN"
+            },
+            {
+              "name": "user",
+              "value": "DEIN_PUSHOVER_USER_KEY"
+            },
+            {
+              "name": "title",
+              "value": "Neuer Homepage-Entwurf"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Termine zusammenfuehren').first().json.stats.beitraege + ' Beitraege, ' + $('Termine zusammenfuehren').first().json.stats.quickinfos + ' Quick-Infos, ' + $('Termine zusammenfuehren').first().json.stats.termine + ' Termine aus Mail vom ' + $('Termine zusammenfuehren').first().json.mailDate }}"
+            },
+            {
+              "name": "url",
+              "value": "={{ $json.html_url }}"
+            },
+            {
+              "name": "url_title",
+              "value": "PR auf GitHub oeffnen"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "pushover-success",
+      "name": "Pushover Benachrichtigung",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2840, 400]
+    }
+  ],
+  "connections": {
+    "Text extrahieren": {
+      "main": [
+        [
+          {
+            "node": "Prompt vorbereiten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt vorbereiten": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Antwort verarbeiten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Antwort verarbeiten": {
+      "main": [
+        [
+          {
+            "node": "Termine laden",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Termine laden": {
+      "main": [
+        [
+          {
+            "node": "Termine zusammenfuehren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Termine zusammenfuehren": {
+      "main": [
+        [
+          {
+            "node": "Main SHA holen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Main SHA holen": {
+      "main": [
+        [
+          {
+            "node": "Branch erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Branch erstellen": {
+      "main": [
+        [
+          {
+            "node": "Dateien vorbereiten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dateien vorbereiten": {
+      "main": [
+        [
+          {
+            "node": "Dateien erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dateien erstellen": {
+      "main": [
+        [
+          {
+            "node": "Draft-PR erstellen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft-PR erstellen": {
+      "main": [
+        [
+          {
+            "node": "Pushover Benachrichtigung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin"
+  },
+  "tags": [
+    {
+      "name": "tc-bw-homepage"
+    }
+  ],
+  "pinData": {},
+  "staticData": null
+}
