@@ -39,6 +39,32 @@ Du erhältst den Text einer Vereins-E-Mail und sollst daraus strukturierte Inhal
 - **termin**: Konkretes Datum mit Veranstaltungsname.
   Kategorie "event" für Vereinsveranstaltungen, "medenspiel" für Ligaspiele.
 
+## Terminkorrektur erkennen
+
+Wenn eine Mail eine **Terminkorrektur** enthält (Schlüsselwörter: "Korrektur",
+"NICHT am", "verschoben auf", "neuer Termin", "wird verlegt", "doch nicht am"),
+erzeuge den Termin mit einem zusätzlichen Feld `replaces`:
+
+```json
+{
+  "type": "termin",
+  "title": "Jahreshauptversammlung 2026",
+  "date": "2026-05-13",
+  "time": "19:00 Uhr",
+  "detail": "Jahreshauptversammlung des Vereins",
+  "category": "event",
+  "replaces": {
+    "title_contains": "Jahreshauptversammlung",
+    "date": "2026-04-26"
+  }
+}
+```
+
+- `replaces.title_contains`: Substring des alten Termin-Titels (Groß-/Kleinschreibung egal)
+- `replaces.date`: Das alte, falsche Datum im Format YYYY-MM-DD
+- Setze `replaces` NUR wenn die Mail explizit einen früheren Termin korrigiert
+- Verwende es NICHT für komplett neue Termine
+
 ## Hinweise zum Verein
 
 - TC Blau-Weiß Attendorn e.V., gegründet 1931
@@ -77,6 +103,18 @@ Kein zusätzlicher Text, keine Erklärungen, nur JSON.
       "time": "10:30 Uhr",
       "detail": "Anlage fit für die Sommersaison machen — viele helfende Hände willkommen!",
       "category": "event"
+    },
+    {
+      "type": "termin",
+      "title": "Jahreshauptversammlung 2026",
+      "date": "2026-05-13",
+      "time": "19:00 Uhr",
+      "detail": "Jahreshauptversammlung des Vereins",
+      "category": "event",
+      "replaces": {
+        "title_contains": "Jahreshauptversammlung",
+        "date": "2026-04-26"
+      }
     }
   ]
 }

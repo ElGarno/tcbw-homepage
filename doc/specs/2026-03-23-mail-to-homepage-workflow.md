@@ -42,9 +42,14 @@ GMX filter rule (vorstand@tc-bw-attendorn.de → "Homepage" folder)
    plain text. Normalize encoding to UTF-8.
 3. **Claude API call** (model: `claude-haiku-4-5-20251001`) — send mail body
    with system prompt, receive structured JSON response via tool use
-4. **Duplicate check** — for each Termin in the response, check against
-   existing `content/termine/_index.md` by date + similar title. Skip
-   duplicates.
+4. **Duplicate & replacement check** — for each Termin in the response:
+   - If `replaces` is present: find the existing event in
+     `content/termine/_index.md` where `title` contains
+     `replaces.title_contains` (case-insensitive) AND `date` matches
+     `replaces.date`. If found, **remove** the old entry and **add** the
+     new one. If no match is found, treat as a new event (append).
+   - If no `replaces`: check against existing events by date + similar
+     title. Skip duplicates.
 5. **GitHub API**:
    - Create branch `aktuelles/YYYY-MM-DD-{short-subject-slug}`
    - Create new Markdown files for Beitraege/Quick-Infos in `content/aktuelles/`
@@ -82,6 +87,14 @@ The system prompt instructs Claude to:
 | Quick-Info | Worth mentioning but too brief | 1-2 sentences, single result or short update |
 | Termin | A specific date/event is mentioned | Contains a date + event name |
 
+**Correction detection:**
+
+When a mail contains a date/event correction (keywords: "Korrektur",
+"NICHT am", "verschoben auf", "neuer Termin", "wird verlegt"), Claude must
+identify both the **new** event and the **old** event being replaced. The
+Termin item then includes a `replaces` field that identifies the old entry
+by title substring and date.
+
 **Output schema (via tool use):**
 
 ```json
@@ -110,10 +123,27 @@ The system prompt instructs Claude to:
       "time": "10:30 Uhr",
       "detail": "Anlage fit fuer die Sommersaison machen",
       "category": "event"
+    },
+    {
+      "type": "termin",
+      "title": "Jahreshauptversammlung 2026",
+      "date": "2026-05-13",
+      "time": "19:00 Uhr",
+      "detail": "Jahreshauptversammlung des Vereins",
+      "category": "event",
+      "replaces": {
+        "title_contains": "Jahreshauptversammlung",
+        "date": "2026-04-26"
+      }
     }
   ]
 }
 ```
+
+The `replaces` field is optional. It is only present when Claude detects
+that a mail explicitly corrects a previously announced date/event. Both
+`title_contains` (substring match, case-insensitive) and `date` must match
+for the replacement to apply.
 
 ### 4. File Generation
 
@@ -199,6 +229,10 @@ two events.
 - **v1 ignores images in mails.** Only text content is processed. Image
   handling can be added later if needed.
 - **Duplicate Termine are skipped.** Match by date + title similarity.
+- **Termin corrections are handled via `replaces`.** When Claude detects a
+  date correction in a mail, it outputs a `replaces` field on the Termin
+  item. The workflow uses this to remove the old entry and add the
+  corrected one in a single commit.
 - **Claude model: Haiku.** Sufficient for structured text extraction from
   German emails, significantly cheaper than Sonnet/Opus.
 - **GMX IMAP access** requires app-specific password. Verify GMX account tier
