@@ -7,16 +7,16 @@ events:
     time: "10:30 Uhr"
     detail: "Anlage fit für die Sommersaison machen — viele helfende Hände willkommen!"
     category: "event"
-  - title: "Jahreshauptversammlung"
-    date: 2026-04-26
-    time: "TBA"
-    detail: "Offizielle Einladung folgt in Kürze"
-    category: "event"
   - title: "Herren 30 vs. Olper TC"
     date: 2026-05-09
     time: "13:00 Uhr"
     detail: "Kreisliga, Heimspiel"
     category: "medenspiel"
+  - title: "Jahreshauptversammlung 2026"
+    date: 2026-05-13
+    time: "19:00 Uhr"
+    detail: "Jahreshauptversammlung des Vereins"
+    category: "event"
   - title: "Damen vs. Schwelmer TC RW"
     date: 2026-05-17
     time: "10:00 Uhr"
@@ -97,9 +97,4 @@ events:
     time: "13:00 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
-  - title: "Jahreshauptversammlung 2026"
-    date: 2026-05-13
-    time: "19:00 Uhr"
-    detail: "Jahreshauptversammlung des Vereins"
-    category: "event"
 ---
