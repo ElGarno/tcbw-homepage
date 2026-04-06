@@ -97,4 +97,9 @@ events:
     time: "13:00 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
+  - title: "Jahreshauptversammlung 2026"
+    date: 2026-05-13
+    time: "19:00 Uhr"
+    detail: "Jahreshauptversammlung des Vereins"
+    category: "event"
 ---
