@@ -1,4 +1,4 @@
 ---
 title: "Verein"
-description: "Alles rund um den TC Blau-Weiß Attendorn."
+description: "Alles rund um den Tennisclub Blau-Weiss Attendorn e.V."
 ---

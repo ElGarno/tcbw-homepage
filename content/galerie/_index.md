@@ -1,4 +1,4 @@
 ---
 title: "Galerie"
-description: "Bilder aus dem Vereinsleben des TC Blau-Weiß Attendorn."
+description: "Bilder aus dem Vereinsleben des Tennisclub Blau-Weiss Attendorn e.V."
 ---

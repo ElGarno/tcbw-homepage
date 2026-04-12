@@ -1,6 +1,6 @@
 ---
 title: "Vorstand & Ansprechpartner"
-description: "Der Vorstand des TC Blau-Weiß Attendorn."
+description: "Der Vorstand des Tennisclub Blau-Weiss Attendorn e.V."
 weight: 10
 layout: vorstand
 departments:

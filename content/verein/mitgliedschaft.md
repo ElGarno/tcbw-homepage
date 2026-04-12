@@ -1,6 +1,6 @@
 ---
 title: "Mitgliedschaft & Beiträge"
-description: "Mitglied werden beim TC Blau-Weiß Attendorn — Beiträge und Infos."
+description: "Mitglied werden beim Tennisclub Blau-Weiss Attendorn e.V. — Beiträge und Infos."
 weight: 30
 ---
 

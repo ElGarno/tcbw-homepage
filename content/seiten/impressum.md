@@ -4,7 +4,7 @@ title: "Impressum"
 
 ## Angaben gemäß § 5 TMG
 
-TC Blau Weiß Attendorn e.V.
+Tennisclub Blau-Weiss Attendorn e.V.
 Schnellenberg 1
 57439 Attendorn
 

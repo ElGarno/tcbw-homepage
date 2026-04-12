@@ -1,9 +1,9 @@
 ---
-title: "TC Blau-Weiß Attendorn"
-description: "Tennisclub Blau-Weiß Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
+title: "Tennisclub Blau-Weiss Attendorn e.V."
+description: "Tennisclub Blau-Weiss Attendorn e.V. — Tennis an der Burg Schnellenberg seit 1931."
 hero:
   eyebrow: "Willkommen beim"
-  title: "TC Blau-Weiß Attendorn"
+  title: "Tennisclub Blau-Weiss Attendorn e.V."
   subtitle: "Tennis an der Burg Schnellenberg"
   cta_primary:
     text: "Mitglied werden"
@@ -14,7 +14,7 @@ hero:
 verein:
   title: "Tradition trifft Leidenschaft"
   text: |
-    Seit 1931 ist der TC Blau-Weiß Attendorn ein fester Bestandteil des sportlichen Lebens in Attendorn. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen für Tennis in jeder Altersklasse.
+    Seit 1931 ist der Tennisclub Blau-Weiss Attendorn e.V. ein fester Bestandteil des sportlichen Lebens in Attendorn. Unsere Anlage an der Burg Schnellenberg bietet ideale Bedingungen für Tennis in jeder Altersklasse.
 
     Ob Anfänger oder erfahrener Spieler, ob jung oder alt — bei uns findet jeder seinen Platz. Mit sieben aktiven Mannschaften, qualifizierten Trainern und einem lebendigen Vereinsleben sind wir mehr als nur ein Tennisclub.
   stats:
@@ -25,7 +25,7 @@ verein:
     - number: "4"
       label: "Plätze"
   image: "/images/historie/tcbw_1931.jpg"
-  image_alt: "Gründung TC Blau-Weiß Attendorn 1931"
+  image_alt: "Gründung Tennisclub Blau-Weiss Attendorn e.V. 1931"
 cta:
   title: "Werde Teil unseres Vereins"
   text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft für dich."

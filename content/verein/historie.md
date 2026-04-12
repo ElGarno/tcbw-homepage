@@ -1,6 +1,6 @@
 ---
 title: "Historie"
-description: "Die Geschichte des TC Blau-Weiß Attendorn seit 1931."
+description: "Die Geschichte des Tennisclub Blau-Weiss Attendorn e.V. seit 1931."
 weight: 20
 ---
 
