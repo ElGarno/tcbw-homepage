@@ -17,4 +17,4 @@ Damen 6er Mannschaft in der Bezirksliga (Gr. 002), Saison Sommer 2026.
 | 31.05.2026 | 10:00 | TV Wickede 1890 | **TC BW Attendorn** | - |
 | 14.06.2026 | 10:00 | **TC BW Attendorn** | TC Halver 1960 | - |
 | 21.06.2026 | 10:00 | Hagener TC Blau-Gold | **TC BW Attendorn** | - |
-| 28.06.2026 | 10:00 | **TC BW Attendorn** | TC BW Sundern | - |
+| 28.06.2026 | 10:00 | **TC BW Attendorn** | TC Blau-Weiß Sundern | - |

@@ -1,0 +1,18 @@
+{
+  "name": "nuliga-sync",
+  "version": "0.1.0",
+  "description": "Liga.nu match schedule sync logic for TC-BW Attendorn homepage",
+  "type": "module",
+  "scripts": {
+    "test": "node --test 'tests/**/*.test.js'",
+    "baseline": "node scripts/baseline.js",
+    "bundle": "node scripts/bundle.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
