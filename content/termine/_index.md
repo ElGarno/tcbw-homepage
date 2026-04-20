@@ -29,12 +29,12 @@ events:
     category: "medenspiel"
   - title: "Herren 40 vs. Hagener TC Blau-Gold"
     date: 2026-06-13
-    time: "13:00 Uhr"
+    time: "14:30 Uhr"
     detail: "Südwestfalenliga, Heimspiel"
     category: "medenspiel"
   - title: "Herren 60 vs. TC SSV Elspe 2"
     date: 2026-06-13
-    time: "13:00 Uhr"
+    time: "09:30 Uhr"
     detail: "Bezirksliga, Heimspiel"
     category: "medenspiel"
   - title: "Damen vs. TC Halver 1960"
@@ -59,15 +59,15 @@ events:
     category: "medenspiel"
   - title: "Herren 30 vs. TuS Ferndorf 2"
     date: 2026-07-04
-    time: "13:00 Uhr"
+    time: "14:30 Uhr"
     detail: "Kreisliga, Heimspiel"
     category: "medenspiel"
   - title: "Herren 60 vs. TuS Hachen"
     date: 2026-07-04
-    time: "13:00 Uhr"
+    time: "09:30 Uhr"
     detail: "Bezirksliga, Heimspiel"
     category: "medenspiel"
-  - title: "Gemischt 1 vs. Hoeinger SV"
+  - title: "Gemischt 1 vs. Höinger SV"
     date: 2026-07-25
     time: "13:00 Uhr"
     detail: "Bezirksklasse, Heimspiel"
@@ -89,12 +89,12 @@ events:
     category: "event"
   - title: "Gemischt 1 vs. TuS 1900 Eisern"
     date: 2026-09-05
-    time: "13:00 Uhr"
+    time: "10:00 Uhr"
     detail: "Bezirksklasse, Heimspiel"
     category: "medenspiel"
   - title: "Gemischt 2 vs. TV Hoffnung Littfeld 2"
     date: 2026-09-05
-    time: "13:00 Uhr"
+    time: "14:30 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
 ---
