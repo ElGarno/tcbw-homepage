@@ -4,7 +4,7 @@
   "description": "Liga.nu match schedule sync logic for TC-BW Attendorn homepage",
   "type": "module",
   "scripts": {
-    "test": "node --test tests/",
+    "test": "node --test 'tests/**/*.test.js'",
     "baseline": "node scripts/baseline.js",
     "bundle": "node scripts/bundle.js"
   },
