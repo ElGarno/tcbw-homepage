@@ -20,13 +20,57 @@
     },
     {
       "parameters": {
-        "jsCode": "// ===========================================================================\n// nuliga-sync — n8n Code node\n//\n// Setup:\n//   1. Set n8n env var: NODE_FUNCTION_ALLOW_EXTERNAL=cheerio,js-yaml\n//   2. Paste the contents of `tools/nuliga-sync/dist/n8n-bundle.js` BELOW the\n//      `--- PASTE BUNDLE BELOW ---` marker (replace this placeholder)\n//   3. Set n8n env vars: GITHUB_TOKEN, GITHUB_OWNER (ElGarno), GITHUB_REPO (tcbw-homepage)\n//\n// This node runs the full sync and returns an object with either:\n//   { changed: false }    → workflow ends\n//   { changed: true, prUrl, prTitle, prBody, missingCount, updateCount, addCount }\n// ===========================================================================\n\nconst cheerio = require('cheerio');\nconst yaml = require('js-yaml');\n\n// --- PASTE BUNDLE BELOW ---\n// ... entire content of tools/nuliga-sync/dist/n8n-bundle.js goes here ...\n// --- PASTE BUNDLE ABOVE ---\n\nconst GITHUB_TOKEN = $env.GITHUB_TOKEN;\nconst OWNER = $env.GITHUB_OWNER;\nconst REPO = $env.GITHUB_REPO;\nconst API = `https://api.github.com/repos/${OWNER}/${REPO}`;\n\nasync function gh(path, opts = {}) {\n  const res = await fetch(`${API}${path}`, {\n    ...opts,\n    headers: {\n      'Authorization': `Bearer ${GITHUB_TOKEN}`,\n      'Accept': 'application/vnd.github+json',\n      'User-Agent': 'nuliga-sync',\n      ...(opts.headers ?? {}),\n    },\n  });\n  if (!res.ok) {\n    const body = await res.text();\n    throw new Error(`GitHub API ${path} ${res.status}: ${body.slice(0, 300)}`);\n  }\n  return res.json();\n}\n\nasync function readRepoFile(path) {\n  const data = await gh(`/contents/${encodeURI(path)}?ref=main`);\n  return Buffer.from(data.content, 'base64').toString('utf8');\n}\n\nasync function findOpenSyncPR() {\n  const pulls = await gh(`/pulls?state=open&per_page=50`);\n  return pulls.find(p => p.head.ref.startsWith('nuliga-sync/'));\n}\n\nasync function commitAndOpenPR({ branch, commitMessage, prTitle, prBody, fileChanges }) {\n  const mainRef = await gh('/git/ref/heads/main');\n  const baseSha = mainRef.object.sha;\n\n  await gh('/git/refs', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),\n  });\n\n  const baseCommit = await gh(`/git/commits/${baseSha}`);\n  const baseTree = baseCommit.tree.sha;\n\n  const treeEntries = fileChanges.map(f => ({\n    path: f.path,\n    mode: '100644',\n    type: 'blob',\n    content: f.content,\n  }));\n\n  const tree = await gh('/git/trees', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ base_tree: baseTree, tree: treeEntries }),\n  });\n\n  const commit = await gh('/git/commits', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ message: commitMessage, tree: tree.sha, parents: [baseSha] }),\n  });\n\n  await gh(`/git/refs/heads/${branch}`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ sha: commit.sha }),\n  });\n\n  const pr = await gh('/pulls', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({\n      title: prTitle,\n      body: prBody,\n      head: branch,\n      base: 'main',\n      draft: true,\n    }),\n  });\n\n  try {\n    await gh(`/issues/${pr.number}/labels`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ labels: ['automated', 'nuliga-sync'] }),\n    });\n  } catch (e) {\n    // labels optional — continue\n  }\n\n  return pr;\n}\n\nasync function commentOnPR(prNumber, body) {\n  await gh(`/issues/${prNumber}/comments`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ body }),\n  });\n}\n\nconst result = await runSync({\n  fetchImpl: fetch,\n  readRepoFile,\n  today: new Date(),\n});\n\nif (!result.changed) {\n  return [{ json: { changed: false, errors: result.errors } }];\n}\n\nconst existingPR = await findOpenSyncPR();\nif (existingPR) {\n  await commentOnPR(existingPR.number, `Zusätzliche Änderungen seit PR-Erstellung:\\n\\n${result.prBody}`);\n  return [{\n    json: {\n      changed: true,\n      action: 'comment',\n      prUrl: existingPR.html_url,\n      prTitle: existingPR.title,\n      prBody: result.prBody,\n      errors: result.errors,\n    },\n  }];\n}\n\nconst pr = await commitAndOpenPR(result);\nreturn [{\n  json: {\n    changed: true,\n    action: 'created',\n    prUrl: pr.html_url,\n    prNumber: pr.number,\n    prTitle: result.prTitle,\n    prBody: result.prBody,\n    errors: result.errors,\n  },\n}];\n"
+        "assignments": {
+          "assignments": [
+            {
+              "id": "github-token",
+              "name": "githubToken",
+              "value": "ghp_REPLACE_WITH_YOUR_PAT",
+              "type": "string"
+            },
+            {
+              "id": "github-owner",
+              "name": "githubOwner",
+              "value": "ElGarno",
+              "type": "string"
+            },
+            {
+              "id": "github-repo",
+              "name": "githubRepo",
+              "value": "tcbw-homepage",
+              "type": "string"
+            },
+            {
+              "id": "pushover-token",
+              "name": "pushoverToken",
+              "value": "REPLACE_WITH_PUSHOVER_APP_TOKEN",
+              "type": "string"
+            },
+            {
+              "id": "pushover-user",
+              "name": "pushoverUser",
+              "value": "REPLACE_WITH_PUSHOVER_USER_KEY",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "config-set",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [360, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===========================================================================\n// nuliga-sync — n8n Code node\n//\n// Setup:\n//   1. Docker env (einmalig): NODE_FUNCTION_ALLOW_EXTERNAL=cheerio,js-yaml\n//   2. Im vorgelagerten \"Config\"-Set-Node alle 5 Werte eintragen\n//      (githubToken, githubOwner, githubRepo, pushoverToken, pushoverUser)\n//   3. Unten den Platzhalter zwischen den --- PASTE BUNDLE --- Markern\n//      durch den Inhalt von tools/nuliga-sync/dist/n8n-bundle.js ersetzen.\n//\n// Output:\n//   { changed: false }                                → If-Node nimmt False-Pfad\n//   { changed: true, prUrl, prTitle, prBody, errors } → If-Node nimmt True-Pfad → Pushover\n// ===========================================================================\n\nconst cheerio = require('cheerio');\nconst yaml = require('js-yaml');\n\n// --- PASTE BUNDLE BELOW ---\n// ... entire content of tools/nuliga-sync/dist/n8n-bundle.js goes here ...\n// --- PASTE BUNDLE ABOVE ---\n\nconst config = $('Config').first().json;\nconst GITHUB_TOKEN = config.githubToken;\nconst OWNER = config.githubOwner;\nconst REPO = config.githubRepo;\nconst API = `https://api.github.com/repos/${OWNER}/${REPO}`;\n\nasync function gh(path, opts = {}) {\n  const res = await fetch(`${API}${path}`, {\n    ...opts,\n    headers: {\n      'Authorization': `Bearer ${GITHUB_TOKEN}`,\n      'Accept': 'application/vnd.github+json',\n      'User-Agent': 'nuliga-sync',\n      ...(opts.headers ?? {}),\n    },\n  });\n  if (!res.ok) {\n    const body = await res.text();\n    throw new Error(`GitHub API ${path} ${res.status}: ${body.slice(0, 300)}`);\n  }\n  return res.json();\n}\n\nasync function readRepoFile(path) {\n  const data = await gh(`/contents/${encodeURI(path)}?ref=main`);\n  return Buffer.from(data.content, 'base64').toString('utf8');\n}\n\nasync function findOpenSyncPR() {\n  const pulls = await gh(`/pulls?state=open&per_page=50`);\n  return pulls.find(p => p.head.ref.startsWith('nuliga-sync/'));\n}\n\nasync function commitAndOpenPR({ branch, commitMessage, prTitle, prBody, fileChanges }) {\n  const mainRef = await gh('/git/ref/heads/main');\n  const baseSha = mainRef.object.sha;\n\n  await gh('/git/refs', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),\n  });\n\n  const baseCommit = await gh(`/git/commits/${baseSha}`);\n  const baseTree = baseCommit.tree.sha;\n\n  const treeEntries = fileChanges.map(f => ({\n    path: f.path,\n    mode: '100644',\n    type: 'blob',\n    content: f.content,\n  }));\n\n  const tree = await gh('/git/trees', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ base_tree: baseTree, tree: treeEntries }),\n  });\n\n  const commit = await gh('/git/commits', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ message: commitMessage, tree: tree.sha, parents: [baseSha] }),\n  });\n\n  await gh(`/git/refs/heads/${branch}`, {\n    method: 'PATCH',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ sha: commit.sha }),\n  });\n\n  const pr = await gh('/pulls', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({\n      title: prTitle,\n      body: prBody,\n      head: branch,\n      base: 'main',\n      draft: true,\n    }),\n  });\n\n  try {\n    await gh(`/issues/${pr.number}/labels`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ labels: ['automated', 'nuliga-sync'] }),\n    });\n  } catch (e) {\n    // labels optional\n  }\n\n  return pr;\n}\n\nasync function commentOnPR(prNumber, body) {\n  await gh(`/issues/${prNumber}/comments`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ body }),\n  });\n}\n\nconst result = await runSync({\n  fetchImpl: fetch,\n  readRepoFile,\n  today: new Date(),\n});\n\nif (!result.changed) {\n  return [{ json: { changed: false, errors: result.errors } }];\n}\n\nconst existingPR = await findOpenSyncPR();\nif (existingPR) {\n  await commentOnPR(existingPR.number, `Zusätzliche Änderungen seit PR-Erstellung:\\n\\n${result.prBody}`);\n  return [{\n    json: {\n      changed: true,\n      action: 'comment',\n      prUrl: existingPR.html_url,\n      prTitle: existingPR.title,\n      prBody: result.prBody,\n      errors: result.errors,\n    },\n  }];\n}\n\nconst pr = await commitAndOpenPR(result);\nreturn [{\n  json: {\n    changed: true,\n    action: 'created',\n    prUrl: pr.html_url,\n    prNumber: pr.number,\n    prTitle: result.prTitle,\n    prBody: result.prBody,\n    errors: result.errors,\n  },\n}];\n"
       },
       "id": "sync-code",
       "name": "Sync Logic",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [480, 300]
+      "position": [600, 300]
     },
     {
       "parameters": {
@@ -54,7 +98,7 @@
       "name": "Aenderungen?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [720, 300]
+      "position": [840, 300]
     },
     {
       "parameters": {
@@ -65,11 +109,11 @@
           "parameters": [
             {
               "name": "token",
-              "value": "={{ $env.PUSHOVER_TOKEN }}"
+              "value": "={{ $('Config').first().json.pushoverToken }}"
             },
             {
               "name": "user",
-              "value": "={{ $env.PUSHOVER_USER }}"
+              "value": "={{ $('Config').first().json.pushoverUser }}"
             },
             {
               "name": "title",
@@ -99,7 +143,7 @@
       "name": "Pushover",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [960, 200]
+      "position": [1080, 200]
     },
     {
       "parameters": {},
@@ -107,11 +151,14 @@
       "name": "Keine Aenderungen",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [960, 400]
+      "position": [1080, 400]
     }
   ],
   "connections": {
     "Taeglich 06:00": {
+      "main": [[{ "node": "Config", "type": "main", "index": 0 }]]
+    },
+    "Config": {
       "main": [[{ "node": "Sync Logic", "type": "main", "index": 0 }]]
     },
     "Sync Logic": {
