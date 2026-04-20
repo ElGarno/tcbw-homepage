@@ -18,6 +18,7 @@ const FILES = [
   'termineUpdater.js',
   'prBody.js',
   'teams.js',
+  'syncRunner.js',
 ];
 
 const parts = [
