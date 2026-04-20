@@ -48,6 +48,7 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Mail-to-Homepage Workflow: n8n JSON erstellt (IMAP + AI Agent + GitHub API)
 - [x] Mail-to-Homepage Workflow: Erster erfolgreicher Durchlauf (PR #3 merged)
 - [ ] Echte Fotos für Homepage-Sektionen (Galerie, Verein-Bild)
+- [x] Liga.nu Auto-Sync Workflow implementiert (Branch feature/nuliga-sync)
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -63,6 +64,22 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Nächster Schritt:** Tablet klären, dann Design finalisieren und Implementierungsplan erstellen
 
 ## Progress Log
+### 2026-04-20
+- Spielplan-Update: Änderungen von liga.nu (Herren 30, 40, 60, Gemischt 1+2) in Mannschafts-MDs und termine/_index.md eingepflegt (commit 2efab03)
+- PR #5 (JHV-Korrektur) gemerged, 3 stale Branches gelöscht
+- Liga.nu Auto-Sync Workflow auf feature/nuliga-sync implementiert:
+  - Standalone JS unter `tools/nuliga-sync/` mit 47 Tests (Node built-in test runner)
+  - Module: normalize, parser (cheerio), mdReader, mdWriter, diff, termineUpdater, prBody, teams, syncRunner
+  - Migration: team+opponent Markerfelder zu medenspiel-Einträgen hinzugefügt
+  - Migration: Opponent-Namen in Mannschafts-MDs auf liga.nu canonical form (TC BW Sundern → TC Blau-Weiß Sundern, TC Iserlohn → Tennisclub Iserlohn, TC RW Hagen → TC Rot-Weiß Hagen)
+  - Baseline script: `npm run baseline` → 0 Diffs gegen live liga.nu
+  - Bundle script: `npm run bundle` → `dist/n8n-bundle.js` zum Paste in n8n Code node
+  - n8n JSON Skelett: `doc/specs/n8n-nuliga-sync.json` (Cron → Sync-Logic Code Node → If → Pushover)
+  - Deployment-Doku: `doc/specs/2026-04-20-nuliga-sync-deployment.md`
+- Spec: `doc/specs/2026-04-20-nuliga-sync-workflow.md`
+- Plan: `doc/plans/2026-04-20-nuliga-sync-implementation.md`
+- Noch offen: n8n-Workflow im UI bauen (Env-Vars setzen, Bundle paste, Credentials, Test Run)
+
 ### 2026-03-17
 - Session initialized, project description read
 - Homepage analysis completed (doc/agents/architecture/2026-03-17_homepage-analyse.md)
