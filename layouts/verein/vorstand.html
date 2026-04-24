@@ -15,7 +15,9 @@
               {{ with .role }}<span style="color: var(--gray-500); font-size: 0.9rem;"> — {{ . }}</span>{{ end }}
             </p>
           {{ else }}
-            <p style="margin: 0 0 6px 0; font-size: 1.05rem; color: var(--blue-800);">{{ . }}</p>
+            <p style="margin: 0 0 6px 0; font-size: 1.05rem;">
+              <strong style="color: var(--blue-800);">{{ . }}</strong>
+            </p>
           {{ end }}
         {{ end }}
       </div>

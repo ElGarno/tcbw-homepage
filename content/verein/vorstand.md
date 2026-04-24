@@ -4,17 +4,17 @@ description: "Der Vorstand des Tennisclub Blau-Weiss Attendorn e.V."
 weight: 10
 layout: vorstand
 departments:
-  - name: "Geschaeftsfuehrung"
+  - name: "Geschäftsführung"
     icon: "shield"
     members:
-      - "Stefan Huette"
+      - "Stefan Hütte"
       - "Christian Feldmann"
   - name: "Finanzen"
     icon: "coins"
     members:
       - "Martina Franz"
       - "Carsten Heimes"
-  - name: "Marketing & Oeffentlichkeitsarbeit"
+  - name: "Marketing & Öffentlichkeitsarbeit"
     icon: "megaphone"
     members:
       - "Bastian Gerlach"
@@ -29,8 +29,8 @@ departments:
   - name: "Digitales"
     icon: "monitor"
     members:
-      - name: "Fabian Woerenkaemper"
-        role: "Homepage, Buchungsapp"
+      - name: "Fabian Wörenkämper"
+        role: "Homepage, Getränkebuchungsapp"
   - name: "Beisitzer"
     icon: "users"
     members:

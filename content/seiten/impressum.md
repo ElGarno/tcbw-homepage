@@ -9,7 +9,7 @@ Schnellenberg 1
 57439 Attendorn
 
 **Vertreten durch:**
-Stefan Huette und Christian Feldmann (Geschaeftsfuehrung)
+Stefan Hütte und Christian Feldmann (Geschäftsführung)
 
 **Kontakt:**
 E-Mail: vorstand@tc-bw-attendorn.de
