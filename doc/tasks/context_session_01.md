@@ -6,8 +6,8 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 
 ## Current Status
 - **Phase**: deployed, content refinement + automation
-- **Last Updated**: 2026-03-23
-- **Blockers**: None
+- **Last Updated**: 2026-04-24
+- **Blockers**: None — nuliga-sync Code fertig & gemerged (PR #6), nur n8n-UI-Setup offen
 
 ## Tasks
 - [x] Analyze current homepage
@@ -48,7 +48,8 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Mail-to-Homepage Workflow: n8n JSON erstellt (IMAP + AI Agent + GitHub API)
 - [x] Mail-to-Homepage Workflow: Erster erfolgreicher Durchlauf (PR #3 merged)
 - [ ] Echte Fotos für Homepage-Sektionen (Galerie, Verein-Bild)
-- [x] Liga.nu Auto-Sync Workflow implementiert (Branch feature/nuliga-sync)
+- [x] Liga.nu Auto-Sync Workflow implementiert und nach main gemerged (PR #6)
+- [ ] nuliga-sync: n8n-Workflow aus JSON importieren, Config-Node + Bundle einrichten, Test-Run
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -64,6 +65,15 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Nächster Schritt:** Tablet klären, dann Design finalisieren und Implementierungsplan erstellen
 
 ## Progress Log
+### 2026-04-24
+- nuliga-sync Code und JSON nach Review angepasst:
+  - `Config`-Set-Node am Workflow-Anfang statt Docker-Env-Vars (n8n self-hosted free hat kein Workflow-Env-Var-UI)
+  - Tokens (GitHub PAT, Pushover) werden im Config-Node direkt eingetragen
+  - Nur `NODE_FUNCTION_ALLOW_EXTERNAL=cheerio,js-yaml` bleibt als Docker-Compose-Einstellung
+  - Deployment-Guide entsprechend überarbeitet
+- Commit 66c8ebb auf main
+- Nächste Schritte (liegen beim User): n8n-Import, Bundle paste, Test-Run, Forced-Diff-Test, Activate
+
 ### 2026-04-20
 - Spielplan-Update: Änderungen von liga.nu (Herren 30, 40, 60, Gemischt 1+2) in Mannschafts-MDs und termine/_index.md eingepflegt (commit 2efab03)
 - PR #5 (JHV-Korrektur) gemerged, 3 stale Branches gelöscht
