@@ -506,6 +506,73 @@
       max-width: 560px;
     }
 
+    /* ── Verein Clubhaus Grid (verein/_index.md) ── */
+    .verein-clubhaus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .verein-clubhaus-grid figure {
+      margin: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--gray-100);
+      box-shadow: 0 4px 16px rgba(10, 22, 40, 0.08);
+    }
+
+    .verein-clubhaus-grid img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .verein-clubhaus-grid figcaption {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      color: var(--gray-500);
+    }
+
+    @media (max-width: 768px) {
+      .verein-clubhaus-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Anfahrt Image ── */
+    .anfahrt-image {
+      margin: 0 0 24px 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(10, 22, 40, 0.08);
+    }
+
+    .anfahrt-image img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Anlage Section ── */
+    .anlage-section {
+      padding-top: 56px;
+      padding-bottom: 56px;
+    }
+
+    .anlage-image {
+      margin: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(10, 22, 40, 0.12);
+    }
+
+    .anlage-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     /* ── News / Aktuelles ── */
     .news-section {
       background: var(--gray-50);
@@ -1041,10 +1108,24 @@
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      margin: 0;
+      background: var(--gray-200);
     }
 
     .galerie-item:first-child {
       grid-row: 1 / -1;
+    }
+
+    .galerie-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .galerie-item:hover img {
+      transform: scale(1.04);
     }
 
     .galerie-placeholder {
@@ -1059,22 +1140,17 @@
       opacity: 0.7;
     }
 
-    .galerie-item:nth-child(1) { background: linear-gradient(135deg, var(--blue-400), var(--blue-600)); }
-    .galerie-item:nth-child(2) { background: linear-gradient(135deg, var(--blue-300), var(--blue-500)); }
-    .galerie-item:nth-child(3) { background: linear-gradient(135deg, var(--blue-200), var(--blue-400)); }
-    .galerie-item:nth-child(4) { background: linear-gradient(135deg, var(--blue-500), var(--blue-700)); }
-    .galerie-item:nth-child(5) { background: linear-gradient(135deg, var(--blue-100), var(--blue-300)); }
-
     .galerie-item::after {
       content: '';
       position: absolute;
       inset: 0;
       background: rgba(0,0,0,0);
       transition: var(--transition);
+      pointer-events: none;
     }
 
     .galerie-item:hover::after {
-      background: rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.08);
     }
 
     /* ── Verein / About ── */

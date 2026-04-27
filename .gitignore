@@ -9,3 +9,11 @@ resources/_gen/
 # IDE
 .idea/
 .venv/
+
+# macOS
+.DS_Store
+
+# Photo originals & preview workspace (not committed to repo)
+TC-BW-Fotos/
+mockup/fotos-preview/
+mockup/fotos-preview.html
