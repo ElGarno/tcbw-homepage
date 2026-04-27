@@ -1,0 +1,45 @@
+{{ define "main" }}
+<article class="article-detail">
+  <div class="article-detail-header">
+    <div class="container" style="max-width: 760px;">
+      <a href="/galerie/" class="article-detail-back">&larr; Alle Alben</a>
+      <div class="article-detail-meta">
+        <time class="article-detail-date">{{ .Date.Format "2. January 2006" }}</time>
+        {{ with .Params.images }}
+        <div class="article-detail-tags">
+          <span class="article-detail-tag">{{ len . }} Bilder</span>
+        </div>
+        {{ end }}
+      </div>
+      <h1 class="article-detail-title">{{ .Title }}</h1>
+      {{ with .Description }}
+      <p class="article-detail-description">{{ . }}</p>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="container">
+    {{ with .Content }}
+    <div class="article-detail-content" style="max-width: 760px; margin: 0 auto;">
+      {{ . }}
+    </div>
+    {{ end }}
+
+    {{ with .Params.images }}
+    <div class="album-grid">
+      {{ range . }}
+      <figure class="album-item">
+        <a href="{{ .src }}" target="_blank" rel="noopener">
+          <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+        </a>
+      </figure>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <div class="article-detail-footer" style="max-width: 760px; margin: 0 auto;">
+      <a href="/galerie/" class="btn-secondary">&larr; Zurück zur Galerie</a>
+    </div>
+  </div>
+</article>
+{{ end }}

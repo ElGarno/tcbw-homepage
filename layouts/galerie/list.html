@@ -1,0 +1,36 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header">
+      <p class="label-upper section-eyebrow">Galerie</p>
+      <h2 class="heading-display section-title">{{ if .Title }}{{ .Title }}{{ else }}Alben{{ end }}</h2>
+      {{ with .Description }}<p class="section-subtitle">{{ . }}</p>{{ end }}
+    </div>
+
+    {{ if .Pages }}
+    <div class="news-grid">
+      {{ range .Pages.ByDate.Reverse }}
+      <a href="{{ .RelPermalink }}" class="news-card reveal">
+        <div class="news-card-image">
+          {{ with .Params.cover }}
+            <img src="{{ . }}" alt="{{ $.Title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          {{ else }}
+            <span class="news-card-image-placeholder">{{ .Title }}</span>
+          {{ end }}
+        </div>
+        <div class="news-card-body">
+          <p class="news-card-date">{{ .Date.Format "2. January 2006" }}{{ with .Params.images }} &middot; {{ len . }} Bilder{{ end }}</p>
+          <h3 class="news-card-title">{{ .Title }}</h3>
+          {{ with .Description }}<p class="news-card-excerpt">{{ . }}</p>{{ end }}
+        </div>
+      </a>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p style="color: var(--gray-500); text-align: center; margin-top: 24px;">
+      Aktuell sind keine Alben verfügbar.
+    </p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
