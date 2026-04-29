@@ -22,7 +22,7 @@ verein:
       label: "Gegründet"
     - number: "7"
       label: "Mannschaften"
-    - number: "4"
+    - number: "3"
       label: "Plätze"
   image: "/images/historie/tcbw_1931.jpg"
   image_alt: "Gründung Tennisclub Blau-Weiss Attendorn e.V. 1931"
