@@ -33,6 +33,13 @@ function toDate(dateStr) {
   return new Date(`${dateStr}T00:00:00Z`);
 }
 
+function isDateLike(v) {
+  // Cross-realm-safe Date detection — `instanceof Date` fails inside the
+  // n8n runner sandbox because js-yaml returns Date instances from a different
+  // realm. Duck-type check on `toISOString` works regardless of realm.
+  return v != null && typeof v.toISOString === 'function';
+}
+
 function sameOpponent(a, b) {
   return normalizeOpponent(a ?? '') === normalizeOpponent(b ?? '');
 }
@@ -106,18 +113,56 @@ export function applyTermineChanges(content, teamChanges) {
   }
 
   events.sort((a, b) => {
-    const ad = a.date instanceof Date ? a.date : toDate(a.date);
-    const bd = b.date instanceof Date ? b.date : toDate(b.date);
+    const ad = isDateLike(a.date) ? a.date : toDate(a.date);
+    const bd = isDateLike(b.date) ? b.date : toDate(b.date);
     return ad - bd;
   });
 
   data.events = events;
 
-  const yamlOut = yaml.dump(data, {
-    lineWidth: -1,
-    quotingType: '"',
-    forceQuotes: false,
-  });
+  return `---\n${dumpTermineYaml(data)}---\n${body}`;
+}
 
-  return `---\n${yamlOut}---\n${body}`;
+// --- Custom YAML serializer ---
+// Avoids js-yaml's yaml.dump because n8n 2.x runner sandbox makes Error.name
+// read-only, which crashes inside YAMLException's constructor. The serializer
+// is intentionally narrow: handles only the termine.md frontmatter shape
+// (top-level scalars + events list with string/Date/null fields).
+
+function escapeDoubleQuoted(s) {
+  return String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+}
+
+function formatYamlValue(key, value) {
+  if (value === undefined || value === null) return '~';
+  if (key === 'date' && isDateLike(value)) {
+    return value.toISOString().slice(0, 10);
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  return `"${escapeDoubleQuoted(value)}"`;
+}
+
+function dumpTermineYaml(data) {
+  const lines = [];
+  for (const [key, val] of Object.entries(data)) {
+    if (key === 'events') continue;
+    lines.push(`${key}: ${formatYamlValue(key, val)}`);
+  }
+  lines.push('events:');
+  const events = data.events ?? [];
+  for (const e of events) {
+    let first = true;
+    for (const [key, val] of Object.entries(e)) {
+      if (val === undefined) continue;
+      const indent = first ? '  - ' : '    ';
+      lines.push(`${indent}${key}: ${formatYamlValue(key, val)}`);
+      first = false;
+    }
+  }
+  return lines.join('\n') + '\n';
 }

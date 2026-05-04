@@ -23,11 +23,18 @@ function isoToday(d = new Date()) {
   return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
 }
 
+function isDateLike(v) {
+  // Cross-realm-safe Date detection — `instanceof Date` fails inside the
+  // n8n runner sandbox because js-yaml's Date instances come from a different
+  // realm. Duck-type check on `toISOString` is reliable.
+  return v != null && typeof v.toISOString === 'function';
+}
+
 function pokalExistingFromTermine(events, ligaGroup) {
   return events
     .filter(e => e.category === 'pokal' && e.liga_group === ligaGroup)
     .map(e => ({
-      date: e.date instanceof Date
+      date: isDateLike(e.date)
         ? e.date.toISOString().slice(0, 10)
         : String(e.date),
       time: String(e.time).replace(/\s*Uhr\s*$/, ''),

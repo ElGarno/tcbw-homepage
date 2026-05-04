@@ -22,7 +22,10 @@ export const TEAMS = [
 
 const BASE = 'https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage';
 
+function encQuery(s) {
+  return encodeURIComponent(s).replace(/%20/g, '+');
+}
+
 export function liganuUrl(group, championship = 'SW 2026') {
-  const params = new URLSearchParams({ championship, group });
-  return `${BASE}?${params.toString()}`;
+  return `${BASE}?championship=${encQuery(championship)}&group=${encQuery(group)}`;
 }
