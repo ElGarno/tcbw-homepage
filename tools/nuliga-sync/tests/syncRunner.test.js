@@ -71,3 +71,59 @@ test('branch name uses timestamp', async () => {
   });
   assert.match(result.branch, /^nuliga-sync\/2026-04-20-\d{4}$/);
 });
+
+test('pokal team: syncs without reading mannschaften MD', async () => {
+  // Modify the live termine content to introduce a pokal time-diff vs liga.nu fixture
+  const realTermine = readFileSync(join(REPO_ROOT, 'content/termine/_index.md'), 'utf8');
+  const modifiedTermine = realTermine.replace(
+    '  - title: "Herren-Pokal vs. TV Rönkhausen 1892"\n    date: 2026-05-05\n    time: "18:00 Uhr"',
+    '  - title: "Herren-Pokal vs. TV Rönkhausen 1892"\n    date: 2026-05-05\n    time: "17:00 Uhr"',
+  );
+
+  // Track which paths were read; pokal teams must NOT trigger a mannschaften MD read.
+  const pathsRead = [];
+  const wrappedReader = async (path) => {
+    pathsRead.push(path);
+    if (path === 'content/termine/_index.md') return modifiedTermine;
+    return readFileSync(join(REPO_ROOT, path), 'utf8');
+  };
+
+  const result = await runSync({
+    fetchImpl: fetchFromFixtures(),
+    readRepoFile: wrappedReader,
+    today: new Date('2026-04-20T05:00:00Z'),
+  });
+
+  assert.equal(result.changed, true);
+  // PR body shows the Herren-Pokal update (17:00 → 18:00)
+  assert.match(result.prBody, /Herren-Pokal/);
+  // fileChanges contains _index.md but NOT a pokal-specific mannschaft MD (none exists)
+  const paths = result.fileChanges.map(f => f.path);
+  assert.ok(paths.includes('content/termine/_index.md'));
+  assert.ok(!paths.some(p => /pokal\.md$/.test(p)));
+});
+
+test('mixed run: medenspiel + pokal updates appear in same PR body', async () => {
+  const modifiedHerren30 = readFileSync(join(REPO_ROOT, 'content/mannschaften/herren-30.md'), 'utf8')
+    .replace('| 04.07.2026 | 14:30 |', '| 04.07.2026 | 13:00 |');
+  const realTermine = readFileSync(join(REPO_ROOT, 'content/termine/_index.md'), 'utf8');
+  const modifiedTermine = realTermine.replace(
+    '  - title: "Herren 40-Pokal vs. TV Rosenthal 1899"\n    date: 2026-05-06\n    time: "18:00 Uhr"',
+    '  - title: "Herren 40-Pokal vs. TV Rosenthal 1899"\n    date: 2026-05-06\n    time: "17:00 Uhr"',
+  );
+
+  const result = await runSync({
+    fetchImpl: fetchFromFixtures(),
+    readRepoFile: repoFileReader({
+      'content/mannschaften/herren-30.md': modifiedHerren30,
+      'content/termine/_index.md': modifiedTermine,
+    }),
+    today: new Date('2026-04-20T05:00:00Z'),
+  });
+
+  assert.equal(result.changed, true);
+  // Both teams should appear in the same Geänderte-Spiele table
+  assert.match(result.prBody, /Herren 30.*TuS Ferndorf/);
+  assert.match(result.prBody, /Herren 40-Pokal.*TV Rosenthal/);
+  assert.match(result.prTitle, /2 Updates/);
+});
