@@ -91,6 +91,14 @@ Toggle oben rechts auf "Active" → Workflow läuft ab jetzt täglich 06:00 Euro
 - Bundle bei Code-Änderungen neu generieren (`npm run bundle`) und im "Sync Logic"-Node aktualisieren
 - Token-Rotation: Config-Node öffnen, Wert ändern, speichern. Kein Docker-Restart nötig.
 
+### WTV Pokal (seit 2026-05-04)
+
+Zusätzlich zum Medenspiel-Spielplan synct der Workflow auch die WTV-Pokal-Heimspiele
+(`championship=WTV VP 2026`). Pokal-Teams sind in `tools/nuliga-sync/src/teams.js` mit
+`kind: 'pokal'` markiert, schreiben **nur** in `content/termine/_index.md` (kein
+Mannschafts-MD) und tauchen im PR-Body unter den `teamLabel`-Einträgen `Herren-Pokal`
+und `Herren 40-Pokal` auf. Spec: `doc/specs/2026-05-04-nuliga-sync-pokal.md`.
+
 ## Troubleshooting
 
 | Symptom | Ursache | Behebung |
