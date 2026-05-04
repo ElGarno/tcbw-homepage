@@ -97,10 +97,14 @@ test('pokal team: syncs without reading mannschaften MD', async () => {
   assert.equal(result.changed, true);
   // PR body shows the Herren-Pokal update (17:00 → 18:00)
   assert.match(result.prBody, /Herren-Pokal/);
-  // fileChanges contains _index.md but NOT a pokal-specific mannschaft MD (none exists)
-  const paths = result.fileChanges.map(f => f.path);
-  assert.ok(paths.includes('content/termine/_index.md'));
-  assert.ok(!paths.some(p => /pokal\.md$/.test(p)));
+  // The diff is pokal-only — no mannschaften MD should have been written.
+  // (pathsRead will include all medenspiel MDs for diff check, but only pokal changes go to PR)
+  const mannschaftWrites = pathsRead.filter(p => p.startsWith('content/mannschaften/') && p.endsWith('.md'));
+  const fileChangePaths = result.fileChanges.map(f => f.path);
+  assert.ok(fileChangePaths.includes('content/termine/_index.md'),
+    'fileChanges should include termine update');
+  assert.ok(!fileChangePaths.some(p => p.startsWith('content/mannschaften/')),
+    `pokal-only run should not write mannschaft MDs, but wrote: ${fileChangePaths.filter(p => p.startsWith('content/mannschaften/')).join(', ')}`);
 });
 
 test('mixed run: medenspiel + pokal updates appear in same PR body', async () => {
