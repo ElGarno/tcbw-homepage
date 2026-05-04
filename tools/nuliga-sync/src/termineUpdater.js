@@ -45,6 +45,38 @@ function findMedenspielIdx(events, team, opponent) {
   );
 }
 
+function findPokalIdx(events, ligaGroup, opponent) {
+  return events.findIndex(e =>
+    e.category === 'pokal' &&
+    e.liga_group === ligaGroup &&
+    sameOpponent(e.opponent, opponent)
+  );
+}
+
+function buildEventEntry(tc, addMatch) {
+  if (tc.kind === 'pokal') {
+    return {
+      title: `${tc.teamLabel} vs. ${addMatch.opponent}`,
+      date: toDate(addMatch.newDate),
+      time: `${addMatch.newTime} Uhr`,
+      detail: tc.pokalDetail,
+      category: 'pokal',
+      opponent: addMatch.opponent,
+      liga_championship: tc.championship,
+      liga_group: tc.ligaGroup,
+    };
+  }
+  return {
+    title: titleFor(tc.team, addMatch.opponent),
+    date: toDate(addMatch.newDate),
+    time: `${addMatch.newTime} Uhr`,
+    detail: detailFor(tc.team),
+    category: 'medenspiel',
+    team: tc.team,
+    opponent: addMatch.opponent,
+  };
+}
+
 export function applyTermineChanges(content, teamChanges) {
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!fmMatch) throw new Error('No frontmatter');
@@ -54,9 +86,13 @@ export function applyTermineChanges(content, teamChanges) {
   const events = data.events ?? [];
 
   for (const tc of teamChanges) {
+    const findIdx = tc.kind === 'pokal'
+      ? (evts, opp) => findPokalIdx(evts, tc.ligaGroup, opp)
+      : (evts, opp) => findMedenspielIdx(evts, tc.team, opp);
+
     for (const u of tc.updates) {
       if (!u.isHome) continue;
-      const idx = findMedenspielIdx(events, tc.team, u.opponent);
+      const idx = findIdx(events, u.opponent);
       if (idx === -1) continue;
       events[idx].date = toDate(u.newDate);
       events[idx].time = `${u.newTime} Uhr`;
@@ -64,16 +100,8 @@ export function applyTermineChanges(content, teamChanges) {
 
     for (const a of tc.adds) {
       if (!a.isHome) continue;
-      if (findMedenspielIdx(events, tc.team, a.opponent) !== -1) continue;
-      events.push({
-        title: titleFor(tc.team, a.opponent),
-        date: toDate(a.newDate),
-        time: `${a.newTime} Uhr`,
-        detail: detailFor(tc.team),
-        category: 'medenspiel',
-        team: tc.team,
-        opponent: a.opponent,
-      });
+      if (findIdx(events, a.opponent) !== -1) continue;
+      events.push(buildEventEntry(tc, a));
     }
   }
 
