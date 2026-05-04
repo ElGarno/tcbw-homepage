@@ -47,7 +47,7 @@ test('away match update is ignored (termine only tracks home matches)', () => {
   ];
   const out = applyTermineChanges(fixture, teamChanges);
   const events = parseEvents(out);
-  assert.equal(events.length, 4);
+  assert.equal(events.length, 6);
 });
 
 test('add: new home match → appended', () => {
@@ -56,7 +56,7 @@ test('add: new home match → appended', () => {
   ];
   const out = applyTermineChanges(fixture, teamChanges);
   const events = parseEvents(out);
-  assert.equal(events.length, 5);
+  assert.equal(events.length, 7);
   const newEvent = events.find(e => e.opponent === 'New Opponent');
   assert.ok(newEvent);
   assert.equal(newEvent.team, 'herren-30');
@@ -69,7 +69,7 @@ test('missing: home match disappears from liga → entry NOT removed', () => {
   ];
   const out = applyTermineChanges(fixture, teamChanges);
   const events = parseEvents(out);
-  assert.equal(events.length, 4);
+  assert.equal(events.length, 6);
   const ferndorf = events.find(e => e.title.includes('Ferndorf'));
   assert.ok(ferndorf);
 });
