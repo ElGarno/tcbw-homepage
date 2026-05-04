@@ -109,3 +109,4 @@ und `Herren 40-Pokal` auf. Spec: `doc/specs/2026-05-04-nuliga-sync-pokal.md`.
 | Pushover kommt nicht | Token im Config-Node falsch | Config-Node prüfen, ggf. neuen Pushover-Token erzeugen und eintragen |
 | "Bad credentials" 401 | GitHub PAT im Config-Node fehlt `repo`-Scope oder ist abgelaufen | Neuen PAT erzeugen, Config-Node aktualisieren |
 | PR erstellt, aber Body leer | Bundle-Paste unvollständig | Bundle-Inhalt nochmal zwischen die Marker paste, Leerzeilen vermeiden |
+| `fetch is not defined` / `process is not defined` im Code-Node | Mit `N8N_RUNNERS_ENABLED=true` ist die Sandbox restriktiver — `fetch`, `process`, `https`, `axios` etc. sind blockiert | Wrapper nutzt `this.helpers.httpRequest` (n8n-built-in) statt `fetch`. Aktuelle `n8n-nuliga-sync.json` ist bereits umgestellt. Falls weitere HTTP-Aufrufe nötig: gleiche Pattern verwenden (Arrow-Function für `this`-Zugriff). |
