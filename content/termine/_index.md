@@ -7,6 +7,22 @@ events:
     time: "10:30 Uhr"
     detail: "Anlage fit für die Sommersaison machen — viele helfende Hände willkommen!"
     category: "event"
+  - title: "Herren-Pokal vs. TV Rönkhausen 1892"
+    date: 2026-05-05
+    time: "18:00 Uhr"
+    detail: "WTV Vereinspokal · Herren LK 18,0–25,0, Heimspiel"
+    category: "pokal"
+    opponent: "TV Rönkhausen 1892 TA"
+    liga_championship: "WTV VP 2026"
+    liga_group: "2229674"
+  - title: "Herren 40-Pokal vs. TV Rosenthal 1899"
+    date: 2026-05-06
+    time: "18:00 Uhr"
+    detail: "WTV Vereinspokal · Herren Ü40 LK 1,0–25,0, Heimspiel"
+    category: "pokal"
+    opponent: "TV Rosenthal 1899"
+    liga_championship: "WTV VP 2026"
+    liga_group: "2229754"
   - title: "Herren 30 vs. Olper TC"
     date: 2026-05-09
     time: "13:00 Uhr"
