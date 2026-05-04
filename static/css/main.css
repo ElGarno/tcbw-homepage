@@ -24,6 +24,9 @@
       --gray-800: #1f2937;
       --green-500: #10b981;
       --green-600: #059669;
+      --orange-500: #f97316;
+      --orange-600: #ea580c;
+      --orange-50:  #fff7ed;
       --radius: 12px;
       --radius-sm: 8px;
       --radius-lg: 16px;
@@ -873,6 +876,10 @@
       background: var(--green-500);
     }
 
+    .termin-item[data-category="pokal"]::before {
+      background: var(--orange-500);
+    }
+
     .termin-item:hover {
       border-color: var(--blue-300);
       box-shadow: var(--shadow-sm);
@@ -898,6 +905,11 @@
     .termin-badge-event {
       background: rgba(16, 185, 129, 0.1);
       color: var(--green-600);
+    }
+
+    .termin-badge-pokal {
+      background: var(--orange-50);
+      color: var(--orange-600);
     }
 
     /* Filter buttons */
