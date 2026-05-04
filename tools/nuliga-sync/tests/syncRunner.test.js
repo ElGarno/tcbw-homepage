@@ -72,7 +72,7 @@ test('branch name uses timestamp', async () => {
   assert.match(result.branch, /^nuliga-sync\/2026-04-20-\d{4}$/);
 });
 
-test('pokal team: syncs without reading mannschaften MD', async () => {
+test('pokal team: syncs without writing mannschaften MD', async () => {
   // Modify the live termine content to introduce a pokal time-diff vs liga.nu fixture
   const realTermine = readFileSync(join(REPO_ROOT, 'content/termine/_index.md'), 'utf8');
   const modifiedTermine = realTermine.replace(
@@ -97,9 +97,7 @@ test('pokal team: syncs without reading mannschaften MD', async () => {
   assert.equal(result.changed, true);
   // PR body shows the Herren-Pokal update (17:00 → 18:00)
   assert.match(result.prBody, /Herren-Pokal/);
-  // The diff is pokal-only — no mannschaften MD should have been written.
-  // (pathsRead will include all medenspiel MDs for diff check, but only pokal changes go to PR)
-  const mannschaftWrites = pathsRead.filter(p => p.startsWith('content/mannschaften/') && p.endsWith('.md'));
+  // All medenspiel MDs are read for diff computation, but pokal-only diffs must not produce mannschaft writes.
   const fileChangePaths = result.fileChanges.map(f => f.path);
   assert.ok(fileChangePaths.includes('content/termine/_index.md'),
     'fileChanges should include termine update');
