@@ -16,12 +16,17 @@
         <div class="termine-legend-dot" style="background: var(--green-500);"></div>
         <span>Vereinsevent</span>
       </div>
+      <div class="termine-legend-item">
+        <div class="termine-legend-dot" style="background: var(--orange-500);"></div>
+        <span>Pokal</span>
+      </div>
     </div>
 
     <div class="termine-filters" id="termineFilters">
       <button class="termine-filter-btn active" data-filter="alle">Alle</button>
       <button class="termine-filter-btn" data-filter="medenspiel">Medenspiele</button>
       <button class="termine-filter-btn" data-filter="event">Vereinsevents</button>
+      <button class="termine-filter-btn" data-filter="pokal">Pokal</button>
     </div>
 
     <div class="termine-list" id="termineList">
@@ -38,8 +43,9 @@
         <div>
           <p class="termin-title">{{ .title }}</p>
           <p class="termin-detail">{{ .detail }}</p>
+          {{ $labels := dict "medenspiel" "Medenspiel" "event" "Event" "pokal" "Pokal" }}
           <span class="termin-badge termin-badge-{{ .category }}">
-            {{ if eq .category "medenspiel" }}Medenspiel{{ else }}Event{{ end }}
+            {{ index $labels .category }}
           </span>
         </div>
         <p class="termin-time">{{ .time }}</p>
