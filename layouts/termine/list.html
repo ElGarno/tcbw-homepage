@@ -30,10 +30,10 @@
     </div>
 
     <div class="termine-list" id="termineList">
-      {{ $now := now }}
+      {{ $cutoff := time (now.Format "2006-01-02") }}
       {{ range .Params.events }}
       {{ $d := time .date }}
-      {{ if ge $d.Unix $now.Unix }}
+      {{ if ge $d.Unix $cutoff.Unix }}
       <div class="termin-item reveal" data-category="{{ .category }}">
         <div class="termin-date-block">
           <p class="termin-day">{{ $d.Day }}</p>
