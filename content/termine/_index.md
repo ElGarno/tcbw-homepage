@@ -42,6 +42,14 @@ events:
     category: "medenspiel"
     team: "damen-6er"
     opponent: "Schwelmer TC RW"
+  - title: "Herren-Pokal vs. TC Letmathe 1"
+    date: 2026-05-19
+    time: "18:00 Uhr"
+    detail: "WTV Vereinspokal · Herren LK 18,0–25,0, Heimspiel"
+    category: "pokal"
+    opponent: "TC Letmathe 1"
+    liga_championship: "WTV VP 2026"
+    liga_group: "2229674"
   - title: "Herren 40 vs. TC Iserlohn"
     date: 2026-05-30
     time: "13:00 Uhr"
