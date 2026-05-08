@@ -1,5 +1,5 @@
 baseURL = "https://tc-bw-attendorn.de/"
-languageCode = "de"
+locale = "de"
 title = "Tennisclub Blau-Weiss Attendorn e.V."
 
 [params]
