@@ -5,9 +5,9 @@ Modernize the homepage of tennis club TC-BW-Attendorn (https://tc-bw-attendorn.d
 Replace the outdated, insecure site with a modern, maintainable solution.
 
 ## Current Status
-- **Phase**: deployed, content refinement + automation
-- **Last Updated**: 2026-04-24
-- **Blockers**: None — nuliga-sync Code fertig & gemerged (PR #6), nur n8n-UI-Setup offen
+- **Phase**: deployed + automation; new sub-project "Social Media Generator" ready for implementation in separate repo
+- **Last Updated**: 2026-05-08
+- **Blockers**: None — nuliga-sync läuft produktiv (PR #10 auto-gemerged 2026-05-06); Social-Tools-Implementation startet in fresh Claude-Session in `~/PycharmProjects/tcbw-social-tools/`
 
 ## Tasks
 - [x] Analyze current homepage
@@ -49,7 +49,13 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Mail-to-Homepage Workflow: Erster erfolgreicher Durchlauf (PR #3 merged)
 - [ ] Echte Fotos für Homepage-Sektionen (Galerie, Verein-Bild)
 - [x] Liga.nu Auto-Sync Workflow implementiert und nach main gemerged (PR #6)
-- [ ] nuliga-sync: n8n-Workflow aus JSON importieren, Config-Node + Bundle einrichten, Test-Run
+- [x] nuliga-sync: n8n-Workflow läuft produktiv — n8n 2.x Sandbox-Compat-Fixes (URLSearchParams, yaml.dump, cross-realm Date), `this.helpers.httpRequest` statt globalem fetch; PR #10 auto-gemerged 2026-05-06
+- [x] Termine: Events bleiben am Spieltag sichtbar, verschwinden erst um Mitternacht (commit 1ad2778)
+- [x] Design-Skill `claude-design/` integriert (Wappen, Anlage-Foto img-5141, Variable Fonts, 4 IG-Templates)
+- [x] Mockup-App `claude-design/app-mockup.html` mit Form + Live-Preview + PNG-Download
+- [x] Mannschafts-Daten-Lookup (`teams-data.js`) inkl. Liga 1:1, Spielplan-Dropdown füllt Datum/Uhrzeit/Gegner auto
+- [x] Spec für Social-Media-Generator: `doc/specs/2026-05-08-tcbw-social-tools.md`
+- [x] Implementation-Plan: `doc/plans/2026-05-08-tcbw-social-tools-implementation.md` (13 Tasks, TDD wo sinnvoll)
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -64,7 +70,27 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Optionen:** Siehe `Getraenkebuchung/brainstorming-optionen.md`
 - **Nächster Schritt:** Tablet klären, dann Design finalisieren und Implementierungsplan erstellen
 
+## Neues Projekt: tcbw-social-tools (Social Media Generator)
+- **Status:** Spec + Plan geschrieben, Mockup im tcbw-homepage Repo lauffähig (`claude-design/app-mockup.html`); echte App wird in separatem Repo `~/PycharmProjects/tcbw-social-tools/` gebaut
+- **Architektur:** Vite + React SPA, Cloudflare Pages, geschützt durch Cloudflare Access (Email-Whitelist), Build-Script extrahiert Mannschaftsdaten aus `content/mannschaften/*.md`
+- **Hosting-Ziel:** `social.tc-bw-attendorn.de`
+- **Spec:** `doc/specs/2026-05-08-tcbw-social-tools.md`
+- **Plan:** `doc/plans/2026-05-08-tcbw-social-tools-implementation.md` (13 Tasks)
+- **Nächster Schritt:** In neuer Claude-Console im neuen Repo den Plan abarbeiten — Pfad: `cd ~/PycharmProjects && mkdir tcbw-social-tools && cd tcbw-social-tools && claude`. Erste Prompt: Plan + Spec lesen lassen und Tasks abarbeiten.
+
 ## Progress Log
+### 2026-05-08
+- nuliga-sync: bestätigt produktiv laufend — PR #10 (`liga.nu sync 2026-05-06`) wurde 2026-05-06 auto-gemerged. Diverse Bugfixes seit 2026-04-24: n8n 2.x Sandbox-Compat (URLSearchParams, yaml.dump, cross-realm Date), `this.helpers.httpRequest` statt globalem fetch (commits 312846d, 3217320)
+- Termine-Fix: Events am Spieltag bleiben sichtbar, ausblenden erst um Mitternacht (commit 1ad2778)
+- **Design-Skill integriert** (`claude-design/`): bestehende Skill-Files reviewed, Wappen + Anlage-Panorama-Foto (img-5141) ergänzt, 4 Variable-Fonts (Playfair Display + DM Sans, regular + italic) downgeloadet, `Instagram Templates.html` und 4 Templates lauffähig gemacht
+- **Mockup-App gebaut** (`claude-design/app-mockup.html`): React via Babel-CDN, alle 4 Templates (MatchResult/MatchAnnouncement/SeasonSchedule/EventCard), Format-/Variant-Pills, Live-Preview mit Auto-Scaling, PNG-Download via html-to-image
+- **Daten-Pipeline:** `teams-data.js` mit Spielplänen aller Mannschaften (extrahiert aus `content/mannschaften/*.md`); Liga ist 1:1-Lookup nach Mannschaft, Spiel-Dropdown füllt Datum/Uhrzeit/Gegner/Heim-Auswärts auto, Pokal-Modus fällt auf Freitext zurück
+- **Lesbarkeits-Fix** in `MatchAnnouncement`-Template (`templates.jsx`): Uhrzeit von dunkelblau (`#1e56a0`) auf hellblau (`#93c5fd`) bzw. hell-orange (`#fdba74`), zusätzlich Drop-Shadow — auf dem Anlage-Foto-Hintergrund jetzt klar lesbar
+- **Spec geschrieben** (`doc/specs/2026-05-08-tcbw-social-tools.md`): Architektur, Tech-Stack (Vite+React, Cloudflare Pages+Access, html-to-image, JSZip, gray-matter), Datenfluss-Diagramme, Erfolgskriterien
+- **Plan geschrieben** (`doc/plans/2026-05-08-tcbw-social-tools-implementation.md`): 13 Tasks mit komplettem Code, TDD für Build-Script + Lib-Helpers, visuelle Tests für UI, Cross-Repo-Build-Script für Cloudflare Pages, Cloudflare Access-Setup
+- 2 Commits: `21faaf6` (Skill+Mockup, 14 Files +3031 Zeilen), `560f89f` (Spec+Plan)
+- Nächster Schritt liegt beim User: neue Claude-Console im neuen Repo `~/PycharmProjects/tcbw-social-tools/` öffnen, Plan abarbeiten
+
 ### 2026-04-24
 - nuliga-sync Code und JSON nach Review angepasst:
   - `Config`-Set-Node am Workflow-Anfang statt Docker-Env-Vars (n8n self-hosted free hat kein Workflow-Env-Var-UI)
@@ -158,6 +184,22 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - Echte Fotos für Homepage: Galerie-Bilder, Instagram-Feed, Vereins-Sektionsbild
 - Mail-to-Homepage: Encoding-Probleme bei GMX noch vollständig gelöst? (fixEncoding Funktion)
 - n8n Version 2.1.4 hat Einschränkungen (IMAP Node, Error Workflows) — Update erwägen?
+- **tcbw-social-tools: Email-Whitelist für Cloudflare Access** muss vom User festgelegt werden (Vorstand + Mannschaftsführer + Marketing). Initial mindestens: vorstand@tc-bw-attendorn.de + Bastian Gerlach + Felix Kersting + Paula Kersting
+
+## Files Modified (Session 2026-05-08)
+- `claude-design/Instagram Templates.html` — neuer Skill (gestaged + committed)
+- `claude-design/SKILL.md` — Skill-Metadaten
+- `claude-design/colors_and_type.css` — CSS-Variablen + @font-face
+- `claude-design/design-canvas.jsx` — DesignCanvas-Layout
+- `claude-design/templates.jsx` — Match-Result + Match-Announcement; Lesbarkeits-Fix dateLine2 (hell-Akzent + Drop-Shadow)
+- `claude-design/templates-events.jsx` — Season-Schedule + Event-Card
+- `claude-design/app-mockup.html` — NEU: interaktive Mockup-App
+- `claude-design/teams-data.js` — NEU: Mannschaftsdaten mit Spielplänen
+- `claude-design/assets/wappen.png`, `foto-anlage-2.jpg` — NEU
+- `claude-design/fonts/*.ttf` — NEU: 4 Variable-Fonts
+- `doc/specs/2026-05-08-tcbw-social-tools.md` — NEU: Spec für Social-Media-Generator
+- `doc/plans/2026-05-08-tcbw-social-tools-implementation.md` — NEU: 13-Task Plan
+- Commits: `21faaf6`, `560f89f`
 
 ## Files Modified (Session 2026-03-23)
 - `static/images/wappen.png` — Neues bereinigtes Wappen

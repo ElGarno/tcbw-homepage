@@ -9,7 +9,7 @@
 **Tech Stack:** Vite 5, React 18, JavaScript (kein TS), CSS-Variablen, html-to-image, JSZip, gray-matter, node:test.
 
 **Spec:** `doc/specs/2026-05-08-tcbw-social-tools.md` im tcbw-homepage Repo.
-**Mockup-Referenz (laufend):** `data/Claude_Design/app-mockup.html` im tcbw-homepage Repo (commit `21faaf6` auf main).
+**Mockup-Referenz (laufend):** `claude-design/app-mockup.html` im tcbw-homepage Repo (commit `21faaf6` auf main).
 
 **Quell-Repo (read-only):** `~/PycharmProjects/tcbw-homepage/`
 **Ziel-Repo (neu):** `~/PycharmProjects/tcbw-social-tools/`
@@ -217,15 +217,15 @@ git commit -m "feat: vite + react bootstrap"
 ```bash
 cd ~/PycharmProjects/tcbw-social-tools
 mkdir -p public/fonts
-cp ../tcbw-homepage/data/Claude_Design/assets/wappen.png public/
-cp ../tcbw-homepage/data/Claude_Design/assets/foto-anlage-2.jpg public/
-cp ../tcbw-homepage/data/Claude_Design/fonts/*.ttf public/fonts/
+cp ../tcbw-homepage/claude-design/assets/wappen.png public/
+cp ../tcbw-homepage/claude-design/assets/foto-anlage-2.jpg public/
+cp ../tcbw-homepage/claude-design/fonts/*.ttf public/fonts/
 ```
 
 - [ ] **Step 2: CSS kopieren**
 
 ```bash
-cp ../tcbw-homepage/data/Claude_Design/colors_and_type.css src/
+cp ../tcbw-homepage/claude-design/colors_and_type.css src/
 ```
 
 - [ ] **Step 3: Font-Pfade im CSS anpassen**
@@ -451,7 +451,7 @@ cat src/data/teams.json
 
 Erwartung: JSON enthält alle 7 Liga-Mannschaften + 2 Pokal-Mannschaften, jeweils mit `league` und `matches` (null für Pokal). Stichprobe: `teams["Herren 30"].matches[0]` sollte `Olper TC, 09.05.2026, home: true` enthalten.
 
-Vergleiche mit Mockup-Referenz `../tcbw-homepage/data/Claude_Design/teams-data.js`: dieselben Daten, nur als JSON statt JS.
+Vergleiche mit Mockup-Referenz `../tcbw-homepage/claude-design/teams-data.js`: dieselben Daten, nur als JSON statt JS.
 
 - [ ] **Step 6: prebuild-Hook validieren**
 
@@ -645,7 +645,7 @@ git commit -m "feat(lib): format-date + resolve-team-mode helpers (TDD)"
 ## Task 5: Shared-Template-Primitives portieren
 
 **Files:**
-- Create: `src/templates/shared.jsx` (von `tcbw-homepage/data/Claude_Design/templates.jsx` portiert)
+- Create: `src/templates/shared.jsx` (von `tcbw-homepage/claude-design/templates.jsx` portiert)
 
 - [ ] **Step 1: shared.jsx anlegen**
 
@@ -766,8 +766,8 @@ git commit -m "feat(templates): port shared primitives (Wappen, CourtLines, Bran
 - Create: `src/templates/EventCard.jsx`
 
 Alle 4 sind im Quell-Repo bereits fertig:
-- `MatchResult` und `MatchAnnouncement` in `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates.jsx`
-- `SeasonSchedule` und `EventCard` in `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates-events.jsx`
+- `MatchResult` und `MatchAnnouncement` in `~/PycharmProjects/tcbw-homepage/claude-design/templates.jsx`
+- `SeasonSchedule` und `EventCard` in `~/PycharmProjects/tcbw-homepage/claude-design/templates-events.jsx`
 
 Die Templates sind ~620 Zeilen — ich liste sie hier nicht erneut. Stattdessen: Copy + drei mechanische Transformationen.
 
@@ -777,7 +777,7 @@ Die Templates sind ~620 Zeilen — ich liste sie hier nicht erneut. Stattdessen:
 cd ~/PycharmProjects/tcbw-social-tools
 ```
 
-Quelle öffnen: `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates.jsx`.
+Quelle öffnen: `~/PycharmProjects/tcbw-homepage/claude-design/templates.jsx`.
 
 Aus dieser Datei die `MatchResult`-Komponente kopieren (von `const MatchResult = (...)` bis zur schließenden `};` der Komponente — ca. Zeile 119 bis ~362). Außerdem: das `ACCENTS`-Objekt (Zeilen ~104–108).
 
@@ -802,7 +802,7 @@ Konkret aus `templates.jsx` einfügen — keine inhaltliche Änderung. Behalte `
 
 - [ ] **Step 2: MatchAnnouncement.jsx anlegen**
 
-Aus `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates.jsx` die `MatchAnnouncement`-Komponente kopieren (ab `const MatchAnnouncement = ...` Zeile ~373 bis ~620).
+Aus `~/PycharmProjects/tcbw-homepage/claude-design/templates.jsx` die `MatchAnnouncement`-Komponente kopieren (ab `const MatchAnnouncement = ...` Zeile ~373 bis ~620).
 
 **Eine inhaltliche Sache prüfen:** im Quell-File ist die Lesbarkeits-Verbesserung der Uhrzeit (`color: variant === "pokal" ? "#fdba74" : "#93c5fd"` mit `textShadow`) bereits drin (commit `21faaf6`).
 
@@ -821,7 +821,7 @@ export const MatchAnnouncement = ({ format = "portrait", variant = "league", dat
 
 - [ ] **Step 3: SeasonSchedule.jsx anlegen**
 
-Aus `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates-events.jsx` die `SeasonSchedule`-Komponente kopieren (ab Zeile ~16 bis ~235).
+Aus `~/PycharmProjects/tcbw-homepage/claude-design/templates-events.jsx` die `SeasonSchedule`-Komponente kopieren (ab Zeile ~16 bis ~235).
 
 Auch das `T34_ACCENTS`-Objekt mitnehmen (Zeilen 6–10).
 
@@ -844,7 +844,7 @@ export const SeasonSchedule = ({ format = "portrait", data }) => {
 
 - [ ] **Step 4: EventCard.jsx anlegen**
 
-Aus `~/PycharmProjects/tcbw-homepage/data/Claude_Design/templates-events.jsx` die `EventCard`-Komponente kopieren (Zeilen ~241–418).
+Aus `~/PycharmProjects/tcbw-homepage/claude-design/templates-events.jsx` die `EventCard`-Komponente kopieren (Zeilen ~241–418).
 
 Datei `src/templates/EventCard.jsx`:
 
@@ -921,7 +921,7 @@ Der App-Shell hat: TopBar oben, links Sidebar (Tabs + Form), rechts Stage (Toolb
 
 - [ ] **Step 1: app.css mit Layout-Styles**
 
-Inhalt aus `~/PycharmProjects/tcbw-homepage/data/Claude_Design/app-mockup.html` Zeilen 8–110 (alles im `<style>`-Block, ohne den Reset für `*, html, body`) übernehmen.
+Inhalt aus `~/PycharmProjects/tcbw-homepage/claude-design/app-mockup.html` Zeilen 8–110 (alles im `<style>`-Block, ohne den Reset für `*, html, body`) übernehmen.
 
 Datei `src/app.css` ersetzen mit:
 
@@ -1404,7 +1404,7 @@ git commit -m "feat(preview): live preview with auto-scaling"
 - Create: `src/components/forms/EventCardForm.jsx`
 - Modify: `src/App.jsx` (Forms einsetzen)
 
-Quelle: `~/PycharmProjects/tcbw-homepage/data/Claude_Design/app-mockup.html` Zeilen ~310–530 enthalten alle 4 Forms. Wir portieren sie 1:1 in eigene Module.
+Quelle: `~/PycharmProjects/tcbw-homepage/claude-design/app-mockup.html` Zeilen ~310–530 enthalten alle 4 Forms. Wir portieren sie 1:1 in eigene Module.
 
 - [ ] **Step 1: TeamSelect-Komponente — als shared util**
 

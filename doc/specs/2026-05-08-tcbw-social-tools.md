@@ -2,7 +2,7 @@
 
 **Status:** Spec — bereit zur Implementierung
 **Datum:** 2026-05-08
-**Mockup-Stand:** `data/Claude_Design/app-mockup.html` (commit `21faaf6`)
+**Mockup-Stand:** `claude-design/app-mockup.html` (commit `21faaf6`)
 
 ## Ziel
 
@@ -128,7 +128,7 @@ sequenceDiagram
 
 ## Branding & Voice
 
-Identisch zur Hauptseite (siehe `data/Claude_Design/SKILL.md`):
+Identisch zur Hauptseite (siehe `claude-design/SKILL.md`):
 
 - Headlines: **Playfair Display 700**, `letter-spacing: -0.02em`
 - Body: **DM Sans 400/500**, `line-height: 1.6`
@@ -158,8 +158,8 @@ Identisch zur Hauptseite (siehe `data/Claude_Design/SKILL.md`):
 
 ## Referenzen
 
-- Mockup: `data/Claude_Design/app-mockup.html` (Stand commit `21faaf6`)
-- Templates (Source of Truth): `data/Claude_Design/templates.jsx`, `templates-events.jsx`
-- Brand-Skill: `data/Claude_Design/SKILL.md`
+- Mockup: `claude-design/app-mockup.html` (Stand commit `21faaf6`)
+- Templates (Source of Truth): `claude-design/templates.jsx`, `templates-events.jsx`
+- Brand-Skill: `claude-design/SKILL.md`
 - Mannschafts-Daten: `content/mannschaften/*.md`
 - nuliga-sync (Daten-Pipeline): `tools/nuliga-sync/`, Spec `doc/specs/2026-04-20-nuliga-sync-workflow.md`
