@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>TC BW Attendorn — Instagram Templates</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="icon" href="assets/wappen.png" />
+<style>
+  html, body { margin: 0; padding: 0; background: #eef0f3; font-family: var(--font-sans); }
+  /* Reset for inner artboards */
+  *, *::before, *::after { box-sizing: border-box; }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="templates.jsx"></script>
+<script type="text/babel" src="templates-events.jsx"></script>
+
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function App() {
+  return (
+    <DesignCanvas
+      title="TC BW Attendorn — Instagram"
+      subtitle="Match-Ergebnis & Heimspiel-Ankündigung · Alle Formate, alle Varianten"
+    >
+      {/* ───────── TEMPLATE 1 — MATCH RESULT ───────── */}
+      <DCSection
+        id="t1-square"
+        title="Template 1 — Match-Ergebnis"
+        subtitle="1080×1080 Feed Square · drei Varianten"
+      >
+        <DCArtboard id="t1-sq-win" label="Win — Heimspiel" width={1080} height={1080}>
+          <MatchResult format="square" variant="win" />
+        </DCArtboard>
+
+        <DCArtboard id="t1-sq-loss" label="Loss — neutral" width={1080} height={1080}>
+          <MatchResult
+            format="square"
+            variant="loss"
+            data={{
+              team: "Damen",
+              home: 2,
+              away: 7,
+              opponent: "TC Lennestadt",
+              date: "11.07.2026",
+              location: "Heimspiel",
+              league: "Bezirksliga",
+            }}
+          />
+        </DCArtboard>
+
+        <DCArtboard id="t1-sq-pokal" label="Pokal — orange accent" width={1080} height={1080}>
+          <MatchResult
+            format="square"
+            variant="pokal"
+            data={{
+              team: "Herren-Pokal",
+              home: 5,
+              away: 4,
+              opponent: "TV Rönkhausen",
+              date: "05.05.2026",
+              location: "Heimspiel",
+              league: "WTV Vereinspokal",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="t1-story"
+        title="Template 1 — Match-Ergebnis · Story"
+        subtitle="1080×1920 Story · drei Varianten"
+      >
+        <DCArtboard id="t1-st-win" label="Win — Story" width={1080} height={1920}>
+          <MatchResult format="story" variant="win" />
+        </DCArtboard>
+
+        <DCArtboard id="t1-st-loss" label="Loss — Story" width={1080} height={1920}>
+          <MatchResult
+            format="story"
+            variant="loss"
+            data={{
+              team: "Damen",
+              home: 2,
+              away: 7,
+              opponent: "TC Lennestadt",
+              date: "11.07.2026",
+              location: "Heimspiel",
+              league: "Bezirksliga",
+            }}
+          />
+        </DCArtboard>
+
+        <DCArtboard id="t1-st-pokal" label="Pokal — Story" width={1080} height={1920}>
+          <MatchResult
+            format="story"
+            variant="pokal"
+            data={{
+              team: "Herren-Pokal",
+              home: 5,
+              away: 4,
+              opponent: "TV Rönkhausen",
+              date: "05.05.2026",
+              location: "Heimspiel",
+              league: "WTV Vereinspokal",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ───────── HEUTE — POKALSPIEL 05.05. ───────── */}
+      <DCSection
+        id="heute-pokal"
+        title="Heute · Herren-Pokal vs. TV Rönkhausen 1892"
+        subtitle="WTV Vereinspokal · 5. Mai · 18:00 Uhr · Heimspiel — alle drei Formate"
+      >
+        <DCArtboard id="heute-pokal-square" label="Square 1080×1080" width={1080} height={1080}>
+          <MatchAnnouncement
+            format="square"
+            variant="pokal"
+            data={{
+              team: "Herren-Pokal",
+              opponent: "TV Rönkhausen 1892",
+              dateLine1: "Heute",
+              dateLine2: "18:00 Uhr",
+              league: "WTV Vereinspokal · LK 18,0–25,0",
+              eyebrow: "Pokal-Heimspiel · 5. Mai",
+              cta: "Komm vorbei",
+              location: "Tennisanlage Burg Schnellenberg",
+            }}
+          />
+        </DCArtboard>
+        <DCArtboard id="heute-pokal-portrait" label="Portrait 1080×1350" width={1080} height={1350}>
+          <MatchAnnouncement
+            format="portrait"
+            variant="pokal"
+            data={{
+              team: "Herren-Pokal",
+              opponent: "TV Rönkhausen 1892",
+              dateLine1: "Heute",
+              dateLine2: "18:00 Uhr",
+              league: "WTV Vereinspokal · LK 18,0–25,0",
+              eyebrow: "Pokal-Heimspiel · 5. Mai",
+              cta: "Komm vorbei",
+              location: "Tennisanlage Burg Schnellenberg",
+            }}
+          />
+        </DCArtboard>
+        <DCArtboard id="heute-pokal-story" label="Story 1080×1920" width={1080} height={1920}>
+          <MatchAnnouncement
+            format="story"
+            variant="pokal"
+            data={{
+              team: "Herren-Pokal",
+              opponent: "TV Rönkhausen 1892",
+              dateLine1: "Heute",
+              dateLine2: "18:00 Uhr",
+              league: "WTV Vereinspokal · LK 18,0–25,0",
+              eyebrow: "Pokal-Heimspiel · 5. Mai",
+              cta: "Komm vorbei",
+              location: "Tennisanlage Burg Schnellenberg",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ───────── TEMPLATE 2 — MATCH ANNOUNCEMENT ───────── */}
+      <DCSection
+        id="t2-square"
+        title="Template 2 — Heimspiel-Ankündigung · Square"
+        subtitle="1080×1080 Feed Square · Liga + Pokal"
+      >
+        <DCArtboard id="t2-sq-league" label="Liga — Square" width={1080} height={1080}>
+          <MatchAnnouncement format="square" variant="league" />
+        </DCArtboard>
+        <DCArtboard id="t2-sq-pokal" label="Pokal — Square" width={1080} height={1080}>
+          <MatchAnnouncement
+            format="square"
+            variant="pokal"
+            data={{
+              team: "Herren 30",
+              opponent: "TV Rönkhausen",
+              dateLine1: "5. Mai",
+              dateLine2: "18:00 Uhr",
+              eyebrow: "Pokal-Heimspiel",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="t2-portrait"
+        title="Template 2 — Heimspiel-Ankündigung · Portrait"
+        subtitle="1080×1350 Feed Portrait · Liga + Pokal"
+      >
+        <DCArtboard id="t2-pt-league" label="Liga — Portrait" width={1080} height={1350}>
+          <MatchAnnouncement format="portrait" variant="league" />
+        </DCArtboard>
+        <DCArtboard id="t2-pt-pokal" label="Pokal — Portrait" width={1080} height={1350}>
+          <MatchAnnouncement
+            format="portrait"
+            variant="pokal"
+            data={{
+              team: "Herren 30",
+              opponent: "TV Rönkhausen",
+              dateLine1: "5. Mai",
+              dateLine2: "18:00 Uhr",
+              eyebrow: "Pokal-Heimspiel",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="t2-story"
+        title="Template 2 — Heimspiel-Ankündigung · Story"
+        subtitle="1080×1920 Story · Liga + Pokal"
+      >
+        <DCArtboard id="t2-st-league" label="Liga — Story" width={1080} height={1920}>
+          <MatchAnnouncement format="story" variant="league" />
+        </DCArtboard>
+        <DCArtboard id="t2-st-pokal" label="Pokal — Story" width={1080} height={1920}>
+          <MatchAnnouncement
+            format="story"
+            variant="pokal"
+            data={{
+              team: "Herren 30",
+              opponent: "TV Rönkhausen",
+              dateLine1: "5. Mai",
+              dateLine2: "18:00 Uhr",
+              eyebrow: "Pokal-Heimspiel",
+            }}
+          />
+        </DCArtboard>
+      </DCSection>
+      {/* ───────── TEMPLATE 3 — SEASON SCHEDULE ───────── */}
+      <DCSection
+        id="t3-schedule"
+        title="Template 3 — Mannschafts-Übersicht"
+        subtitle="Saison 2026 · Portrait + Story"
+      >
+        <DCArtboard id="ig-schedule-portrait" label="Portrait 1080×1350" width={1080} height={1350}>
+          <SeasonSchedule format="portrait" />
+        </DCArtboard>
+        <DCArtboard id="ig-schedule-story" label="Story 1080×1920" width={1080} height={1920}>
+          <SeasonSchedule format="story" />
+        </DCArtboard>
+      </DCSection>
+
+      {/* ───────── TEMPLATE 4 — EVENT CARDS ───────── */}
+      <DCSection
+        id="t4-event-sommerfest"
+        title="Template 4 — Event · Sommerfest"
+        subtitle="Square + Portrait + Story · grüner Akzent"
+      >
+        <DCArtboard id="ig-event-sommerfest-square" label="Sommerfest · Square" width={1080} height={1080}>
+          <EventCard format="square" data={{
+            eyebrow: "Vereinsevent",
+            title: "Sommerfest 2026",
+            dateLine1: "23. August",
+            dateLine2: "15:00 Uhr",
+            subline: "Familienprogramm · Schleifchenturnier · Grill",
+            cta: "Wir freuen uns auf euch",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-sommerfest-portrait" label="Sommerfest · Portrait" width={1080} height={1350}>
+          <EventCard format="portrait" data={{
+            eyebrow: "Vereinsevent",
+            title: "Sommerfest 2026",
+            dateLine1: "23. August",
+            dateLine2: "15:00 Uhr",
+            subline: "Familienprogramm · Schleifchenturnier · Grill",
+            cta: "Wir freuen uns auf euch",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-sommerfest-story" label="Sommerfest · Story" width={1080} height={1920}>
+          <EventCard format="story" data={{
+            eyebrow: "Vereinsevent",
+            title: "Sommerfest 2026",
+            dateLine1: "23. August",
+            dateLine2: "15:00 Uhr",
+            subline: "Familienprogramm · Schleifchenturnier · Grill",
+            cta: "Wir freuen uns auf euch",
+          }} />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="t4-event-arbeitseinsatz"
+        title="Template 4 — Event · Frühjahrsarbeitseinsatz"
+        subtitle="Square + Portrait + Story"
+      >
+        <DCArtboard id="ig-event-arbeitseinsatz-square" label="Arbeitseinsatz · Square" width={1080} height={1080}>
+          <EventCard format="square" data={{
+            eyebrow: "Mithelfen",
+            title: "Frühjahrs­arbeitseinsatz",
+            dateLine1: "28. März",
+            dateLine2: "10:30 Uhr",
+            subline: "Anlage fit für die Saison machen — viele Hände willkommen",
+            cta: "Pack mit an",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-arbeitseinsatz-portrait" label="Arbeitseinsatz · Portrait" width={1080} height={1350}>
+          <EventCard format="portrait" data={{
+            eyebrow: "Mithelfen",
+            title: "Frühjahrs­arbeitseinsatz",
+            dateLine1: "28. März",
+            dateLine2: "10:30 Uhr",
+            subline: "Anlage fit für die Saison machen — viele Hände willkommen",
+            cta: "Pack mit an",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-arbeitseinsatz-story" label="Arbeitseinsatz · Story" width={1080} height={1920}>
+          <EventCard format="story" data={{
+            eyebrow: "Mithelfen",
+            title: "Frühjahrs­arbeitseinsatz",
+            dateLine1: "28. März",
+            dateLine2: "10:30 Uhr",
+            subline: "Anlage fit für die Saison machen — viele Hände willkommen",
+            cta: "Pack mit an",
+          }} />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection
+        id="t4-event-jhv"
+        title="Template 4 — Event · Jahreshauptversammlung"
+        subtitle="Square + Portrait + Story"
+      >
+        <DCArtboard id="ig-event-jhv-square" label="JHV · Square" width={1080} height={1080}>
+          <EventCard format="square" data={{
+            eyebrow: "Mitgliederversammlung",
+            title: "Jahreshauptver­sammlung 2026",
+            dateLine1: "13. Mai",
+            dateLine2: "19:00 Uhr",
+            subline: "Vereinsmitglieder herzlich eingeladen",
+            cta: "Wir zählen auf euch",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-jhv-portrait" label="JHV · Portrait" width={1080} height={1350}>
+          <EventCard format="portrait" data={{
+            eyebrow: "Mitgliederversammlung",
+            title: "Jahreshauptver­sammlung 2026",
+            dateLine1: "13. Mai",
+            dateLine2: "19:00 Uhr",
+            subline: "Vereinsmitglieder herzlich eingeladen",
+            cta: "Wir zählen auf euch",
+          }} />
+        </DCArtboard>
+        <DCArtboard id="ig-event-jhv-story" label="JHV · Story" width={1080} height={1920}>
+          <EventCard format="story" data={{
+            eyebrow: "Mitgliederversammlung",
+            title: "Jahreshauptver­sammlung 2026",
+            dateLine1: "13. Mai",
+            dateLine2: "19:00 Uhr",
+            subline: "Vereinsmitglieder herzlich eingeladen",
+            cta: "Wir zählen auf euch",
+          }} />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

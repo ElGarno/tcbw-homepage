@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TC BW Attendorn — Social Media Generator (Mockup)</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="icon" href="assets/wappen.png" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-100); font-family: var(--font-sans); color: var(--gray-800); }
+  #root, .app { height: 100vh; min-height: 100vh; }
+
+  /* ───── Layout shell ───── */
+  .app { display: flex; flex-direction: column; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px; background: #fff; border-bottom: 1px solid var(--gray-200);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .topbar-left img { width: 40px; height: 40px; object-fit: contain; }
+  .topbar-title {
+    font-family: var(--font-display); font-weight: 700; font-size: 20px;
+    color: var(--blue-700); letter-spacing: -0.01em; line-height: 1;
+  }
+  .topbar-sub {
+    font-size: 12px; color: var(--gray-500); margin-top: 4px;
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+
+  .body { display: flex; flex: 1; min-height: 0; }
+  .sidebar {
+    width: 380px; flex-shrink: 0; background: #fff;
+    border-right: 1px solid var(--gray-200);
+    overflow-y: auto; padding: 0 0 24px;
+  }
+  .stage {
+    flex: 1; min-width: 0; min-height: 0;
+    display: flex; flex-direction: column;
+    background: var(--gray-100);
+  }
+  .stage-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px; border-bottom: 1px solid var(--gray-200); background: #fff;
+    gap: 16px;
+  }
+  .stage-canvas {
+    flex: 1; min-height: 0; overflow: auto; padding: 32px;
+    display: flex; align-items: flex-start; justify-content: center;
+  }
+
+  /* ───── Sidebar tabs ───── */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid var(--gray-200); }
+  .tab {
+    padding: 14px 12px; font-size: 13px; font-weight: 600;
+    background: var(--gray-50); color: var(--gray-600); border: none; cursor: pointer;
+    border-bottom: 2px solid transparent; text-align: center;
+    font-family: var(--font-sans); letter-spacing: 0.02em;
+  }
+  .tab:hover { background: var(--blue-50); color: var(--blue-700); }
+  .tab.active { background: #fff; color: var(--blue-700); border-bottom-color: var(--blue-600); }
+
+  /* ───── Form ───── */
+  .form { padding: 22px 22px 8px; display: flex; flex-direction: column; gap: 16px; }
+  .form-section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--blue-500); margin-top: 8px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .label {
+    font-size: 12px; font-weight: 600; color: var(--gray-700); letter-spacing: 0.02em;
+  }
+  .input, .select {
+    border: 1px solid var(--gray-300); border-radius: 8px;
+    padding: 9px 12px; font-size: 14px; font-family: var(--font-sans);
+    background: #fff; color: var(--gray-800);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input:focus, .select:focus {
+    outline: none; border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(58,123,213,0.16);
+  }
+  .pillgroup { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    padding: 8px 14px; font-size: 12px; font-weight: 600;
+    border-radius: 999px; border: 1px solid var(--gray-300); background: #fff;
+    cursor: pointer; color: var(--gray-700); letter-spacing: 0.02em;
+    transition: all 0.12s; font-family: var(--font-sans);
+  }
+  .pill:hover { border-color: var(--blue-500); color: var(--blue-700); }
+  .pill.active {
+    background: var(--blue-600); color: #fff; border-color: var(--blue-600);
+    box-shadow: 0 2px 6px rgba(26,64,128,0.25);
+  }
+  .pill.accent-orange.active { background: #f97316; border-color: #f97316; }
+
+  /* ───── Buttons ───── */
+  .btn {
+    padding: 10px 20px; font-size: 14px; font-weight: 600;
+    border-radius: 8px; border: none; cursor: pointer; font-family: var(--font-sans);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, box-shadow 0.12s, background 0.12s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary { background: var(--blue-600); color: #fff; box-shadow: var(--shadow-cta); }
+  .btn-primary:hover:not(:disabled) { background: var(--blue-700); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent; color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+  }
+  .btn-ghost:hover { border-color: var(--gray-400); background: var(--gray-50); }
+
+  /* ───── Preview wrapper ───── */
+  .preview-frame {
+    background: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    border-radius: 4px; overflow: hidden;
+  }
+  .preview-scaler {
+    transform-origin: top left; will-change: transform;
+  }
+
+  /* Loading state for download */
+  .badge-pending { font-size: 11px; padding: 4px 10px; border-radius: 999px;
+    background: var(--gray-100); color: var(--gray-600); font-weight: 600; letter-spacing: 0.04em; }
+  .badge-ok { background: #dcfce7; color: #166534; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/html-to-image@1.11.13/dist/html-to-image.js" crossorigin="anonymous"></script>
+
+<!-- Team data + existing templates -->
+<script src="teams-data.js"></script>
+<script type="text/babel" src="templates.jsx"></script>
+<script type="text/babel" src="templates-events.jsx"></script>
+
+<script type="text/babel">
+const { useState, useRef, useMemo, useEffect } = React;
+
+/* ─────────────────────────────────────────────
+   FORMAT/VARIANT CATALOG PER TEMPLATE
+   ───────────────────────────────────────────── */
+
+const TEMPLATES = {
+  "match-result": {
+    label: "Ergebnis",
+    sublabel: "Spiel-Ergebnis nach Heimspiel",
+    formats: ["square", "story"],
+    variants: [
+      { id: "win",   label: "Sieg",       accent: "blue" },
+      { id: "loss",  label: "Niederlage", accent: "gray" },
+      { id: "pokal", label: "Pokal",      accent: "orange" },
+    ],
+    Component: window.MatchResult,
+    defaults: {
+      team: "Herren 30",
+      home: 6, away: 3,
+      opponent: "Olper TC",
+      date: "09.05.2026",
+      location: "Heimspiel",
+      league: "Kreisliga",
+    },
+  },
+  "match-announcement": {
+    label: "Heimspiel",
+    sublabel: "Ankündigung vor dem Match",
+    formats: ["square", "portrait", "story"],
+    variants: [
+      { id: "league", label: "Liga",  accent: "blue" },
+      { id: "pokal",  label: "Pokal", accent: "orange" },
+    ],
+    Component: window.MatchAnnouncement,
+    defaults: {
+      team: "Herren 40",
+      opponent: "Tennisclub Iserlohn",
+      dateLine1: "30. Mai",
+      dateLine2: "13:00 Uhr",
+      league: "Südwestfalenliga",
+      location: "Tennisanlage Burg Schnellenberg",
+      cta: "Komm vorbei",
+      eyebrow: "Nächstes Heimspiel",
+    },
+    /* Default ist 1. Heimspiel vom Default-Team — match-checked. */
+  },
+  "season-schedule": {
+    label: "Saison",
+    sublabel: "Mannschafts-Übersicht (einmal pro Saison)",
+    formats: ["portrait", "story"],
+    variants: [{ id: "default", label: "Standard", accent: "blue" }],
+    Component: window.SeasonSchedule,
+    defaults: {
+      eyebrow: "Saison 2026",
+      title: "Unsere Mannschaften",
+      subtitle: "Sommer 2026",
+      slogan: "Der an der Burg",
+    },
+  },
+  "event-card": {
+    label: "Event",
+    sublabel: "Sommerfest, JHV, Arbeitseinsatz …",
+    formats: ["square", "portrait", "story"],
+    variants: [{ id: "default", label: "Standard", accent: "green" }],
+    Component: window.EventCard,
+    defaults: {
+      eyebrow: "Vereinsevent",
+      title: "Sommerfest 2026",
+      dateLine1: "23. August",
+      dateLine2: "15:00 Uhr",
+      subline: "Familienprogramm · Schleifchenturnier · Grill",
+      location: "Tennisanlage Burg Schnellenberg",
+      cta: "Wir freuen uns auf euch",
+    },
+  },
+};
+
+const FORMAT_DIMS = {
+  square:   { w: 1080, h: 1080, label: "Square 1:1" },
+  portrait: { w: 1080, h: 1350, label: "Portrait 4:5" },
+  story:    { w: 1080, h: 1920, label: "Story 9:16" },
+};
+
+const TEAM_OPTIONS = Object.keys(window.TCBW_TEAMS_DATA);
+const TEAMS_DATA = window.TCBW_TEAMS_DATA;
+
+const MONTHS_DE = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+function formatDateLong(ddmmyyyy) {
+  if (!ddmmyyyy) return "";
+  const [d, m] = ddmmyyyy.split(".");
+  return `${parseInt(d, 10)}. ${MONTHS_DE[parseInt(m, 10) - 1]}`;
+}
+function matchLabel(m) {
+  return `${m.date.slice(0, 5)} · ${m.opponent} (${m.home ? "Heim" : "Auswärts"})`;
+}
+function findMatchIndex(team, opponent, date) {
+  const t = TEAMS_DATA[team];
+  if (!t?.matches) return -1;
+  return t.matches.findIndex(m => m.opponent === opponent && m.date === date);
+}
+
+/* Resolve whether to use freetext (Pokal mode hides match dropdown). */
+function resolveTeamMode(team, variant) {
+  const t = TEAMS_DATA[team];
+  const isPokalTeam = !!t?.isPokal;
+  const isPokalVariant = variant === "pokal";
+  const isPokal = isPokalTeam || isPokalVariant;
+  return {
+    isPokal,
+    league: t?.league ?? "",
+    matches: isPokal ? null : (t?.matches ?? null),
+  };
+}
+
+/* ─────────────────────────────────────────────
+   FORM PER TEMPLATE
+   ───────────────────────────────────────────── */
+
+const Field = ({ label, children }) => (
+  <label className="field">
+    <span className="label">{label}</span>
+    {children}
+  </label>
+);
+
+const Input = ({ value, onChange, ...rest }) => (
+  <input className="input" value={value ?? ""} onChange={e => onChange(e.target.value)} {...rest} />
+);
+
+const NumberInput = ({ value, onChange }) => (
+  <input
+    className="input" type="number" min="0" max="20"
+    value={value ?? 0}
+    onChange={e => onChange(parseInt(e.target.value || "0", 10))}
+  />
+);
+
+const TeamSelect = ({ value, onChange }) => (
+  <select className="select" value={value ?? ""} onChange={e => onChange(e.target.value)}>
+    {TEAM_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+  </select>
+);
+
+/* Smart select that falls back to a freetext input. */
+const OptionsOrText = ({ value, onChange, options, placeholder, allowFreetext }) => {
+  if (allowFreetext || !options) {
+    return <Input value={value} onChange={onChange} placeholder={placeholder} />;
+  }
+  return (
+    <select className="select" value={value ?? ""} onChange={e => onChange(e.target.value)}>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  );
+};
+
+/* Hint shown next to dropdowns explaining where the data comes from. */
+const Hint = ({ children }) => (
+  <span style={{ fontSize: 11, color: "var(--gray-500)", marginTop: 2, lineHeight: 1.4 }}>
+    {children}
+  </span>
+);
+
+const MatchResultForm = ({ data, set, variant }) => {
+  const mode = resolveTeamMode(data.team, variant);
+  const selectedIdx = mode.matches ? findMatchIndex(data.team, data.opponent, data.date) : -1;
+
+  return (
+    <>
+      <div className="form-section-title">Mannschaft & Spiel</div>
+      <Field label="Mannschaft">
+        <TeamSelect value={data.team} onChange={v => {
+          const t = TEAMS_DATA[v];
+          const newMode = resolveTeamMode(v, variant);
+          if (newMode.isPokal) {
+            set({ team: v, league: t.league, opponent: "", date: "", location: "Heimspiel" });
+          } else {
+            const m = t.matches[0];
+            set({
+              team: v, league: t.league,
+              opponent: m.opponent, date: m.date,
+              location: m.home ? "Heimspiel" : "Auswärts",
+            });
+          }
+        }} />
+        <Hint>Liga: <strong>{mode.league}</strong></Hint>
+      </Field>
+
+      {mode.isPokal ? (
+        <>
+          <Field label="Gegner">
+            <Input value={data.opponent} onChange={v => set({ opponent: v })} placeholder="Gegner manuell eintragen" />
+            <Hint>Pokal — nächste Runde unbekannt, bitte manuell eintragen.</Hint>
+          </Field>
+          <Field label="Datum">
+            <Input value={data.date} onChange={v => set({ date: v })} placeholder="z.B. 04.07.2026" />
+          </Field>
+          <Field label="Ort">
+            <select className="select" value={data.location ?? "Heimspiel"} onChange={e => set({ location: e.target.value })}>
+              <option>Heimspiel</option>
+              <option>Auswärts</option>
+            </select>
+          </Field>
+        </>
+      ) : (
+        <Field label="Spiel">
+          <select className="select" value={selectedIdx} onChange={e => {
+            const m = mode.matches[parseInt(e.target.value, 10)];
+            set({ opponent: m.opponent, date: m.date, location: m.home ? "Heimspiel" : "Auswärts" });
+          }}>
+            {mode.matches.map((m, i) => (
+              <option key={i} value={i}>{matchLabel(m)}</option>
+            ))}
+          </select>
+          <Hint>Spielplan aus liga.nu — Datum, Uhrzeit, Heim/Auswärts werden automatisch übernommen.</Hint>
+        </Field>
+      )}
+
+      <div className="form-section-title">Ergebnis</div>
+      <div className="field-row">
+        <Field label="Wir"><NumberInput value={data.home} onChange={v => set({ home: v })} /></Field>
+        <Field label="Gegner"><NumberInput value={data.away} onChange={v => set({ away: v })} /></Field>
+      </div>
+    </>
+  );
+};
+
+const MatchAnnouncementForm = ({ data, set, variant }) => {
+  const mode = resolveTeamMode(data.team, variant);
+  // Heimspiel-Ankündigung zeigt nur Heimspiele zur Auswahl an (CTA "Komm vorbei").
+  const homeMatches = mode.matches?.filter(m => m.home) ?? null;
+  const selectedIdx = homeMatches
+    ? homeMatches.findIndex(m => m.opponent === data.opponent && formatDateLong(m.date) === data.dateLine1)
+    : -1;
+
+  return (
+    <>
+      <div className="form-section-title">Mannschaft & Spiel</div>
+      <Field label="Mannschaft">
+        <TeamSelect value={data.team} onChange={v => {
+          const t = TEAMS_DATA[v];
+          const newMode = resolveTeamMode(v, variant);
+          if (newMode.isPokal) {
+            set({ team: v, league: t.league, opponent: "", dateLine1: "", dateLine2: "" });
+          } else {
+            const home = t.matches.filter(m => m.home);
+            const m = home[0] ?? t.matches[0];
+            set({
+              team: v, league: t.league,
+              opponent: m.opponent,
+              dateLine1: formatDateLong(m.date),
+              dateLine2: m.time + " Uhr",
+            });
+          }
+        }} />
+        <Hint>Liga: <strong>{mode.league}</strong></Hint>
+      </Field>
+
+      {mode.isPokal ? (
+        <>
+          <Field label="Gegner">
+            <Input value={data.opponent} onChange={v => set({ opponent: v })} placeholder="Gegner manuell eintragen" />
+            <Hint>Pokal — nächste Runde unbekannt, bitte manuell eintragen.</Hint>
+          </Field>
+          <div className="field-row">
+            <Field label="Datum"><Input value={data.dateLine1} onChange={v => set({ dateLine1: v })} placeholder="30. Mai" /></Field>
+            <Field label="Uhrzeit"><Input value={data.dateLine2} onChange={v => set({ dateLine2: v })} placeholder="13:00 Uhr" /></Field>
+          </div>
+        </>
+      ) : homeMatches && homeMatches.length > 0 ? (
+        <Field label="Heimspiel">
+          <select className="select" value={selectedIdx} onChange={e => {
+            const m = homeMatches[parseInt(e.target.value, 10)];
+            set({
+              opponent: m.opponent,
+              dateLine1: formatDateLong(m.date),
+              dateLine2: m.time + " Uhr",
+            });
+          }}>
+            {homeMatches.map((m, i) => (
+              <option key={i} value={i}>{matchLabel(m)}</option>
+            ))}
+          </select>
+          <Hint>Nur Heimspiele — Datum & Uhrzeit werden aus liga.nu übernommen.</Hint>
+        </Field>
+      ) : (
+        <Hint>Diese Mannschaft hat keine Heimspiele in der aktuellen Saison.</Hint>
+      )}
+
+      <div className="form-section-title">Beschriftung</div>
+      <Field label="Eyebrow (oben)"><Input value={data.eyebrow} onChange={v => set({ eyebrow: v })} placeholder="z.B. Nächstes Heimspiel" /></Field>
+      <Field label="CTA (unten)"><Input value={data.cta} onChange={v => set({ cta: v })} placeholder="z.B. Komm vorbei" /></Field>
+      <Field label="Ort"><Input value={data.location} onChange={v => set({ location: v })} /></Field>
+    </>
+  );
+};
+
+const EventCardForm = ({ data, set }) => (
+  <>
+    <div className="form-section-title">Event</div>
+    <Field label="Eyebrow"><Input value={data.eyebrow} onChange={v => set({ eyebrow: v })} placeholder="z.B. Vereinsevent" /></Field>
+    <Field label="Titel"><Input value={data.title} onChange={v => set({ title: v })} placeholder="z.B. Sommerfest 2026" /></Field>
+
+    <div className="form-section-title">Termin</div>
+    <div className="field-row">
+      <Field label="Datum"><Input value={data.dateLine1} onChange={v => set({ dateLine1: v })} placeholder="23. August" /></Field>
+      <Field label="Uhrzeit"><Input value={data.dateLine2} onChange={v => set({ dateLine2: v })} placeholder="15:00 Uhr" /></Field>
+    </div>
+
+    <div className="form-section-title">Beschriftung</div>
+    <Field label="Untertitel"><Input value={data.subline} onChange={v => set({ subline: v })} placeholder="kurze Beschreibung" /></Field>
+    <Field label="CTA"><Input value={data.cta} onChange={v => set({ cta: v })} /></Field>
+    <Field label="Ort"><Input value={data.location} onChange={v => set({ location: v })} /></Field>
+  </>
+);
+
+const SeasonScheduleForm = ({ data, set }) => (
+  <>
+    <div className="form-section-title">Header</div>
+    <Field label="Eyebrow"><Input value={data.eyebrow} onChange={v => set({ eyebrow: v })} /></Field>
+    <Field label="Titel"><Input value={data.title} onChange={v => set({ title: v })} /></Field>
+    <Field label="Untertitel"><Input value={data.subtitle} onChange={v => set({ subtitle: v })} /></Field>
+    <Field label="Slogan"><Input value={data.slogan} onChange={v => set({ slogan: v })} /></Field>
+    <div className="form-section-title">Mannschaften</div>
+    <div style={{ fontSize: 12, color: "var(--gray-500)", lineHeight: 1.5 }}>
+      Der Mockup nutzt die hinterlegte Standard-Liste (7 Teams + Pokal). In der finalen App werden die Mannschaften aus der Hugo-Site automatisch geladen.
+    </div>
+  </>
+);
+
+const FORM_BY_TEMPLATE = {
+  "match-result":       MatchResultForm,
+  "match-announcement": MatchAnnouncementForm,
+  "season-schedule":    SeasonScheduleForm,
+  "event-card":         EventCardForm,
+};
+
+/* ─────────────────────────────────────────────
+   APP
+   ───────────────────────────────────────────── */
+
+function App() {
+  const [templateId, setTemplateId] = useState("match-result");
+  const [format, setFormat] = useState("square");
+  const [variant, setVariant] = useState("win");
+  const [data, setData] = useState(TEMPLATES["match-result"].defaults);
+  const [downloadStatus, setDownloadStatus] = useState("idle"); // idle | working | done
+
+  const tpl = TEMPLATES[templateId];
+  const Form = FORM_BY_TEMPLATE[templateId];
+  const Component = tpl.Component;
+
+  // Reset format/variant/data when template changes
+  const switchTemplate = (id) => {
+    const t = TEMPLATES[id];
+    setTemplateId(id);
+    setFormat(t.formats[0]);
+    setVariant(t.variants[0].id);
+    setData(t.defaults);
+  };
+
+  const set = (patch) => setData(d => ({ ...d, ...patch }));
+
+  // Available variants for current template (some don't have variants)
+  const showVariants = tpl.variants.length > 1;
+
+  const dims = FORMAT_DIMS[format];
+
+  /* ── Scale preview to fit available space ── */
+  const stageRef = useRef(null);
+  const [scale, setScale] = useState(0.5);
+  useEffect(() => {
+    const compute = () => {
+      const el = stageRef.current;
+      if (!el) return;
+      const padding = 64;
+      const availW = el.clientWidth - padding;
+      const availH = el.clientHeight - padding;
+      const s = Math.min(availW / dims.w, availH / dims.h, 1);
+      setScale(s > 0 ? s : 0.5);
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    if (stageRef.current) ro.observe(stageRef.current);
+    window.addEventListener("resize", compute);
+    return () => { ro.disconnect(); window.removeEventListener("resize", compute); };
+  }, [dims.w, dims.h]);
+
+  /* ── Download (single + ZIP-of-all-formats) ── */
+  const previewRef = useRef(null);
+
+  const downloadCurrent = async () => {
+    if (!previewRef.current) return;
+    setDownloadStatus("working");
+    try {
+      const dataUrl = await window.htmlToImage.toPng(previewRef.current, {
+        cacheBust: true, pixelRatio: 1,
+        width: dims.w, height: dims.h,
+        style: { transform: "none", transformOrigin: "top left" },
+      });
+      const a = document.createElement("a");
+      const stamp = new Date().toISOString().slice(0,10);
+      a.download = `tcbw_${templateId}_${variant}_${format}_${stamp}.png`;
+      a.href = dataUrl;
+      a.click();
+      setDownloadStatus("done");
+      setTimeout(() => setDownloadStatus("idle"), 1800);
+    } catch (e) {
+      console.error(e);
+      alert("Download fehlgeschlagen — Konsole ansehen");
+      setDownloadStatus("idle");
+    }
+  };
+
+  /* Render the actual full-size template (will be scaled visually via wrapper) */
+  const componentProps = useMemo(() => {
+    const props = { format, data };
+    if (templateId !== "season-schedule" && templateId !== "event-card") {
+      props.variant = variant;
+    }
+    return props;
+  }, [format, variant, data, templateId]);
+
+  return (
+    <div className="app">
+      {/* ─── TOP BAR ─── */}
+      <header className="topbar">
+        <div className="topbar-left">
+          <img src="assets/wappen.png" alt="TC BW Attendorn" />
+          <div>
+            <div className="topbar-title">Social Media Generator</div>
+            <div className="topbar-sub">TC Blau-Weiss Attendorn · Mockup</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {downloadStatus === "working" && <span className="badge-pending">Erzeuge PNG …</span>}
+          {downloadStatus === "done" && <span className="badge-pending badge-ok">Heruntergeladen ✓</span>}
+          <button className="btn btn-primary" onClick={downloadCurrent} disabled={downloadStatus === "working"}>
+            <span style={{ fontSize: 16, lineHeight: 1 }}>↓</span>
+            PNG herunterladen
+          </button>
+        </div>
+      </header>
+
+      {/* ─── BODY ─── */}
+      <div className="body">
+        {/* ─── SIDEBAR ─── */}
+        <aside className="sidebar">
+          <div className="tabs" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
+            {Object.entries(TEMPLATES).map(([id, t]) => (
+              <button
+                key={id}
+                className={`tab ${templateId === id ? "active" : ""}`}
+                onClick={() => switchTemplate(id)}
+                title={t.sublabel}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="form">
+            {/* Format pills */}
+            <div className="form-section-title">Format</div>
+            <div className="pillgroup">
+              {tpl.formats.map(f => (
+                <button
+                  key={f}
+                  className={`pill ${format === f ? "active" : ""}`}
+                  onClick={() => setFormat(f)}
+                >
+                  {FORMAT_DIMS[f].label}
+                </button>
+              ))}
+            </div>
+
+            {/* Variant pills (if applicable) */}
+            {showVariants && (
+              <>
+                <div className="form-section-title">Variante</div>
+                <div className="pillgroup">
+                  {tpl.variants.map(v => (
+                    <button
+                      key={v.id}
+                      className={`pill ${v.accent === "orange" ? "accent-orange" : ""} ${variant === v.id ? "active" : ""}`}
+                      onClick={() => setVariant(v.id)}
+                    >
+                      {v.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            <Form data={data} set={set} variant={variant} />
+          </div>
+        </aside>
+
+        {/* ─── PREVIEW ─── */}
+        <main className="stage">
+          <div className="stage-toolbar">
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--gray-700)" }}>{tpl.label} · {FORMAT_DIMS[format].label}</span>
+              <span style={{ fontSize: 12, color: "var(--gray-500)" }}>Vorschau {Math.round(scale * 100)} % · {dims.w}×{dims.h} px</span>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn btn-ghost" onClick={() => setData(tpl.defaults)}>Reset</button>
+            </div>
+          </div>
+          <div className="stage-canvas" ref={stageRef}>
+            <div
+              className="preview-frame"
+              style={{ width: dims.w * scale, height: dims.h * scale }}
+            >
+              <div
+                className="preview-scaler"
+                style={{ transform: `scale(${scale})`, width: dims.w, height: dims.h }}
+              >
+                <div ref={previewRef}>
+                  <Component {...componentProps} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
