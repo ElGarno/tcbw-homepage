@@ -4,6 +4,8 @@ league: "Bezirksliga"
 weight: 40
 captain: "Blum Norbert"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+2026&group=109"
+image: "/images/mannschaften/herren-60.jpg"
+image_alt: "Mannschaftsfoto Herren 60 des TC Blau-Weiss Attendorn"
 ---
 
 Herren 60 4er Mannschaft in der Bezirksliga (Gr. 109), Saison Sommer 2026.
@@ -12,7 +14,7 @@ Herren 60 4er Mannschaft in der Bezirksliga (Gr. 109), Saison Sommer 2026.
 
 | Datum | Uhrzeit | Heim | Gast | Ergebnis |
 |-------|---------|------|------|----------|
-| 09.05.2026 | 13:00 | TC Ennepetal-Breckerfeld | **TC BW Attendorn** | - |
+| 09.05.2026 | 13:00 | TC Ennepetal-Breckerfeld | **TC BW Attendorn** | 4:2 |
 | 16.05.2026 | 10:00 | TC Esseltal | **TC BW Attendorn** | - |
 | 13.06.2026 | 09:30 | **TC BW Attendorn** | TC SSV Elspe 2 | - |
 | 21.06.2026 | 14:30 | SSV Allendorf TA | **TC BW Attendorn** | - |

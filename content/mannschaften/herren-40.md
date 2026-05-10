@@ -12,7 +12,7 @@ Herren 40 6er Mannschaft in der Südwestfalenliga (Gr. 077), Saison Sommer 2026.
 
 | Datum | Uhrzeit | Heim | Gast | Ergebnis |
 |-------|---------|------|------|----------|
-| 09.05.2026 | 14:00 | TuS Bruchhausen 02 | **TC BW Attendorn** | - |
+| 09.05.2026 | 14:00 | TuS Bruchhausen 02 | **TC BW Attendorn** | 6:3 |
 | 30.05.2026 | 13:00 | **TC BW Attendorn** | Tennisclub Iserlohn | - |
 | 13.06.2026 | 14:30 | **TC BW Attendorn** | Hagener TC Blau-Gold | - |
 | 20.06.2026 | 13:00 | **TC BW Attendorn** | TV Plettenberg | - |

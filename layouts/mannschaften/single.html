@@ -4,6 +4,11 @@
     <p class="label-upper section-eyebrow">Mannschaften</p>
     <h1 class="heading-display section-title">{{ .Title }}</h1>
     <p class="section-subtitle" style="margin-bottom: 32px;">{{ .Params.league }}</p>
+    {{ with .Params.image }}
+    <figure class="team-photo" style="margin: 0 0 32px; border-radius: var(--radius-lg); overflow: hidden;">
+      <img src="{{ . }}" alt="{{ $.Params.image_alt | default $.Title }}" loading="lazy" style="width: 100%; height: auto; display: block;">
+    </figure>
+    {{ end }}
     <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600);">
       {{ .Content }}
     </div>
