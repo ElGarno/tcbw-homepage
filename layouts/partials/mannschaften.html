@@ -10,19 +10,7 @@
 
     <div class="teams-grid">
       {{ range $teams.ByWeight }}
-      <a href="{{ .RelPermalink }}" class="team-card reveal{{ if .Params.image }} team-card--with-photo{{ end }}">
-        {{ with .Params.image }}
-        <div class="team-card-photo">
-          <img src="{{ . }}" alt="{{ $.Params.image_alt | default $.Title }}" loading="lazy">
-        </div>
-        {{ else }}
-        <div class="team-card-icon">&#127934;</div>
-        {{ end }}
-        <div class="team-card-body">
-          <p class="team-card-name">{{ .Title }}</p>
-          <p class="team-card-league">{{ .Params.league }}</p>
-        </div>
-      </a>
+        {{ partial "team-card.html" . }}
       {{ end }}
     </div>
   </div>
