@@ -10,18 +10,37 @@ function bullet(s) {
 export function renderPrBody(syncDate, teamChanges) {
   const lines = [`## Liga.nu Sync — ${syncDate}`, ''];
 
-  lines.push('### Geänderte Spiele');
   const allUpdates = teamChanges.flatMap(tc => tc.updates.map(u => ({ ...u, teamLabel: tc.teamLabel })));
-  if (allUpdates.length === 0) {
+  // Split updates: a row is a "schedule change" if date or time differs, a "result change" if the
+  // result newly appeared or was corrected. Combined updates appear in both sections (clearer for review).
+  const scheduleUpdates = allUpdates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
+  const resultUpdates = allUpdates.filter(u => u.newResult != null && u.oldResult !== u.newResult);
+
+  lines.push('### Geänderte Spiele');
+  if (scheduleUpdates.length === 0) {
     lines.push('(keine)');
   } else {
     lines.push('| Team | Spiel | Vorher | Neu |');
     lines.push('|---|---|---|---|');
-    for (const u of allUpdates) {
+    for (const u of scheduleUpdates) {
       const where = u.isHome ? 'H' : 'A';
       const oldStr = `${shortDate(u.oldDate)} ${u.oldTime}`;
       const newStr = `${shortDate(u.newDate)} ${u.newTime}`;
       lines.push(`| ${u.teamLabel} | ${u.opponent} (${where}) | ${oldStr} | ${newStr} |`);
+    }
+  }
+  lines.push('');
+
+  lines.push('### Neue Ergebnisse');
+  if (resultUpdates.length === 0) {
+    lines.push('(keine)');
+  } else {
+    lines.push('| Team | Spiel | Vorher | Ergebnis |');
+    lines.push('|---|---|---|---|');
+    for (const u of resultUpdates) {
+      const where = u.isHome ? 'H' : 'A';
+      const oldStr = u.oldResult ?? '–';
+      lines.push(`| ${u.teamLabel} | ${u.opponent} (${where}) | ${oldStr} | ${u.newResult} |`);
     }
   }
   lines.push('');

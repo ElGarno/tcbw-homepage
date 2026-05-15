@@ -46,11 +46,17 @@ export function parseGroupPage(html) {
 
     if (!home.includes('Attendorn') && !guest.includes('Attendorn')) return;
 
+    // Matches cell: first td.center after the guest team cell. Empty (&nbsp;) until played.
+    const guestCell = $(teamLinks[1]).closest('td');
+    const matchesCellText = guestCell.nextAll('td.center').first().text();
+    const result = matchesCellText.match(/\d+:\d+/)?.[0] ?? null;
+
     matches.push({
       date: currentDateTime.date,
       time: currentDateTime.time,
       home,
       guest,
+      result,
     });
   });
 

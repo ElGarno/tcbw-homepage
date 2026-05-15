@@ -40,6 +40,60 @@ test('missings show warning marker', () => {
   assert.match(body, /Herren 60.*TC Ennepetal-Breckerfeld.*\(A\).*09\.05\.\s*13:00/);
 });
 
+test('result-only update appears in "Neue Ergebnisse" section, not in "Geänderte Spiele"', () => {
+  const teamChanges = [{
+    team: 'herren-30',
+    teamLabel: 'Herren 30',
+    updates: [
+      // Date+time unchanged, only result newly filled
+      { opponent: 'Olper TC', isHome: true,
+        oldDate: '2026-05-09', oldTime: '13:00', newDate: '2026-05-09', newTime: '13:00',
+        oldResult: null, newResult: '3:6' },
+    ],
+    adds: [], missings: [], termineUpdates: [],
+  }];
+  const body = renderPrBody('2026-04-21', teamChanges);
+  assert.match(body, /### Neue Ergebnisse/);
+  assert.match(body, /Herren 30.*Olper TC \(H\).*3:6/);
+  // "Geänderte Spiele" should NOT list this row (no date/time change)
+  assert.match(body, /### Geänderte Spiele\n\(keine\)/);
+});
+
+test('result-only update with prior score (correction) shows old → new in Ergebnisse', () => {
+  const teamChanges = [{
+    team: 'herren-30', teamLabel: 'Herren 30',
+    updates: [
+      { opponent: 'Olper TC', isHome: true,
+        oldDate: '2026-05-09', oldTime: '13:00', newDate: '2026-05-09', newTime: '13:00',
+        oldResult: '3:6', newResult: '6:3' },
+    ],
+    adds: [], missings: [], termineUpdates: [],
+  }];
+  const body = renderPrBody('2026-04-21', teamChanges);
+  assert.match(body, /Herren 30.*Olper TC \(H\).*3:6.*6:3/);
+});
+
+test('combined date+result change appears in both Geänderte Spiele and Neue Ergebnisse', () => {
+  const teamChanges = [{
+    team: 'herren-30', teamLabel: 'Herren 30',
+    updates: [
+      { opponent: 'Olper TC', isHome: true,
+        oldDate: '2026-05-09', oldTime: '13:00', newDate: '2026-05-09', newTime: '14:00',
+        oldResult: null, newResult: '3:6' },
+    ],
+    adds: [], missings: [], termineUpdates: [],
+  }];
+  const body = renderPrBody('2026-04-21', teamChanges);
+  assert.match(body, /\| Herren 30 \| Olper TC \(H\) \| 09\.05\. 13:00 \| 09\.05\. 14:00 \|/);
+  assert.match(body, /### Neue Ergebnisse/);
+  assert.match(body, /Herren 30.*Olper TC \(H\).*3:6/);
+});
+
+test('no result updates → "Neue Ergebnisse" shows (keine)', () => {
+  const body = renderPrBody('2026-04-21', []);
+  assert.match(body, /### Neue Ergebnisse\n\(keine\)/);
+});
+
 test('termine updates section only present when any termineUpdates exist', () => {
   const noTermine = renderPrBody('2026-04-21', [{
     team: 'herren-30', teamLabel: 'Herren 30',

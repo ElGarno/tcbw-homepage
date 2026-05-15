@@ -58,3 +58,28 @@ test('parses date+time from liga.nu combined cell format', () => {
   assert.match(firstMatch.home, /Attendorn/);
   assert.match(firstMatch.guest, /Olper/);
 });
+
+test('result is null when liga.nu Matches cell is empty', () => {
+  const result = parseGroupPage(html67);
+  for (const m of result.matches) {
+    assert.equal(m.result, null, `match against ${m.guest} should have null result in fixture`);
+  }
+});
+
+test('result is parsed when liga.nu Matches cell contains a score', () => {
+  // The Herren 30 fixture has 4 Attendorn matches, all in Spielbericht "offen" state.
+  // Simulate a played match by injecting a 6:3 into the first row's Matches cell.
+  // liga.nu structure: row has cells [weekday, datetime, empty, home, guest, Matches, Sätze, Games, Spielbericht].
+  // The empty (&nbsp;) Matches cell is the first <td class="center"> in the row.
+  const patched = html67.replace(
+    // First empty Matches placeholder after the Olper TC 1 link in the schedule body
+    /(Olper TC 1[\s\S]*?<\/td>\s*<td class="center">\s*)&nbsp;/,
+    '$16:3',
+  );
+  // If the regex didn't match (HTML layout drift), the fixture is unchanged → test fails clearly.
+  assert.notEqual(patched, html67, 'fixture patch failed — Olper TC row not found');
+  const result = parseGroupPage(patched);
+  const olperMatch = result.matches.find(m => /Olper/.test(m.guest));
+  assert.ok(olperMatch, 'Olper match missing from parsed result');
+  assert.equal(olperMatch.result, '6:3');
+});

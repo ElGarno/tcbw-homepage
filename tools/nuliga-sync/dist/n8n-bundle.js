@@ -64,11 +64,17 @@ function parseGroupPage(html) {
 
     if (!home.includes('Attendorn') && !guest.includes('Attendorn')) return;
 
+    // Matches cell: first td.center after the guest team cell. Empty (&nbsp;) until played.
+    const guestCell = $(teamLinks[1]).closest('td');
+    const matchesCellText = guestCell.nextAll('td.center').first().text();
+    const result = matchesCellText.match(/\d+:\d+/)?.[0] ?? null;
+
     matches.push({
       date: currentDateTime.date,
       time: currentDateTime.time,
       home,
       guest,
+      result,
     });
   });
 
@@ -178,13 +184,21 @@ function diffMatches(existing, liga) {
       adds.push({ ...ligaMatch });
       continue;
     }
-    if (existingMatch.date !== ligaMatch.date || existingMatch.time !== ligaMatch.time) {
+    const dateOrTimeChanged =
+      existingMatch.date !== ligaMatch.date || existingMatch.time !== ligaMatch.time;
+    // liga.nu null never overwrites a manually entered MD result — preserves human edits
+    // and avoids result loss if liga.nu temporarily drops the score (parser hiccup, layout change).
+    const resultChanged =
+      ligaMatch.result != null && existingMatch.result !== ligaMatch.result;
+    if (dateOrTimeChanged || resultChanged) {
       updates.push({
         identity: id,
         oldDate: existingMatch.date,
         oldTime: existingMatch.time,
+        oldResult: existingMatch.result ?? null,
         newDate: ligaMatch.date,
         newTime: ligaMatch.time,
+        newResult: resultChanged ? ligaMatch.result : (existingMatch.result ?? null),
         home: ligaMatch.home,
         guest: ligaMatch.guest,
       });
@@ -384,18 +398,37 @@ function bullet(s) {
 function renderPrBody(syncDate, teamChanges) {
   const lines = [`## Liga.nu Sync — ${syncDate}`, ''];
 
-  lines.push('### Geänderte Spiele');
   const allUpdates = teamChanges.flatMap(tc => tc.updates.map(u => ({ ...u, teamLabel: tc.teamLabel })));
-  if (allUpdates.length === 0) {
+  // Split updates: a row is a "schedule change" if date or time differs, a "result change" if the
+  // result newly appeared or was corrected. Combined updates appear in both sections (clearer for review).
+  const scheduleUpdates = allUpdates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
+  const resultUpdates = allUpdates.filter(u => u.newResult != null && u.oldResult !== u.newResult);
+
+  lines.push('### Geänderte Spiele');
+  if (scheduleUpdates.length === 0) {
     lines.push('(keine)');
   } else {
     lines.push('| Team | Spiel | Vorher | Neu |');
     lines.push('|---|---|---|---|');
-    for (const u of allUpdates) {
+    for (const u of scheduleUpdates) {
       const where = u.isHome ? 'H' : 'A';
       const oldStr = `${shortDate(u.oldDate)} ${u.oldTime}`;
       const newStr = `${shortDate(u.newDate)} ${u.newTime}`;
       lines.push(`| ${u.teamLabel} | ${u.opponent} (${where}) | ${oldStr} | ${newStr} |`);
+    }
+  }
+  lines.push('');
+
+  lines.push('### Neue Ergebnisse');
+  if (resultUpdates.length === 0) {
+    lines.push('(keine)');
+  } else {
+    lines.push('| Team | Spiel | Vorher | Ergebnis |');
+    lines.push('|---|---|---|---|');
+    for (const u of resultUpdates) {
+      const where = u.isHome ? 'H' : 'A';
+      const oldStr = u.oldResult ?? '–';
+      lines.push(`| ${u.teamLabel} | ${u.opponent} (${where}) | ${oldStr} | ${u.newResult} |`);
     }
   }
   lines.push('');
@@ -583,6 +616,10 @@ async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
         const ligaHome = liga.matches.filter(m => m.home.includes('Attendorn'));
         const existing = pokalExistingFromTermine(termineEvents, team.group);
         const cs = diffMatches(existing, ligaHome);
+        // Termine schema (_index.md) has no `result:` field; drop pokal updates whose only diff
+        // is a new result, otherwise we produce PRs with no file changes. Add a `result:` column
+        // to the termine schema + a frontend renderer to lift this filter.
+        cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
         teamReports.push({ team, cs, existingMatches: existing, ligaMatches: ligaHome });
       } else {
         const existingMd = await readRepoFile(team.file);
@@ -615,11 +652,16 @@ async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
       const identity = getIdentityLocal(u);
       const idx = nextMatches.findIndex(m => getIdentityLocal(m) === identity);
       if (idx !== -1) {
-        nextMatches[idx] = { ...nextMatches[idx], date: u.newDate, time: u.newTime };
+        nextMatches[idx] = {
+          ...nextMatches[idx],
+          date: u.newDate,
+          time: u.newTime,
+          result: u.newResult ?? nextMatches[idx].result,
+        };
       }
     }
     for (const a of report.cs.adds) {
-      nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: null });
+      nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: a.result ?? null });
     }
 
     const newMdContent = writeMannschaftMd({
