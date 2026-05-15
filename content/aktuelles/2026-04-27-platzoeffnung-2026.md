@@ -3,6 +3,7 @@ title: "Platzöffnung 2026"
 date: 2026-04-27
 description: "Unsere drei Tennisplätze sind ab sofort wieder freigegeben. Wichtige Hinweise zur Platzpflege und Bewässerung."
 tags: ["Platzöffnung", "Platzpflege", "Sandplatz"]
+category: "platz"
 ---
 
 Ab sofort können unsere drei Plätze wieder bespielt werden. Wir danken allen Mitgliedern, die bei den Vorbereitung- und Reinigungsarbeiten beteiligt waren.

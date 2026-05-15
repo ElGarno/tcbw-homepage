@@ -3,6 +3,7 @@ title: "Rückblick Winter & Ausblick Sommer 2026"
 date: 2026-03-19
 description: "Die Wintersaison ist abgeschlossen — jetzt steigt die Vorfreude auf den Sommer mit sechs Seniorenmannschaften und einer Jugendmannschaft."
 tags: ["Saison 2026", "Wintersaison", "Ausblick"]
+category: "match"
 ---
 
 ## Rückblick Wintersaison

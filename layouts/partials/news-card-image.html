@@ -1,0 +1,23 @@
+{{/*
+  Renders the image block inside a .news-card.
+  Resolution order:
+    1. Page .Params.image (explicit override)
+    2. Page .Params.category → /images/news/category-<slug>.jpg
+    3. Title placeholder (legacy gradient)
+  Called with the Page as context, e.g. `{{ partial "news-card-image.html" . }}`.
+*/}}
+{{ $img := .Params.image }}
+{{ if not $img }}
+  {{ with .Params.category }}
+    {{ $img = printf "/images/news/category-%s.jpg" . }}
+  {{ end }}
+{{ end }}
+{{ if $img }}
+  <div class="news-card-image news-card-image--photo">
+    <img src="{{ $img }}" alt="{{ .Title }}" loading="lazy">
+  </div>
+{{ else }}
+  <div class="news-card-image">
+    <span class="news-card-image-placeholder">{{ .Title }}</span>
+  </div>
+{{ end }}
