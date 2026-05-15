@@ -60,7 +60,6 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
 - [ ] Instagram Feed einbetten — braucht Meta Business Account + API Token
-- [ ] Vorstandswechsel zu Gerlach/Kersting — ändern sobald offiziell
 - [ ] Google Maps Embed mit korrektem Place-Pin (aktuell nur Koordinaten)
 - [ ] Mail-to-Homepage: Pushover-Fehlerbenachrichtigung als separater Error-Workflow
 - [ ] Mail-to-Homepage: Branch-Kollisionsvermeidung (Timestamp oder vorher löschen)
