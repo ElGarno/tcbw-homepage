@@ -1,19 +1,21 @@
 ---
 title: "Training"
-description: "Trainingszeiten und Trainer beim Tennisclub Blau-Weiss Attendorn e.V."
-trainers:
-  - name: "Vladislav Hupertz"
-    initials: "VH"
-    role: "Tennistrainer"
-    image: "/images/trainer/Mico.jpg"
-trainer_description: |
-  Mit 20 Jahren bestand er die Berufsprüfung und Zertifizierung zum Tennistrainer. Seit Jahren unterrichtet Vladislav Hupertz (Spitzname Mitzo) in Attendorn auf der Anlage des Tennisclub Blau-Weiss Attendorn e.V. an der Burg Schnellenberg.
-
-  Im Winter wird in zwei nahegelegenen Tennishallen mit Granulatboden unterrichtet.
-
-  Eine pädagogische Verantwortung für die Gesamtentwicklung (sportliche wie auch private) steht im Vordergrund der Arbeit unseres Tennislehrers. Die Jugendlichen sollen das Tennisspiel als einen wichtigen Teil, aber nicht den wichtigsten Teil ihres Lebens begreifen lernen.
-
-  Großer Wert wird gelegt auf eine langfristige und kontinuierliche Kinder- und Jugendarbeit in der Praxis auf dem Platz. Die Kinder und Jugendlichen werden sowohl im Einzelunterricht als auch in Gruppen von zwei und mehreren Spielern unterrichtet.
-
-  Der Unterricht kann durch Ballmaschine, Video-Analyse und Bilderreihen unterstützt werden.
+description: "Trainingsangebote beim Tennisclub Blau-Weiss Attendorn e.V."
 ---
+
+## Mannschaftstraining
+
+Für unsere Medenrunden-Mannschaften gibt es regelmäßiges Mannschaftstraining ohne Trainer.
+Die Termine sind im [Court-Booking-System](https://tc-bw-attendorn.courtbooking.de) für die jeweiligen
+Mannschaften geblockt. Sprich deinen Mannschaftsführer an, wenn du dabei sein möchtest.
+
+## Kindertraining (kostenfrei)
+
+Jeden **Freitag von 17:00 – 18:00 Uhr** findet ein kostenfreies Training für Kinder
+**ab 5 Jahren** statt. Schläger sind im Vereinsheim vorhanden – einfach vorbeikommen
+und mitmachen.
+
+## Individuelles Training
+
+Für Anfragen zu Einzel- oder Gruppenunterricht außerhalb des Mannschaftstrainings nimm
+bitte Kontakt mit dem Vorstand auf: [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de).
