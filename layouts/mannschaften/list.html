@@ -1,0 +1,24 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header" style="margin-bottom: 48px;">
+      <h1 class="heading-display section-title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="section-subtitle">{{ . }}</p>{{ end }}
+    </div>
+
+    {{ with .Content }}
+    <div style="font-size: 1.05rem; line-height: 1.8; color: var(--gray-600); margin-bottom: 32px;">
+      {{ . }}
+    </div>
+    {{ end }}
+
+    {{ if .Pages }}
+    <div class="teams-grid">
+      {{ range .Pages.ByWeight }}
+        {{ partial "team-card.html" . }}
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,17 @@
+{{/*
+  Renders one team card. Called with a Page as context.
+  Used by partials/mannschaften.html (homepage) and mannschaften/list.html (overview page).
+*/}}
+<a href="{{ .RelPermalink }}" class="team-card reveal{{ if .Params.image }} team-card--with-photo{{ end }}">
+  {{ with .Params.image }}
+  <div class="team-card-photo">
+    <img src="{{ . }}" alt="{{ $.Params.image_alt | default $.Title }}" loading="lazy">
+  </div>
+  {{ else }}
+  <div class="team-card-icon">&#127934;</div>
+  {{ end }}
+  <div class="team-card-body">
+    <p class="team-card-name">{{ .Title }}</p>
+    <p class="team-card-league">{{ .Params.league }}</p>
+  </div>
+</a>
