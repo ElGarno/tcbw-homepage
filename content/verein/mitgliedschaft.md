@@ -8,10 +8,12 @@ weight: 30
 
 | Kategorie | Jahresbeitrag |
 |-----------|--------------|
-| Erwachsene | 150 EUR |
-| Kinder in weiterführenden Schulen / Studenten | 60 EUR |
+| Erwachsene | 200 EUR |
+| Kinder in weiterführenden Schulen / Studenten | 100 EUR |
 | Kinder, deren Eltern Clubmitglieder sind | 50 EUR |
 | Vorschul- und Grundschulkinder | 40 EUR |
+| Zweitmitgliedschaft | 100 EUR |
+| Schnuppermitgliedschaft | 100 EUR |
 
 ## Downloads
 

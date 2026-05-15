@@ -7,8 +7,10 @@ departments:
   - name: "Geschäftsführung"
     icon: "shield"
     members:
-      - "Stefan Hütte"
-      - "Christian Feldmann"
+      - name: "Bastian Gerlach"
+        role: "1. Geschäftsführer"
+      - name: "Felix Kersting"
+        role: "2. Geschäftsführer (Handwerkliche Tätigkeiten)"
   - name: "Finanzen"
     icon: "coins"
     members:
@@ -17,8 +19,9 @@ departments:
   - name: "Marketing & Öffentlichkeitsarbeit"
     icon: "megaphone"
     members:
-      - "Bastian Gerlach"
       - "Paula Kersting"
+      - name: "Aaron Heseler"
+        role: "Eventmanagement"
   - name: "Sport"
     icon: "trophy"
     members:
@@ -35,7 +38,6 @@ departments:
     icon: "users"
     members:
       - "Annika Foidl"
-      - "Lisa Heiche"
       - "Tim Maier"
 contact:
   email: "vorstand@tc-bw-attendorn.de"
