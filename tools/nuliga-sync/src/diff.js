@@ -20,13 +20,21 @@ export function diffMatches(existing, liga) {
       adds.push({ ...ligaMatch });
       continue;
     }
-    if (existingMatch.date !== ligaMatch.date || existingMatch.time !== ligaMatch.time) {
+    const dateOrTimeChanged =
+      existingMatch.date !== ligaMatch.date || existingMatch.time !== ligaMatch.time;
+    // liga.nu null never overwrites a manually entered MD result — preserves human edits
+    // and avoids result loss if liga.nu temporarily drops the score (parser hiccup, layout change).
+    const resultChanged =
+      ligaMatch.result != null && existingMatch.result !== ligaMatch.result;
+    if (dateOrTimeChanged || resultChanged) {
       updates.push({
         identity: id,
         oldDate: existingMatch.date,
         oldTime: existingMatch.time,
+        oldResult: existingMatch.result ?? null,
         newDate: ligaMatch.date,
         newTime: ligaMatch.time,
+        newResult: resultChanged ? ligaMatch.result : (existingMatch.result ?? null),
         home: ligaMatch.home,
         guest: ligaMatch.guest,
       });

@@ -55,3 +55,23 @@ test('away game: guest gets bolded, home stays plain', () => {
   const out = writeMannschaftMd({ frontmatter, body, matches });
   assert.match(out, /\| TV Rosenthal \| \*\*TC BW Attendorn\*\* \| - \|/);
 });
+
+test('result string is written into the Ergebnis column', () => {
+  const { frontmatter, body } = readMannschaftMd(md);
+  const matches = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: '3:6' },
+  ];
+  const out = writeMannschaftMd({ frontmatter, body, matches });
+  assert.match(out, /\| \*\*TC BW Attendorn\*\* \| Olper TC \| 3:6 \|/);
+});
+
+test('round-trip preserves non-null result', () => {
+  const mdWithResult = md.replace(
+    '| 09.05.2026 | 13:00 | **TC BW Attendorn** | Olper TC | - |',
+    '| 09.05.2026 | 13:00 | **TC BW Attendorn** | Olper TC | 3:6 |',
+  );
+  const { frontmatter, body, matches } = readMannschaftMd(mdWithResult);
+  const out = writeMannschaftMd({ frontmatter, body, matches });
+  const { matches: roundTripped } = readMannschaftMd(out);
+  assert.equal(roundTripped[0].result, '3:6');
+});

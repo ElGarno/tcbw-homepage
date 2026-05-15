@@ -122,6 +122,10 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
         const ligaHome = liga.matches.filter(m => m.home.includes('Attendorn'));
         const existing = pokalExistingFromTermine(termineEvents, team.group);
         const cs = diffMatches(existing, ligaHome);
+        // Termine schema (_index.md) has no `result:` field; drop pokal updates whose only diff
+        // is a new result, otherwise we produce PRs with no file changes. Add a `result:` column
+        // to the termine schema + a frontend renderer to lift this filter.
+        cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
         teamReports.push({ team, cs, existingMatches: existing, ligaMatches: ligaHome });
       } else {
         const existingMd = await readRepoFile(team.file);
@@ -154,11 +158,16 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
       const identity = getIdentityLocal(u);
       const idx = nextMatches.findIndex(m => getIdentityLocal(m) === identity);
       if (idx !== -1) {
-        nextMatches[idx] = { ...nextMatches[idx], date: u.newDate, time: u.newTime };
+        nextMatches[idx] = {
+          ...nextMatches[idx],
+          date: u.newDate,
+          time: u.newTime,
+          result: u.newResult ?? nextMatches[idx].result,
+        };
       }
     }
     for (const a of report.cs.adds) {
-      nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: null });
+      nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: a.result ?? null });
     }
 
     const newMdContent = writeMannschaftMd({

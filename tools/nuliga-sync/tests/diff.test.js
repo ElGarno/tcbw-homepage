@@ -74,3 +74,65 @@ test('home/away swap (same opponent) → treated as different identity', () => {
   assert.equal(result.missings.length, 1);
   assert.equal(result.adds.length, 1);
 });
+
+test('result newly filled in (existing null, liga has score) → 1 Update', () => {
+  const existing = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: null },
+  ];
+  const liga = [
+    { date: '2026-05-09', time: '13:00', home: 'TC Blau-Weiß Attendorn 1', guest: 'Olper TC 1', result: '3:6' },
+  ];
+  const result = diffMatches(existing, liga);
+  assert.equal(result.updates.length, 1);
+  assert.equal(result.updates[0].newResult, '3:6');
+  assert.equal(result.updates[0].oldResult, null);
+});
+
+test('result unchanged (both null) → no Update', () => {
+  const existing = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: null },
+  ];
+  const liga = [
+    { date: '2026-05-09', time: '13:00', home: 'TC Blau-Weiß Attendorn 1', guest: 'Olper TC 1', result: null },
+  ];
+  const result = diffMatches(existing, liga);
+  assert.equal(result.updates.length, 0);
+});
+
+test('result disappears from liga.nu (existing has score, liga is null) → no Update (preserve manual entry)', () => {
+  const existing = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: '3:6' },
+  ];
+  const liga = [
+    { date: '2026-05-09', time: '13:00', home: 'TC Blau-Weiß Attendorn 1', guest: 'Olper TC 1', result: null },
+  ];
+  const result = diffMatches(existing, liga);
+  assert.equal(result.updates.length, 0,
+    'liga.nu null must never overwrite a manually entered result');
+});
+
+test('result corrected (existing 3:6, liga 6:3) → 1 Update', () => {
+  const existing = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: '3:6' },
+  ];
+  const liga = [
+    { date: '2026-05-09', time: '13:00', home: 'TC Blau-Weiß Attendorn 1', guest: 'Olper TC 1', result: '6:3' },
+  ];
+  const result = diffMatches(existing, liga);
+  assert.equal(result.updates.length, 1);
+  assert.equal(result.updates[0].newResult, '6:3');
+  assert.equal(result.updates[0].oldResult, '3:6');
+});
+
+test('time AND result both changed → still 1 Update (carries both)', () => {
+  const existing = [
+    { date: '2026-05-09', time: '13:00', home: 'TC BW Attendorn', guest: 'Olper TC', result: null },
+  ];
+  const liga = [
+    { date: '2026-05-09', time: '14:00', home: 'TC Blau-Weiß Attendorn 1', guest: 'Olper TC 1', result: '6:3' },
+  ];
+  const result = diffMatches(existing, liga);
+  assert.equal(result.updates.length, 1);
+  assert.equal(result.updates[0].newTime, '14:00');
+  assert.equal(result.updates[0].newResult, '6:3');
+});
