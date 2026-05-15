@@ -3,6 +3,7 @@ title: "Mixed-Teams 2026 – Aufruf zur Teilnahme"
 date: 2026-03-23
 description: "Einladung zur Teilnahme an zwei Mixed-Mannschaften, ideal für Spieler mit wenig Mannschaftserfahrung."
 tags: ["Mixed", "Mannschaftstennis", "Aufruf"]
+category: "match"
 ---
 
 Wir haben in dieser Saison wieder zwei Mixed-Mannschaften gemeldet. Die Erfahrung der letzten Jahre hat gezeigt, dass diese Spiele besonders gut für Tennisspieler geeignet sind, die bisher wenig bis keine Mannschaftserfahrung haben.

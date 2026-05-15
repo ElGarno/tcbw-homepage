@@ -621,7 +621,7 @@
       opacity: 0.6;
     }
 
-    /* Tennis ball decoration in image placeholder */
+    /* Tennis ball decoration in image placeholder (gradient cards only) */
     .news-card-image::after {
       content: '';
       position: absolute;
@@ -633,6 +633,18 @@
       bottom: 16px;
       right: 16px;
       box-shadow: inset -4px -4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Photo variant: real image fills the card, no gradient or decoration */
+    .news-card-image--photo {
+      background: var(--gray-100);
+    }
+    .news-card-image--photo::after { display: none; }
+    .news-card-image--photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .news-card-body {
