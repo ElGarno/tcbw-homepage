@@ -2,6 +2,10 @@
 title: "Mitgliedschaft & Beiträge"
 description: "Mitglied werden beim Tennisclub Blau-Weiss Attendorn e.V. — Beiträge und Infos."
 weight: 30
+contact_section:
+  heading: "Mitglied werden"
+  body: "Interesse? Schreib uns eine E-Mail oder sprich uns direkt auf der Anlage an."
+  email: "vorstand@tc-bw-attendorn.de"
 ---
 
 ## Mitgliedsbeiträge
@@ -18,7 +22,3 @@ weight: 30
 
 - [Einwilligung in die Datenverarbeitung (PDF)](/downloads/Einwilligung-in-die-Datenverarbeitung.pdf)
 - [Einverständniserklärung TC BW Attendorn (PDF)](/downloads/Einverständniserklärung-TC-BW-ATTENDORN.pdf)
-
-## Mitglied werden
-
-Interesse? Schreib uns eine E-Mail an **vorstand@tc-bw-attendorn.de** oder sprich uns direkt auf der Anlage an.
