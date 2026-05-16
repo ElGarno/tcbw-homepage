@@ -14,7 +14,10 @@
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [200, 300],
+      "position": [
+        200,
+        300
+      ],
       "webhookId": "tcbw-anmeldung"
     },
     {
@@ -25,7 +28,10 @@
           "responseCode": 200,
           "responseHeaders": {
             "entries": [
-              { "name": "Access-Control-Allow-Origin", "value": "https://tc-bw-attendorn.de" }
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://tc-bw-attendorn.de"
+              }
             ]
           }
         }
@@ -34,7 +40,10 @@
       "name": "Respond OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1200, 200]
+      "position": [
+        1200,
+        200
+      ]
     },
     {
       "parameters": {
@@ -44,7 +53,10 @@
           "responseCode": 400,
           "responseHeaders": {
             "entries": [
-              { "name": "Access-Control-Allow-Origin", "value": "https://tc-bw-attendorn.de" }
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://tc-bw-attendorn.de"
+              }
             ]
           }
         }
@@ -53,17 +65,23 @@
       "name": "Respond Error",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1200, 420]
+      "position": [
+        1200,
+        420
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const body = $input.first().json.body ?? $input.first().json;\n\n// Required fields\nconst required = ['vorname','nachname','geburtsdatum','strasse','plz','ort','email','kategorie','beginn','kontoinhaber','iban','sepa_consent','privacy_consent'];\nconst missing = required.filter(k => !body[k]);\nif (missing.length) {\n  return [{ json: { ok: false, error: 'missing fields: ' + missing.join(', ') } }];\n}\n\n// IBAN Mod-97 sanity check\nconst iban = String(body.iban).replace(/\\s+/g,'').toUpperCase();\nconst rearr = iban.slice(4) + iban.slice(0,4);\nconst numStr = rearr.replace(/[A-Z]/g, c => (c.charCodeAt(0) - 55).toString());\nlet rem = 0;\nfor (const d of numStr) { rem = (rem * 10 + Number(d)) % 97; }\nif (rem !== 1) {\n  return [{ json: { ok: false, error: 'invalid IBAN' } }];\n}\n\n// Mandatsreferenz\nconst nowIso = new Date().toISOString();\nconst mandateRef = 'TCBW-' + nowIso.replace(/[-:T.Z]/g,'').slice(0,12) + '-' + (body.nachname || '').slice(0,8).replace(/[^A-Za-z]/g,'').toUpperCase();\n\n// Markdown email body for vorstand\nconst md = [\n  '# Neuer Mitgliedsantrag',\n  '',\n  '**Eingegangen:** ' + nowIso,\n  '**Mandatsreferenz:** ' + mandateRef,\n  '**User-Agent:** ' + (body.user_agent || '–'),\n  '',\n  '## Persönliche Daten',\n  '| Feld | Wert |',\n  '|------|------|',\n  '| Vorname | ' + body.vorname + ' |',\n  '| Nachname | ' + body.nachname + ' |',\n  '| Geburtsdatum | ' + body.geburtsdatum + ' |',\n  '| Adresse | ' + body.strasse + ', ' + body.plz + ' ' + body.ort + ' |',\n  '| E-Mail | ' + body.email + ' |',\n  '| Telefon | ' + (body.telefon || '–') + ' |',\n  '',\n  body.guardian_name ? '## Erziehungsberechtigte/r\\n| Name | ' + body.guardian_name + ' |\\n| Telefon | ' + (body.guardian_telefon || '–') + ' |\\n' : '',\n  '## Mitgliedschaft',\n  '| Feld | Wert |',\n  '|------|------|',\n  '| Kategorie | ' + body.kategorie + ' |',\n  '| Beginn | ' + body.beginn + ' |',\n  '',\n  '## SEPA-Lastschriftmandat',\n  '| Feld | Wert |',\n  '|------|------|',\n  '| Kontoinhaber:in | ' + body.kontoinhaber + ' |',\n  '| IBAN | ' + iban + ' |',\n  '| Mandat akzeptiert | ' + body.sepa_consent + ' |',\n  '| Datenschutz akzeptiert | ' + body.privacy_consent + ' |',\n  ''\n].join('\\n');\n\nreturn [{ json: { ok: true, body, mandateRef, md, iban } }];"
+        "jsCode": "// \"Validate & Build\" Code-Node für den Online-Anmeldung-Workflow.\n// Lesbare Version — die JSON-escaped Variante steckt in n8n-online-anmeldung.json.\n// Generiert vorstandHtml + applicantHtml für die nachgelagerten Mail-Nodes.\n\nconst body = $input.first().json.body ?? $input.first().json;\n\nconst required = ['vorname','nachname','geburtsdatum','strasse','plz','ort','email','kategorie','beginn','kontoinhaber','iban','sepa_consent','privacy_consent'];\nconst missing = required.filter(k => !body[k]);\nif (missing.length) {\n  return [{ json: { ok: false, error: 'missing fields: ' + missing.join(', ') } }];\n}\n\n// IBAN Mod-97 sanity check\nconst iban = String(body.iban).replace(/\\s+/g,'').toUpperCase();\nconst rearr = iban.slice(4) + iban.slice(0,4);\nconst numStr = rearr.replace(/[A-Z]/g, c => (c.charCodeAt(0) - 55).toString());\nlet rem = 0;\nfor (const d of numStr) { rem = (rem * 10 + Number(d)) % 97; }\nif (rem !== 1) {\n  return [{ json: { ok: false, error: 'invalid IBAN' } }];\n}\n\nconst nowIso = new Date().toISOString();\nconst eingegangen = new Date(nowIso).toLocaleString('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'long', timeStyle: 'short' });\nconst mandateRef = 'TCBW-' + nowIso.replace(/[-:T.Z]/g,'').slice(0,12) + '-' + (body.nachname || '').slice(0,8).replace(/[^A-Za-z]/g,'').toUpperCase();\n\nconst esc = s => String(s ?? '').replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));\n\nconst row = (label, value) =>\n  '<tr><td style=\"padding:8px 12px;border-bottom:1px solid #e5e7eb;color:#6b7280;width:200px;vertical-align:top;\">' + esc(label) +\n  '</td><td style=\"padding:8px 12px;border-bottom:1px solid #e5e7eb;\">' + esc(value) + '</td></tr>';\n\nconst section = (title, rowsHtml) =>\n  '<h2 style=\"color:#1e56a0;font-size:18px;margin:32px 0 12px;\">' + title + '</h2>' +\n  '<table style=\"width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-radius:8px;font-family:Helvetica,Arial,sans-serif;font-size:14px;\">' + rowsHtml + '</table>';\n\nconst guardianSection = body.guardian_name\n  ? section('Erziehungsberechtigte/r', row('Name', body.guardian_name) + row('Telefon', body.guardian_telefon || '–'))\n  : '';\n\nconst vorstandHtml =\n  '<!DOCTYPE html><html lang=\"de\"><head><meta charset=\"UTF-8\"></head>' +\n  '<body style=\"margin:0;padding:24px;background:#f9fafb;font-family:Helvetica,Arial,sans-serif;color:#1f2937;\">' +\n  '<div style=\"max-width:640px;margin:0 auto;background:white;border-radius:12px;padding:32px;\">' +\n  '<h1 style=\"color:#0a1628;font-size:24px;margin:0 0 8px;border-bottom:2px solid #1e56a0;padding-bottom:12px;\">Neuer Mitgliedsantrag</h1>' +\n  '<p style=\"color:#6b7280;font-size:14px;margin:12px 0;\">' +\n  '<strong>Eingegangen:</strong> ' + esc(eingegangen) + '<br>' +\n  '<strong>Mandatsreferenz:</strong> <code style=\"background:#f0f6fe;padding:2px 6px;border-radius:4px;font-size:13px;\">' + esc(mandateRef) + '</code></p>' +\n  section('Persönliche Daten',\n    row('Vorname', body.vorname) +\n    row('Nachname', body.nachname) +\n    row('Geburtsdatum', body.geburtsdatum) +\n    row('Adresse', body.strasse + ', ' + body.plz + ' ' + body.ort) +\n    row('E-Mail', body.email) +\n    row('Telefon', body.telefon || '–')\n  ) +\n  guardianSection +\n  section('Mitgliedschaft',\n    row('Kategorie', body.kategorie) +\n    row('Beginn', body.beginn)\n  ) +\n  section('SEPA-Lastschriftmandat',\n    row('Kontoinhaber:in', body.kontoinhaber) +\n    row('IBAN', iban) +\n    row('Mandat akzeptiert', body.sepa_consent ? '✓' : '–') +\n    row('Datenschutz akzeptiert', body.privacy_consent ? '✓' : '–')\n  ) +\n  '<p style=\"margin-top:32px;font-size:13px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:16px;\">User-Agent: ' + esc(body.user_agent || '–') + '</p>' +\n  '</div></body></html>';\n\nconst applicantHtml =\n  '<!DOCTYPE html><html lang=\"de\"><head><meta charset=\"UTF-8\"></head>' +\n  '<body style=\"margin:0;padding:24px;background:#f9fafb;font-family:Helvetica,Arial,sans-serif;color:#1f2937;\">' +\n  '<div style=\"max-width:640px;margin:0 auto;background:white;border-radius:12px;padding:32px;\">' +\n  '<h1 style=\"color:#0a1628;font-size:22px;margin:0 0 16px;\">Hallo ' + esc(body.vorname) + ',</h1>' +\n  '<p style=\"line-height:1.6;\">danke für deinen Aufnahmeantrag beim <strong>Tennisclub Blau-Weiss Attendorn e.V.</strong> — wir haben deine Daten erhalten.</p>' +\n  '<div style=\"background:#f0f6fe;border-left:4px solid #1e56a0;border-radius:8px;padding:16px 20px;margin:24px 0;\">' +\n  '<p style=\"margin:0;font-size:14px;\"><strong>Eingegangen:</strong> ' + esc(eingegangen) + '<br>' +\n  '<strong>Deine Mandatsreferenz:</strong> <code style=\"background:white;padding:2px 6px;border-radius:4px;font-size:13px;\">' + esc(mandateRef) + '</code></p></div>' +\n  '<h2 style=\"color:#1e56a0;font-size:18px;margin:24px 0 12px;\">Wie es weitergeht</h2>' +\n  '<ol style=\"line-height:1.7;padding-left:20px;\">' +\n  '<li>Der Vorstand prüft deinen Antrag in den nächsten Tagen.</li>' +\n  '<li>Du bekommst eine Bestätigung per Mail, sobald der Beitritt aktiv ist.</li>' +\n  '<li>Der erste Mitgliedsbeitrag wird per SEPA-Lastschrift von dem angegebenen Konto eingezogen.</li>' +\n  '</ol>' +\n  '<p style=\"line-height:1.6;\">Bei Fragen schreib uns einfach an <a href=\"mailto:vorstand@tc-bw-attendorn.de\" style=\"color:#1a4080;\">vorstand@tc-bw-attendorn.de</a>.</p>' +\n  '<p style=\"margin-top:32px;line-height:1.6;\">Viele Grüße<br><strong>TC Blau-Weiss Attendorn e.V.</strong></p>' +\n  '</div></body></html>';\n\nreturn [{ json: { ok: true, body, mandateRef, eingegangen, vorstandHtml, applicantHtml, iban } }];\n"
       },
       "id": "validate",
       "name": "Validate & Build",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [400, 300]
+      "position": [
+        400,
+        300
+      ]
     },
     {
       "parameters": {
@@ -80,24 +98,33 @@
       "name": "Valid?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [600, 300]
+      "position": [
+        600,
+        300
+      ]
     },
     {
       "parameters": {
         "fromEmail": "noreply@tc-bw-attendorn.de",
         "toEmail": "vorstand@tc-bw-attendorn.de",
         "subject": "=Neuer Mitgliedsantrag: {{ $json.body.vorname }} {{ $json.body.nachname }}",
-        "emailType": "text",
-        "text": "={{ $json.md }}",
-        "options": {}
+        "emailType": "html",
+        "options": {},
+        "html": "={{ $json.vorstandHtml }}"
       },
       "id": "mail-vorstand",
       "name": "Mail an Vorstand",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2,
-      "position": [800, 200],
+      "position": [
+        800,
+        200
+      ],
       "credentials": {
-        "smtp": { "id": "REPLACE_WITH_SMTP_CRED_ID", "name": "Vereins-SMTP" }
+        "smtp": {
+          "id": "REPLACE_WITH_SMTP_CRED_ID",
+          "name": "Vereins-SMTP"
+        }
       }
     },
     {
@@ -105,33 +132,94 @@
         "fromEmail": "noreply@tc-bw-attendorn.de",
         "toEmail": "={{ $json.body.email }}",
         "subject": "Bestätigung deines Aufnahmeantrags – TC Blau-Weiss Attendorn",
-        "emailType": "text",
-        "text": "=Hallo {{ $json.body.vorname }},\n\nwir haben deinen Aufnahmeantrag erhalten — vielen Dank!\n\nMandatsreferenz: {{ $json.mandateRef }}\nEingegangen: {{ $now }}\n\nDer Vorstand prüft deinen Antrag und meldet sich innerhalb weniger Tage bei dir.\n\nFalls du Fragen hast, schreib uns gerne an vorstand@tc-bw-attendorn.de.\n\nViele Grüße\nTC Blau-Weiss Attendorn e.V.",
-        "options": {}
+        "emailType": "html",
+        "options": {},
+        "html": "={{ $json.applicantHtml }}"
       },
       "id": "mail-applicant",
       "name": "Bestätigung an Antragsteller",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2,
-      "position": [1000, 200],
+      "position": [
+        1000,
+        200
+      ],
       "credentials": {
-        "smtp": { "id": "REPLACE_WITH_SMTP_CRED_ID", "name": "Vereins-SMTP" }
+        "smtp": {
+          "id": "REPLACE_WITH_SMTP_CRED_ID",
+          "name": "Vereins-SMTP"
+        }
       }
     }
   ],
   "connections": {
-    "Webhook": { "main": [[{ "node": "Validate & Build", "type": "main", "index": 0 }]] },
-    "Validate & Build": { "main": [[{ "node": "Valid?", "type": "main", "index": 0 }]] },
-    "Valid?": {
+    "Webhook": {
       "main": [
-        [{ "node": "Mail an Vorstand", "type": "main", "index": 0 }],
-        [{ "node": "Respond Error", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Validate & Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "Mail an Vorstand": { "main": [[{ "node": "Bestätigung an Antragsteller", "type": "main", "index": 0 }]] },
-    "Bestätigung an Antragsteller": { "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]] }
+    "Validate & Build": {
+      "main": [
+        [
+          {
+            "node": "Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid?": {
+      "main": [
+        [
+          {
+            "node": "Mail an Vorstand",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail an Vorstand": {
+      "main": [
+        [
+          {
+            "node": "Bestätigung an Antragsteller",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bestätigung an Antragsteller": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
   "settings": {},
   "active": false,
-  "tags": ["mitgliedsantrag", "automated"]
+  "tags": [
+    "mitgliedsantrag",
+    "automated"
+  ]
 }
