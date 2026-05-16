@@ -1,0 +1,420 @@
+{{ define "main" }}
+<section class="section" style="padding-top: 120px; padding-bottom: 80px;">
+  <div class="container" style="max-width: 760px;">
+
+    <p class="label-upper section-eyebrow">Verein</p>
+    <h1 class="heading-display section-title" style="margin-bottom: 16px;">{{ .Title }}</h1>
+    {{ with .Description }}<p class="section-subtitle" style="margin-bottom: 48px;">{{ . }}</p>{{ end }}
+
+    {{ if not .Site.Params.anmeldungWebhook }}
+    <div class="anmeldung-info-banner" role="status">
+      <strong>Online-Anmeldung ist noch nicht aktiv.</strong> Bitte schreib uns direkt an
+      <a href="mailto:vorstand@tc-bw-attendorn.de">vorstand@tc-bw-attendorn.de</a>.
+    </div>
+    {{ end }}
+
+    <form id="anmeldung-form" class="anmeldung-form" novalidate>
+
+      {{/* ── Persönliche Daten ─────────────────────────────────── */}}
+      <fieldset class="form-section">
+        <legend>Persönliche Daten</legend>
+
+        <div class="form-row">
+          <label class="form-field">
+            <span>Vorname <span class="req">*</span></span>
+            <input type="text" name="vorname" autocomplete="given-name" required>
+          </label>
+          <label class="form-field">
+            <span>Nachname <span class="req">*</span></span>
+            <input type="text" name="nachname" autocomplete="family-name" required>
+          </label>
+        </div>
+
+        <label class="form-field">
+          <span>Geburtsdatum <span class="req">*</span></span>
+          <input type="date" name="geburtsdatum" autocomplete="bday" required>
+        </label>
+
+        <label class="form-field">
+          <span>Straße &amp; Hausnummer <span class="req">*</span></span>
+          <input type="text" name="strasse" autocomplete="street-address" required>
+        </label>
+
+        <div class="form-row">
+          <label class="form-field form-field--narrow">
+            <span>PLZ <span class="req">*</span></span>
+            <input type="text" name="plz" inputmode="numeric" pattern="\d{5}" maxlength="5" autocomplete="postal-code" required>
+          </label>
+          <label class="form-field form-field--grow">
+            <span>Ort <span class="req">*</span></span>
+            <input type="text" name="ort" autocomplete="address-level2" required>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label class="form-field">
+            <span>E-Mail <span class="req">*</span></span>
+            <input type="email" name="email" autocomplete="email" required>
+          </label>
+          <label class="form-field">
+            <span>Telefon</span>
+            <input type="tel" name="telefon" autocomplete="tel">
+          </label>
+        </div>
+      </fieldset>
+
+      {{/* ── Erziehungsberechtigte/r (toggleable) ──────────────── */}}
+      <fieldset class="form-section" id="guardian-section" hidden>
+        <legend>Erziehungsberechtigte/r</legend>
+        <p class="form-hint">Bei Antragstellern unter 18 Jahren erforderlich.</p>
+        <label class="form-field">
+          <span>Name <span class="req">*</span></span>
+          <input type="text" name="guardian_name">
+        </label>
+        <label class="form-field">
+          <span>Telefon <span class="req">*</span></span>
+          <input type="tel" name="guardian_telefon">
+        </label>
+      </fieldset>
+
+      {{/* ── Mitgliedschaft ────────────────────────────────────── */}}
+      <fieldset class="form-section">
+        <legend>Mitgliedschaft</legend>
+
+        <label class="form-field">
+          <span>Beitragskategorie <span class="req">*</span></span>
+          <select name="kategorie" required>
+            <option value="" disabled selected>Bitte wählen</option>
+            <option value="Erwachsene (200 EUR)">Erwachsene — 200 EUR</option>
+            <option value="Besucher weiterführender Schulen / Studenten (100 EUR)">Besucher weiterführender Schulen / Studenten — 100 EUR</option>
+            <option value="Zweit- / Schnuppermitgliedschaft (100 EUR)">Zweit- / Schnuppermitgliedschaft — 100 EUR</option>
+            <option value="Kinder, deren Eltern Clubmitglieder sind (50 EUR)">Kinder, deren Eltern Clubmitglieder sind — 50 EUR</option>
+            <option value="Vorschul- und Grundschulkinder (40 EUR)">Vorschul- und Grundschulkinder — 40 EUR</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Beginn der Mitgliedschaft <span class="req">*</span></span>
+          <input type="date" name="beginn" required>
+        </label>
+      </fieldset>
+
+      {{/* ── SEPA-Lastschriftmandat ────────────────────────────── */}}
+      <fieldset class="form-section">
+        <legend>SEPA-Lastschriftmandat</legend>
+
+        <label class="form-field">
+          <span>Kontoinhaber:in <span class="req">*</span></span>
+          <input type="text" name="kontoinhaber" autocomplete="cc-name" required>
+        </label>
+
+        <label class="form-field">
+          <span>IBAN <span class="req">*</span></span>
+          <input type="text" name="iban" inputmode="latin" autocomplete="off"
+                 placeholder="DE00 0000 0000 0000 0000 00" required
+                 pattern="[A-Za-z]{2}\d{2}[A-Za-z0-9 ]{15,30}">
+          <span class="form-hint" id="iban-feedback" aria-live="polite"></span>
+        </label>
+
+        <p class="sepa-mandate">
+          Hiermit ermächtige ich den <strong>Tennisclub Blau-Weiss Attendorn e.V.</strong>
+          (Gläubiger-ID: <code>{{ .Site.Params.sepaCreditorId }}</code>),
+          Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich
+          weise ich mein Kreditinstitut an, die vom TC Blau-Weiss Attendorn e.V.
+          auf mein Konto gezogenen Lastschriften einzulösen.
+          Ich kann innerhalb von <strong>acht Wochen</strong>, beginnend mit dem
+          Belastungsdatum, die Erstattung des belasteten Betrages verlangen.
+        </p>
+
+        <label class="form-checkbox">
+          <input type="checkbox" name="sepa_consent" required>
+          <span>Ich erteile dem TC Blau-Weiss Attendorn e.V. das SEPA-Lastschriftmandat zu den oben genannten Bedingungen. <span class="req">*</span></span>
+        </label>
+      </fieldset>
+
+      {{/* ── Datenschutz-Consent ───────────────────────────────── */}}
+      <fieldset class="form-section">
+        <legend>Datenschutz</legend>
+        <label class="form-checkbox">
+          <input type="checkbox" name="privacy_consent" required>
+          <span>Ich habe die <a href="/seiten/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Vereinsmitgliedschaft zu. <span class="req">*</span></span>
+        </label>
+      </fieldset>
+
+      {{/* ── Submit + Status ───────────────────────────────────── */}}
+      <div class="form-actions">
+        <button type="submit" class="btn-primary anmeldung-submit">
+          Antrag abschicken
+        </button>
+      </div>
+
+      <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
+    </form>
+
+  </div>
+</section>
+
+<style>
+  .anmeldung-info-banner {
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-left: 4px solid var(--blue-500);
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: var(--gray-700, #374151);
+    margin-bottom: 32px;
+  }
+  .anmeldung-info-banner a { color: var(--blue-700); }
+
+  .anmeldung-form { display: flex; flex-direction: column; gap: 32px; }
+
+  .form-section {
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    background: white;
+    margin: 0;
+  }
+  .form-section > legend {
+    padding: 0 10px;
+    font-weight: 700;
+    color: var(--blue-800);
+    font-size: 1.05rem;
+  }
+  .form-section > legend + .form-hint,
+  .form-section > .form-hint { margin-top: -6px; margin-bottom: 14px; }
+
+  .form-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .form-row > .form-field { flex: 1 1 220px; min-width: 0; }
+  .form-field--narrow { flex: 0 0 120px !important; }
+  .form-field--grow { flex: 1 1 240px !important; }
+
+  .form-field {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-bottom: 14px;
+  }
+  .form-field > span { font-size: 0.9rem; font-weight: 500; color: var(--gray-700, #374151); }
+  .form-field .req { color: #c0392b; }
+  .form-field input,
+  .form-field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    font: inherit;
+    background: white;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-field input:focus,
+  .form-field select:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(30, 86, 160, 0.15);
+  }
+  .form-field input[aria-invalid="true"],
+  .form-field input:invalid:not(:placeholder-shown):not([type="date"]) {
+    border-color: #c0392b;
+  }
+
+  .form-hint { font-size: 0.85rem; color: var(--gray-500); }
+  .form-hint.is-error { color: #c0392b; font-weight: 500; }
+  .form-hint.is-ok { color: #198754; }
+
+  .form-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .form-checkbox input { margin-top: 4px; flex-shrink: 0; }
+  .form-checkbox span { font-size: 0.95rem; color: var(--gray-700, #374151); }
+  .form-checkbox a { color: var(--blue-700); text-decoration: underline; }
+
+  .sepa-mandate {
+    background: var(--blue-50);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--gray-700, #374151);
+    margin: 4px 0 18px;
+  }
+  .sepa-mandate code {
+    background: white;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+
+  .form-actions { display: flex; justify-content: flex-start; margin-top: 8px; }
+  .anmeldung-submit {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+  .anmeldung-submit[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+  .form-status {
+    border-radius: 12px;
+    padding: 18px 22px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .form-status.is-success {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+  }
+  .form-status.is-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+  }
+
+  @media (max-width: 560px) {
+    .form-section { padding: 20px 18px 16px; }
+    .form-row { gap: 12px; }
+    .form-field--narrow { flex: 1 1 100px !important; }
+  }
+</style>
+
+<script>
+(function () {
+  const form = document.getElementById('anmeldung-form');
+  if (!form) return;
+
+  const WEBHOOK_URL = {{ .Site.Params.anmeldungWebhook | jsonify }};
+  const submitBtn = form.querySelector('.anmeldung-submit');
+  const status = document.getElementById('form-status');
+  const guardianSection = document.getElementById('guardian-section');
+  const ibanField = form.elements['iban'];
+  const ibanFeedback = document.getElementById('iban-feedback');
+  const beginnField = form.elements['beginn'];
+  const birthdayField = form.elements['geburtsdatum'];
+  const vornameField = form.elements['vorname'];
+  const nachnameField = form.elements['nachname'];
+  const kontoinhaberField = form.elements['kontoinhaber'];
+
+  // Default "Beginn der Mitgliedschaft" = heute
+  if (!beginnField.value) {
+    const today = new Date().toISOString().slice(0, 10);
+    beginnField.value = today;
+  }
+
+  // Geburtsdatum-Toggle für Erziehungsberechtigte (< 18 Jahre)
+  function toggleGuardian() {
+    const bd = birthdayField.value;
+    if (!bd) {
+      guardianSection.hidden = true;
+      return;
+    }
+    const birth = new Date(bd);
+    const cutoff = new Date();
+    cutoff.setFullYear(cutoff.getFullYear() - 18);
+    const isMinor = birth > cutoff;
+    guardianSection.hidden = !isMinor;
+    const inputs = guardianSection.querySelectorAll('input');
+    inputs.forEach(i => { i.required = isMinor; });
+  }
+  birthdayField.addEventListener('change', toggleGuardian);
+
+  // Auto-fill Kontoinhaber:in mit Antragsteller-Name, solange noch leer / nicht manuell geändert
+  let kontoinhaberDirty = false;
+  kontoinhaberField.addEventListener('input', () => { kontoinhaberDirty = true; });
+  function autofillKontoinhaber() {
+    if (kontoinhaberDirty) return;
+    const full = [vornameField.value, nachnameField.value].filter(Boolean).join(' ').trim();
+    if (full) kontoinhaberField.value = full;
+  }
+  vornameField.addEventListener('input', autofillKontoinhaber);
+  nachnameField.addEventListener('input', autofillKontoinhaber);
+
+  // IBAN Mod-97 Validation (ISO 13616)
+  function validateIban(raw) {
+    const iban = raw.replace(/\s+/g, '').toUpperCase();
+    if (!/^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(iban)) return false;
+    const rearranged = iban.slice(4) + iban.slice(0, 4);
+    // Convert letters: A=10 ... Z=35
+    const numStr = rearranged.replace(/[A-Z]/g, c => (c.charCodeAt(0) - 55).toString());
+    // Iterative mod 97 to avoid bigint
+    let remainder = 0;
+    for (const digit of numStr) {
+      remainder = (remainder * 10 + Number(digit)) % 97;
+    }
+    return remainder === 1;
+  }
+
+  ibanField.addEventListener('input', () => {
+    const v = ibanField.value.trim();
+    if (!v) { ibanFeedback.textContent = ''; ibanFeedback.className = 'form-hint'; ibanField.removeAttribute('aria-invalid'); return; }
+    if (validateIban(v)) {
+      ibanFeedback.textContent = '✓ IBAN gültig';
+      ibanFeedback.className = 'form-hint is-ok';
+      ibanField.setAttribute('aria-invalid', 'false');
+    } else {
+      ibanFeedback.textContent = 'Bitte gültige IBAN eingeben';
+      ibanFeedback.className = 'form-hint is-error';
+      ibanField.setAttribute('aria-invalid', 'true');
+    }
+  });
+
+  function showStatus(kind, text) {
+    status.hidden = false;
+    status.className = 'form-status ' + (kind === 'success' ? 'is-success' : 'is-error');
+    status.textContent = text;
+    status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.hidden = true;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (!validateIban(ibanField.value)) {
+      ibanField.focus();
+      ibanFeedback.textContent = 'Bitte gültige IBAN eingeben';
+      ibanFeedback.className = 'form-hint is-error';
+      return;
+    }
+
+    if (!WEBHOOK_URL) {
+      showStatus('error', 'Online-Anmeldung ist noch nicht aktiviert. Bitte schreib uns an vorstand@tc-bw-attendorn.de.');
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.iban = data.iban.replace(/\s+/g, '').toUpperCase();
+    data.timestamp = new Date().toISOString();
+    data.user_agent = navigator.userAgent;
+    data.form = 'mitgliedsantrag';
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Wird gesendet …';
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      form.reset();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Antrag gesendet ✓';
+      showStatus('success',
+        'Danke! Dein Aufnahmeantrag ist bei uns angekommen. Du erhältst gleich eine Bestätigung per E-Mail. Der Vorstand meldet sich innerhalb weniger Tage bei dir.');
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+      showStatus('error',
+        'Da ist etwas schiefgelaufen. Bitte versuche es nochmal oder schreib uns direkt an vorstand@tc-bw-attendorn.de.');
+    }
+  });
+})();
+</script>
+{{ end }}
