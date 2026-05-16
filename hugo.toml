@@ -17,7 +17,7 @@ title = "Tennisclub Blau-Weiss Attendorn e.V."
   courtbookingURL = "https://tc-bw-attendorn.courtbooking.de/login?standard=true"
   courtbookingLabel = "Platz buchen"
   # Online-Anmeldung — placeholders, vor Live-Schaltung ausfüllen
-  anmeldungWebhook = ""             # n8n-Webhook-URL für Mitgliedsantrag-POSTs
+  anmeldungWebhook = "https://n8n.faffi.synology.me/webhook/tcbw-anmeldung"
   sepaCreditorId = "DE99ZZZ00000000000"  # Echte Gläubiger-ID des Vereins eintragen
 
 [menus]

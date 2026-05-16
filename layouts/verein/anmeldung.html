@@ -283,7 +283,7 @@
   const form = document.getElementById('anmeldung-form');
   if (!form) return;
 
-  const WEBHOOK_URL = {{ .Site.Params.anmeldungWebhook | jsonify }};
+  const WEBHOOK_URL = {{ printf "%q" .Site.Params.anmeldungWebhook | safeJS }};
   const submitBtn = form.querySelector('.anmeldung-submit');
   const status = document.getElementById('form-status');
   const guardianSection = document.getElementById('guardian-section');
