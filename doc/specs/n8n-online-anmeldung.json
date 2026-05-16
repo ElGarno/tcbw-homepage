@@ -107,10 +107,10 @@
       "parameters": {
         "fromEmail": "noreply@tc-bw-attendorn.de",
         "toEmail": "vorstand@tc-bw-attendorn.de",
-        "subject": "=Neuer Mitgliedsantrag: {{ $json.body.vorname }} {{ $json.body.nachname }}",
+        "subject": "=Neuer Mitgliedsantrag: {{ $('Validate & Build').item.json.body.vorname }} {{ $('Validate & Build').item.json.body.nachname }}",
         "emailType": "html",
         "options": {},
-        "html": "={{ $json.vorstandHtml }}"
+        "html": "={{ $('Validate & Build').item.json.vorstandHtml }}"
       },
       "id": "mail-vorstand",
       "name": "Mail an Vorstand",
@@ -130,11 +130,11 @@
     {
       "parameters": {
         "fromEmail": "noreply@tc-bw-attendorn.de",
-        "toEmail": "={{ $json.body.email }}",
+        "toEmail": "={{ $('Validate & Build').item.json.body.email }}",
         "subject": "Bestätigung deines Aufnahmeantrags – TC Blau-Weiss Attendorn",
         "emailType": "html",
         "options": {},
-        "html": "={{ $json.applicantHtml }}"
+        "html": "={{ $('Validate & Build').item.json.applicantHtml }}"
       },
       "id": "mail-applicant",
       "name": "Bestätigung an Antragsteller",
