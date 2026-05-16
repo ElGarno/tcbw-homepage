@@ -21,4 +21,4 @@ contact_section:
 ## Downloads
 
 - [Einwilligung in die Datenverarbeitung (PDF)](/downloads/Einwilligung-in-die-Datenverarbeitung.pdf)
-- [Einverständniserklärung TC BW Attendorn (PDF)](/downloads/Einverständniserklärung-TC-BW-ATTENDORN.pdf)
+- [Einverständniserklärung TC BW Attendorn (PDF)](/downloads/Einverstaendniserklaerung-TC-BW-ATTENDORN.pdf)
