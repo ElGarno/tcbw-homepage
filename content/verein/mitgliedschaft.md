@@ -41,9 +41,11 @@ contact_section:
 | Kinder, deren Eltern Clubmitglieder sind | 50 EUR |
 | Vorschul- und Grundschulkinder | 40 EUR |
 
-## Offline-Variante (PDF zum Ausdrucken)
+## Datenschutz & Einverständnis (Begleitdokumente)
 
-Wenn du den Antrag lieber auf Papier ausfüllen möchtest:
+Hintergrund-Dokumente zum Nachlesen und fürs Archiv:
 
 - [Einwilligung in die Datenverarbeitung (PDF)](/downloads/Einwilligung-in-die-Datenverarbeitung.pdf)
 - [Einverständniserklärung TC BW Attendorn (PDF)](/downloads/Einverstaendniserklaerung-TC-BW-ATTENDORN.pdf)
+
+Du kommst nicht online klar? Schreib uns an [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de) — wir nehmen den Antrag dann persönlich auf.

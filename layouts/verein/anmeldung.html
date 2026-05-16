@@ -13,6 +13,8 @@
     </div>
     {{ end }}
 
+    <p class="form-required-legend"><span class="req">*</span> Pflichtfeld</p>
+
     <form id="anmeldung-form" class="anmeldung-form" novalidate>
 
       {{/* ── Persönliche Daten ─────────────────────────────────── */}}
@@ -165,6 +167,13 @@
     margin-bottom: 32px;
   }
   .anmeldung-info-banner a { color: var(--blue-700); }
+
+  .form-required-legend {
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    margin: 0 0 16px;
+  }
+  .form-required-legend .req { color: #c0392b; font-weight: 600; }
 
   .anmeldung-form { display: flex; flex-direction: column; gap: 32px; }
 
