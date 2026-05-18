@@ -101,6 +101,44 @@
         </label>
       </fieldset>
 
+      {{/* ── Foto- & Datenfreigaben (alle freiwillig) ───────────── */}}
+      <fieldset class="form-section">
+        <legend>Foto- &amp; Datenfreigaben (freiwillig)</legend>
+        <p class="form-hint">Alle folgenden Einwilligungen sind freiwillig und jederzeit per Mail an <a href="mailto:vorstand@tc-bw-attendorn.de">vorstand@tc-bw-attendorn.de</a> widerrufbar.</p>
+
+        <p id="guardian-consent-note" class="form-hint form-hint--minor" hidden>
+          Hinweis: Bei Antragstellern unter 18 Jahren werden die folgenden Freigaben durch die <strong>Erziehungsberechtigten</strong> erteilt.
+        </p>
+
+        <label class="form-checkbox">
+          <input type="checkbox" name="share_contact">
+          <span>Meine Kontaktdaten dürfen zu Vereinszwecken (z.&nbsp;B. Bildung von Fahrgemeinschaften) an andere Vereinsmitglieder weitergegeben werden.</span>
+        </label>
+
+        <p style="margin: 18px 0 8px; font-weight: 500; color: var(--gray-700, #374151);">Veröffentlichung von Fotos &amp; Videos meiner Person bei Vereinsveranstaltungen und Mannschaftspräsentationen auf:</p>
+
+        <label class="form-checkbox">
+          <input type="checkbox" name="foto_homepage">
+          <span>Homepage des Vereins (<code>tc-bw-attendorn.de</code>)</span>
+        </label>
+        <label class="form-checkbox">
+          <input type="checkbox" name="foto_facebook">
+          <span>Facebook-Seite des Vereins</span>
+        </label>
+        <label class="form-checkbox">
+          <input type="checkbox" name="foto_instagram">
+          <span>Instagram-Seite des Vereins</span>
+        </label>
+        <label class="form-checkbox">
+          <input type="checkbox" name="foto_presse">
+          <span>Regionale Presseerzeugnisse (z.&nbsp;B. Sauerlandkurier, Lokalanzeigen)</span>
+        </label>
+
+        <p class="form-hint" style="margin-top: 14px;">
+          Veröffentlichungen im Internet und sozialen Netzwerken sind weltweit abrufbar. Eine vollständige Löschung im Nachhinein kann nicht garantiert werden. Bei Teilnahme an öffentlichen Vereinsveranstaltungen dürfen Fotos im Rahmen der Öffentlichkeitsarbeit auch nach Widerruf weiterhin gezeigt werden.
+        </p>
+      </fieldset>
+
       {{/* ── SEPA-Lastschriftmandat ────────────────────────────── */}}
       <fieldset class="form-section">
         <legend>SEPA-Lastschriftmandat</legend>
@@ -228,6 +266,16 @@
   .form-hint { font-size: 0.85rem; color: var(--gray-500); }
   .form-hint.is-error { color: #c0392b; font-weight: 500; }
   .form-hint.is-ok { color: #198754; }
+  .form-hint--minor {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #92400e;
+    margin: 8px 0 14px;
+    font-size: 0.9rem;
+  }
+  .form-hint--minor a { color: #78350f; }
 
   .form-checkbox {
     display: flex;
@@ -311,10 +359,12 @@
   }
 
   // Geburtsdatum-Toggle für Erziehungsberechtigte (< 18 Jahre)
+  const guardianConsentNote = document.getElementById('guardian-consent-note');
   function toggleGuardian() {
     const bd = birthdayField.value;
     if (!bd) {
       guardianSection.hidden = true;
+      if (guardianConsentNote) guardianConsentNote.hidden = true;
       return;
     }
     const birth = new Date(bd);
@@ -322,6 +372,7 @@
     cutoff.setFullYear(cutoff.getFullYear() - 18);
     const isMinor = birth > cutoff;
     guardianSection.hidden = !isMinor;
+    if (guardianConsentNote) guardianConsentNote.hidden = !isMinor;
     const inputs = guardianSection.querySelectorAll('input');
     inputs.forEach(i => { i.required = isMinor; });
   }
