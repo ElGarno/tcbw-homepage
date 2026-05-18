@@ -77,6 +77,18 @@
           <span>Telefon <span class="req">*</span></span>
           <input type="tel" name="guardian_telefon">
         </label>
+
+        <div class="signature-field" data-signature-for="guardian_signature">
+          <label>Unterschrift der/des Erziehungsberechtigten <span class="req">*</span></label>
+          <div class="signature-canvas-wrap">
+            <canvas class="signature-canvas" data-pad="guardian" width="600" height="180" aria-label="Unterschriftfeld Erziehungsberechtigte/r"></canvas>
+          </div>
+          <div class="signature-actions">
+            <button type="button" class="signature-clear" data-clear="guardian">Leeren</button>
+            <span class="form-hint">Bitte mit der Maus oder per Touch unterschreiben.</span>
+          </div>
+          <input type="hidden" name="guardian_signature">
+        </div>
       </fieldset>
 
       {{/* ── Mitgliedschaft ────────────────────────────────────── */}}
@@ -179,6 +191,24 @@
           <input type="checkbox" name="privacy_consent" required>
           <span>Ich habe die <a href="/seiten/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Vereinsmitgliedschaft zu. <span class="req">*</span></span>
         </label>
+      </fieldset>
+
+      {{/* ── Unterschrift ──────────────────────────────────────── */}}
+      <fieldset class="form-section">
+        <legend>Unterschrift</legend>
+        <p class="form-hint">Mit deiner Unterschrift bestätigst du die oben gemachten Angaben sowie das SEPA-Mandat.</p>
+
+        <div class="signature-field" data-signature-for="signature">
+          <label>Deine Unterschrift <span class="req">*</span></label>
+          <div class="signature-canvas-wrap">
+            <canvas class="signature-canvas" data-pad="applicant" width="600" height="180" aria-label="Unterschriftfeld Antragsteller"></canvas>
+          </div>
+          <div class="signature-actions">
+            <button type="button" class="signature-clear" data-clear="applicant">Leeren</button>
+            <span class="form-hint">Bitte mit der Maus oder per Touch unterschreiben.</span>
+          </div>
+          <input type="hidden" name="signature">
+        </div>
       </fieldset>
 
       {{/* ── Submit + Status ───────────────────────────────────── */}}
@@ -304,6 +334,55 @@
     font-size: 0.85em;
   }
 
+  .signature-field { margin-top: 6px; }
+  .signature-field > label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--gray-700, #374151);
+    margin-bottom: 8px;
+  }
+  .signature-canvas-wrap {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    background: #fafbfc;
+    background-image:
+      linear-gradient(to right, rgba(0,0,0,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow: hidden;
+    touch-action: none;
+  }
+  .signature-canvas {
+    display: block;
+    width: 100%;
+    height: 180px;
+    cursor: crosshair;
+  }
+  .signature-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 6px;
+  }
+  .signature-clear {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    color: var(--gray-700, #374151);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .signature-clear:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300, #cbd5e0);
+  }
+  .signature-field[aria-invalid="true"] .signature-canvas-wrap {
+    border-color: #c0392b;
+  }
+
   .form-actions { display: flex; justify-content: flex-start; margin-top: 8px; }
   .anmeldung-submit {
     padding: 14px 28px;
@@ -335,6 +414,7 @@
   }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
 <script>
 (function () {
   const form = document.getElementById('anmeldung-form');
@@ -344,6 +424,41 @@
   const submitBtn = form.querySelector('.anmeldung-submit');
   const status = document.getElementById('form-status');
   const guardianSection = document.getElementById('guardian-section');
+
+  // ── Signature pads ──────────────────────────────────────────────
+  const pads = {};
+  function initSignaturePad(canvas) {
+    // Hi-DPI: scale the canvas backing store to devicePixelRatio so strokes are crisp
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    const pad = new SignaturePad(canvas, { penColor: '#0a1628', minWidth: 0.8, maxWidth: 2.2 });
+    return pad;
+  }
+  document.querySelectorAll('.signature-canvas').forEach(c => {
+    const id = c.dataset.pad;
+    pads[id] = initSignaturePad(c);
+  });
+  document.querySelectorAll('.signature-clear').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pad = pads[btn.dataset.clear];
+      if (pad) pad.clear();
+    });
+  });
+  // Re-init on resize (canvas pixel buffer scales differently than CSS)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      document.querySelectorAll('.signature-canvas').forEach(c => {
+        const id = c.dataset.pad;
+        const oldData = pads[id] ? pads[id].toData() : null;
+        pads[id] = initSignaturePad(c);
+        if (oldData) pads[id].fromData(oldData);
+      });
+    }, 200);
+  });
   const ibanField = form.elements['iban'];
   const ibanFeedback = document.getElementById('iban-feedback');
   const beginnField = form.elements['beginn'];
@@ -425,6 +540,11 @@
     status.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  function markSignatureInvalid(padKey, invalid) {
+    const wrap = document.querySelector('.signature-field[data-signature-for="' + (padKey === 'applicant' ? 'signature' : 'guardian_signature') + '"]');
+    if (wrap) wrap.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     status.hidden = true;
@@ -440,9 +560,35 @@
       return;
     }
 
+    // Signatur(en) prüfen
+    if (!pads.applicant || pads.applicant.isEmpty()) {
+      markSignatureInvalid('applicant', true);
+      showStatus('error', 'Bitte unterschreibe das Formular im Feld „Deine Unterschrift".');
+      return;
+    } else {
+      markSignatureInvalid('applicant', false);
+    }
+    if (!guardianSection.hidden) {
+      if (!pads.guardian || pads.guardian.isEmpty()) {
+        markSignatureInvalid('guardian', true);
+        showStatus('error', 'Bitte unterschreibe auch das Feld „Unterschrift der/des Erziehungsberechtigten".');
+        return;
+      } else {
+        markSignatureInvalid('guardian', false);
+      }
+    }
+
     if (!WEBHOOK_URL) {
       showStatus('error', 'Online-Anmeldung ist noch nicht aktiviert. Bitte schreib uns an vorstand@tc-bw-attendorn.de.');
       return;
+    }
+
+    // Signaturen in Hidden-Inputs ablegen, damit sie via FormData mitkommen
+    form.elements['signature'].value = pads.applicant.toDataURL('image/png');
+    if (!guardianSection.hidden && pads.guardian) {
+      form.elements['guardian_signature'].value = pads.guardian.toDataURL('image/png');
+    } else {
+      form.elements['guardian_signature'].value = '';
     }
 
     const data = Object.fromEntries(new FormData(form).entries());
@@ -464,6 +610,7 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
 
       form.reset();
+      Object.values(pads).forEach(p => p.clear && p.clear());
       submitBtn.disabled = true;
       submitBtn.textContent = 'Antrag gesendet ✓';
       showStatus('success',
