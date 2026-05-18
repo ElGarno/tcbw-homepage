@@ -4,6 +4,11 @@ Diese Spec beschreibt einmaliges Setup für PDF-Generierung im Anmeldungs-Workfl
 Wenn alles eingerichtet ist, erzeugt der Workflow für jede Anmeldung ein
 unterschriebenes PDF und hängt es an Vorstand- und Antragsteller-Mail.
 
+Die Cloudflare Account-ID ist in der Workflow-JSON bereits **hardcoded**
+(`34a3222a9e0b55bc8a2d2f285ac7e121`) — sollte das einmal nötig sein, die
+Account-ID auszuwechseln, in `n8n-online-anmeldung.json` die URL in der
+**Render PDF**-Node anpassen.
+
 ## 1. Cloudflare API-Token anlegen
 
 1. **Cloudflare Dashboard** → rechts oben Profil → **API Tokens** → **Create Token**
@@ -15,12 +20,7 @@ unterschriebenes PDF und hängt es an Vorstand- und Antragsteller-Mail.
 6. **TTL:** optional unbegrenzt
 7. **Continue → Create Token → Token kopieren** (er wird nur einmal angezeigt)
 
-## 2. Cloudflare Account-ID notieren
-
-Im Cloudflare Dashboard rechts in der Sidebar steht die **Account ID** —
-brauchst du gleich für die n8n-Workflow-Variable.
-
-## 3. n8n-Credential anlegen
+## 2. n8n-Credential anlegen
 
 1. n8n → **Credentials** → **New**
 2. Type: **Header Auth**
@@ -29,28 +29,18 @@ brauchst du gleich für die n8n-Workflow-Variable.
 5. Header Value: `Bearer DEIN_TOKEN_HIER`
 6. Save
 
-## 4. Workflow-Variable für Account-ID
-
-In n8n → **Settings → Variables → New Variable**:
-
-- Key: `cfAccountId`
-- Value: die Cloudflare Account ID aus Schritt 2
-
-(Alternativ: hardcode in der HTTP-Node-URL — Variable ist sauberer, weil
-sie auch in anderen Workflows referenzierbar ist.)
-
-## 5. Workflow re-importieren oder Render-PDF-Node verknüpfen
+## 3. Workflow re-importieren oder Render-PDF-Node verknüpfen
 
 Beim ersten Re-Import: in der **Render PDF**-Node die Credential aus
-Schritt 3 zuordnen (Dropdown bei "Credential to connect with").
+Schritt 2 zuordnen (Dropdown bei "Credential to connect with").
 
-## 6. Browser Rendering aktivieren
+## 4. Browser Rendering aktivieren
 
 Im Cloudflare Dashboard → **Workers & Pages → Browser Rendering** muss
 das Feature mindestens einmal aktiviert/akzeptiert worden sein (Free Plan
 reicht: 10 min Browser-Zeit pro Tag, das entspricht ~100-200 PDFs).
 
-## 7. Test
+## 5. Test
 
 Curl-Test wie bisher absetzen, im n8n-Workflow auf "Executions" schauen:
 
@@ -64,7 +54,7 @@ Bei Fehlern in Render PDF:
 - 404: Account-ID stimmt nicht
 - 429: Quota überschritten — Free Plan upgraden oder bis morgen warten
 
-## 8. Optional: Quota beobachten
+## 6. Optional: Quota beobachten
 
 Cloudflare Dashboard → **Analytics & Logs → Browser Rendering** zeigt die
 verbrauchte Browser-Zeit. Bei stetig steigenden Anmeldungen ggf. auf
