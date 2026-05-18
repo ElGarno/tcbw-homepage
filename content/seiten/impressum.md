@@ -16,6 +16,13 @@ Felix Kersting (2. Geschäftsführer)
 E-Mail: [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de)<br>
 Telefon Clubhaus: 0151-43168187
 
+**Vereinsregister**<br>
+Amtsgericht Siegen<br>
+Registernummer: VR 5034
+
+**SEPA-Gläubiger-Identifikationsnummer**<br>
+DE96ZZZ00001146527
+
 ## Haftungsausschluss (Disclaimer)
 
 ### Haftung für Inhalte

@@ -16,9 +16,9 @@ title = "Tennisclub Blau-Weiss Attendorn e.V."
   facebook = "https://facebook.com/tc.blauweiss.attendorn.de"
   courtbookingURL = "https://tc-bw-attendorn.courtbooking.de/login?standard=true"
   courtbookingLabel = "Platz buchen"
-  # Online-Anmeldung — placeholders, vor Live-Schaltung ausfüllen
+  # Online-Anmeldung
   anmeldungWebhook = "https://n8n.faffi.synology.me/webhook/tcbw-anmeldung"
-  sepaCreditorId = "DE99ZZZ00000000000"  # Echte Gläubiger-ID des Vereins eintragen
+  sepaCreditorId = "DE96ZZZ00001146527"
 
 [menus]
   [[menus.main]]
