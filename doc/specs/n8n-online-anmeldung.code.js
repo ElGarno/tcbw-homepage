@@ -38,6 +38,16 @@ const guardianSection = body.guardian_name
   ? section('Erziehungsberechtigte/r', row('Name', body.guardian_name) + row('Telefon', body.guardian_telefon || '–'))
   : '';
 
+const yn = v => (v === 'on' || v === true || v === 'true') ? '✓ erteilt' : '– nicht erteilt';
+
+const consentSection = section('Foto- &amp; Datenfreigaben (freiwillig)',
+  row('Kontaktdaten an Mitglieder weitergeben', yn(body.share_contact)) +
+  row('Foto/Video auf Homepage', yn(body.foto_homepage)) +
+  row('Foto/Video auf Facebook', yn(body.foto_facebook)) +
+  row('Foto/Video auf Instagram', yn(body.foto_instagram)) +
+  row('Foto/Video in regionaler Presse', yn(body.foto_presse))
+);
+
 const vorstandHtml =
   '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>' +
   '<body style="margin:0;padding:24px;background:#f9fafb;font-family:Helvetica,Arial,sans-serif;color:#1f2937;">' +
@@ -65,6 +75,7 @@ const vorstandHtml =
     row('Mandat akzeptiert', body.sepa_consent ? '✓' : '–') +
     row('Datenschutz akzeptiert', body.privacy_consent ? '✓' : '–')
   ) +
+  consentSection +
   '<p style="margin-top:32px;font-size:13px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:16px;">User-Agent: ' + esc(body.user_agent || '–') + '</p>' +
   '</div></body></html>';
 
@@ -83,7 +94,9 @@ const applicantHtml =
   '<li>Du bekommst eine Bestätigung per Mail, sobald der Beitritt aktiv ist.</li>' +
   '<li>Der erste Mitgliedsbeitrag wird per SEPA-Lastschrift von dem angegebenen Konto eingezogen.</li>' +
   '</ol>' +
-  '<p style="line-height:1.6;">Bei Fragen schreib uns einfach an <a href="mailto:vorstand@tc-bw-attendorn.de" style="color:#1a4080;">vorstand@tc-bw-attendorn.de</a>.</p>' +
+  consentSection +
+  '<p style="line-height:1.6;font-size:13px;color:#6b7280;margin-top:18px;">Hinweis: Die oben angekreuzten Foto- und Datenfreigaben sind freiwillig und jederzeit per Mail an <a href="mailto:vorstand@tc-bw-attendorn.de" style="color:#1a4080;">vorstand@tc-bw-attendorn.de</a> widerrufbar.</p>' +
+  '<p style="line-height:1.6;margin-top:24px;">Bei Fragen schreib uns einfach an <a href="mailto:vorstand@tc-bw-attendorn.de" style="color:#1a4080;">vorstand@tc-bw-attendorn.de</a>.</p>' +
   '<p style="margin-top:32px;line-height:1.6;">Viele Grüße<br><strong>TC Blau-Weiss Attendorn e.V.</strong></p>' +
   '</div></body></html>';
 
