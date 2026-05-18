@@ -160,7 +160,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.cloudflare.com/client/v4/accounts/{{ $vars.cfAccountId }}/browser-rendering/pdf",
+        "url": "https://api.cloudflare.com/client/v4/accounts/34a3222a9e0b55bc8a2d2f285ac7e121/browser-rendering/pdf",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "httpHeaderAuth",
         "sendBody": true,
