@@ -35,7 +35,15 @@ if (rem !== 1) {
 
 const nowIso = new Date().toISOString();
 const eingegangen = new Date(nowIso).toLocaleString('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'long', timeStyle: 'short' });
-const mandateRef = 'TCBW-' + nowIso.replace(/[-:T.Z]/g,'').slice(0,12) + '-' + (body.nachname || '').slice(0,8).replace(/[^A-Za-z]/g,'').toUpperCase();
+
+// ASCII-Transliteration für Mandatsreferenz / Dateinamen (Wörenkämper → Woerenkaemper)
+const asciify = s => String(s ?? '')
+  .replace(/ä/g, 'ae').replace(/Ä/g, 'Ae')
+  .replace(/ö/g, 'oe').replace(/Ö/g, 'Oe')
+  .replace(/ü/g, 'ue').replace(/Ü/g, 'Ue')
+  .replace(/ß/g, 'ss');
+
+const mandateRef = 'TCBW-' + nowIso.replace(/[-:T.Z]/g,'').slice(0,12) + '-' + asciify(body.nachname).replace(/[^A-Za-z]/g,'').slice(0,8).toUpperCase();
 
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -238,7 +246,7 @@ const pdfHtml =
   '</body></html>';
 
 // Sicherer Datei-Name für den Anhang
-const safeName = (body.nachname + '_' + body.vorname).replace(/[^A-Za-z0-9_-]/g, '');
+const safeName = asciify(body.nachname + '_' + body.vorname).replace(/[^A-Za-z0-9_-]/g, '');
 const pdfFilename = 'Mitgliedsantrag_' + safeName + '_' + mandateRef + '.pdf';
 
 return [{ json: { ok: true, body, mandateRef, eingegangen, vorstandHtml, applicantHtml, pdfHtml, pdfFilename, iban, isMinor } }];
