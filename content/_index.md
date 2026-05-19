@@ -28,7 +28,13 @@ verein:
   image_alt: "Gründung Tennisclub Blau-Weiss Attendorn e.V. 1931"
 cta:
   title: "Werde Teil unseres Vereins"
-  text: "Erwachsene ab 150 EUR/Jahr, Kinder ab 40 EUR/Jahr — finde die passende Mitgliedschaft für dich."
-  button_text: "Mitgliedschaft anfragen"
+  text: "Erwachsene ab 200 €/Jahr, Kinder ab 40 €/Jahr — Familien-Staffelung für mehrere Kinder."
+  button_text: "Beiträge & Anmeldung"
   button_url: "/verein/mitgliedschaft/"
+schnupperjahr:
+  eyebrow: "Schnupperjahr"
+  title: "Tennis ausprobieren — für die Hälfte"
+  text: "Du warst noch nie Mitglied und willst Tennis erstmal kennenlernen? Im Schnupperjahr zahlst du nur **50 %** des regulären Beitrags und hast die volle Vereinsmitgliedschaft. Wenn du nicht überzeugt bist, kündigst du bis 30. September einfach — sonst wechselt es automatisch in die reguläre Mitgliedschaft zum 1. Januar des Folgejahres."
+  button_text: "Jetzt Schnupperjahr starten"
+  button_url: "/verein/anmeldung/"
 ---

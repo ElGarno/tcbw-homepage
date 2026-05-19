@@ -33,13 +33,55 @@ contact_section:
 
 ## Mitgliedsbeiträge
 
+### Erwachsene
+
 | Kategorie | Jahresbeitrag |
-|-----------|--------------|
-| Erwachsene | 200 EUR |
-| Besucher weiterführender Schulen / Studenten | 100 EUR |
-| Zweit- / Schnuppermitgliedschaft | 100 EUR |
-| Kinder, deren Eltern Clubmitglieder sind | 50 EUR |
-| Vorschul- und Grundschulkinder | 40 EUR |
+|---|---|
+| Aktives Mitglied | 200 € |
+| Zweitmitgliedschaft | 100 € |
+| Passives Mitglied | 40 € |
+
+### Schüler & Studenten
+
+| Kategorie | Jahresbeitrag |
+|---|---|
+| Schüler / Student (ab 5. Klasse, mit Nachweis) | 100 € |
+
+### Kinder bis zur 4. Klasse
+
+| Kategorie | Jahresbeitrag |
+|---|---|
+| Vorschul- und Grundschulkind | 40 € |
+
+### Familien-Staffelung für Kinder ab der 5. Klasse
+
+Familien werden über die Reihenfolge ihrer Kinder gestaffelt — je mehr Kinder im Verein, desto günstiger jedes weitere. Wenn **beide** Eltern aktive Mitglieder sind, gilt die zweite Spalte:
+
+| Kind | 1 Elternteil ist Mitglied | Beide Eltern sind Mitglieder |
+|---|---|---|
+| 1. Kind | 50 € *) | 40 € |
+| 2. Kind | 40 € | 30 € |
+| 3. Kind | 30 € | 20 € |
+| 4. Kind (und weitere) | 20 € | 10 € |
+
+*) Wenn das 1. Kind noch in der Grundschule ist, gilt der Kinderbeitrag von 40 €.
+
+### Schnupperjahr
+
+| Kategorie | Jahresbeitrag |
+|---|---|
+| Schnupperjahr (50 % des regulären Beitrags) | je nach Konstellation |
+
+<div class="info-box">
+<h4>Was ist das Schnupperjahr?</h4>
+<p><strong>Du warst noch nie Mitglied und willst Tennis erstmal ausprobieren?</strong> Dann ist das Schnupperjahr genau richtig: Du zahlst im ersten Jahr nur <strong>50&nbsp;%</strong> des regulären Beitrags und kannst den Club in Ruhe kennenlernen — mit voller Platznutzung, Zugang zum Mannschaftstraining und allen anderen Vereinsleistungen.</p>
+<ul>
+  <li><strong>Wer kann mitmachen?</strong> Nur Neumitglieder — pro Person einmalig, nicht wiederholbar.</li>
+  <li><strong>Wie lange?</strong> Das Schnupperjahr läuft bis zum <strong>31. Dezember</strong> deines Beitrittsjahres.</li>
+  <li><strong>Und danach?</strong> Kündigst du bis zum <strong>30. September</strong>, endet die Mitgliedschaft mit dem Jahresende. Andernfalls wechselt sie zum <strong>1. Januar</strong> des Folgejahres automatisch in eine reguläre Mitgliedschaft.</li>
+  <li><strong>Beispiele:</strong> Erwachsener: 100 € · Grundschulkind: 20 € · Schüler/Student: 50 €</li>
+</ul>
+</div>
 
 ## Datenschutz & Einverständnis (Begleitdokumente)
 
