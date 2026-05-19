@@ -216,6 +216,16 @@
           <span class="form-hint">Schnupperjahr-Rabatt wird automatisch berücksichtigt, falls oben angekreuzt.</span>
         </label>
 
+        <div id="spouse-relation-block" hidden>
+          <label class="form-checkbox" style="margin-top: 4px;">
+            <input type="checkbox" name="partner_already_member" id="partner-already-member-toggle">
+            <span>Mein/e Ehepartner/in ist bereits aktives Mitglied im Verein.</span>
+          </label>
+          <p id="partner-already-member-note" class="form-hint form-hint--info" hidden>
+            <strong>Hinweis:</strong> Der Vorstand passt eure bereits gemeldeten Kinder dann automatisch auf die günstigere Staffelung „beide Eltern Mitglied" an (40 € / 30 € / 20 € / 10 €).
+          </p>
+        </div>
+
         <label class="form-field">
           <span>Beginn der Mitgliedschaft <span class="req">*</span></span>
           <input type="date" name="beginn" required>
@@ -430,6 +440,17 @@
     font-size: 0.9rem;
   }
   .form-hint--minor a { color: #78350f; }
+  .form-hint--info {
+    background: var(--blue-50);
+    border-left: 3px solid var(--blue-500);
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: var(--gray-700, #374151);
+    margin: 10px 0 14px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .form-hint--info strong { color: var(--blue-800); }
 
   .form-checkbox {
     display: flex;
@@ -755,6 +776,15 @@
     return r ? r.value : 'einzel';
   }
 
+  const spouseRelationBlock = document.getElementById('spouse-relation-block');
+  const partnerAlreadyToggle = document.getElementById('partner-already-member-toggle');
+  const partnerAlreadyNote = document.getElementById('partner-already-member-note');
+  if (partnerAlreadyToggle && partnerAlreadyNote) {
+    partnerAlreadyToggle.addEventListener('change', () => {
+      partnerAlreadyNote.hidden = !partnerAlreadyToggle.checked;
+    });
+  }
+
   function applyModus() {
     const modus = currentModus();
     // Einzel-Modus: klassisches Formular
@@ -768,6 +798,7 @@
       existingChildrenBlock.hidden = true;
       kategorieField.hidden = false;
       kategorieSelect.required = true;
+      spouseRelationBlock.hidden = false;
       // Guardian-Toggle wird vom Geburtsdatum gesteuert
       toggleGuardian();
     } else if (modus === 'familie') {
@@ -779,6 +810,7 @@
       existingChildrenBlock.hidden = true;
       kategorieField.hidden = true;
       kategorieSelect.required = false;
+      spouseRelationBlock.hidden = true;
       guardianSection.hidden = true;
     } else if (modus === 'kind') {
       personalLegend.textContent = 'Erziehungsberechtigte/r';
@@ -789,6 +821,7 @@
       existingChildrenBlock.hidden = false;
       kategorieField.hidden = true;
       kategorieSelect.required = false;
+      spouseRelationBlock.hidden = true;
       guardianSection.hidden = true;
       // Sicherstellen, dass mindestens 1 Kind im Repeater steckt
       if (kinderList.children.length === 0) addKind();
