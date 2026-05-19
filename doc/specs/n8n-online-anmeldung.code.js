@@ -169,6 +169,9 @@ const vorstandHtml =
   '<strong>Modus:</strong> ' + esc(modusLabel) + '<br>' +
   '<strong>Mandatsreferenz:</strong> <code style="background:#f0f6fe;padding:2px 6px;border-radius:4px;font-size:13px;">' + esc(mandateRef) + '</code></p>' +
   '<p style="background:#ecfdf5;border-left:4px solid #10b981;padding:10px 14px;border-radius:6px;font-size:14px;margin:18px 0;">📎 Der vollständige unterschriebene Antrag liegt als PDF im Anhang.</p>' +
+  (modus === 'einzel' && body.partner_already_member === 'on'
+    ? '<p style="background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 16px;border-radius:6px;font-size:14px;margin:18px 0;"><strong>⚠ Aktion erforderlich:</strong> Antragsteller gibt an, dass der/die Ehepartner/in bereits Mitglied ist. Bitte die <strong>Beiträge der bereits gemeldeten Kinder</strong> auf die Staffelung „beide Eltern Mitglied" (40 € / 30 € / 20 € / 10 €) anpassen.</p>'
+    : '') +
   personalSection + partnerSection_html + kinderSection_html + feeBlock +
   section('SEPA-Lastschriftmandat',
     row('Kontoinhaber:in', body.kontoinhaber) +
@@ -325,6 +328,10 @@ const pdfHtml =
   '</table>' +
 
   sigHtml +
+
+  (modus === 'einzel' && body.partner_already_member === 'on'
+    ? '<div style="margin-top:14px;background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:5px;font-size:10pt;line-height:1.5;color:#78350f;"><strong>Hinweis an den Vorstand:</strong> Antragsteller gibt an, dass der/die Ehepartner/in bereits aktives Mitglied ist. Beiträge der bereits gemeldeten Kinder bitte auf die Staffelung „beide Eltern Mitglied" anpassen (40 € / 30 € / 20 € / 10 €).</div>'
+    : '') +
 
   '<div class="audit">' +
     '<strong>Audit-Stempel</strong><br>' +
