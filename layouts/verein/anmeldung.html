@@ -377,6 +377,10 @@
   }
   .form-required-legend .req { color: #c0392b; font-weight: 600; }
 
+  /* hidden-Attribut hat in HTML5 niedrigere Priorität als display-Rules wie .form-field {display:flex}.
+     Mit !important sicherstellen, dass [hidden] immer wirklich versteckt ist. */
+  [hidden] { display: none !important; }
+
   .anmeldung-form { display: flex; flex-direction: column; gap: 32px; }
 
   .form-section {
@@ -756,6 +760,7 @@
     if (guardianConsentNote) guardianConsentNote.hidden = !isMinor;
     const inputs = guardianSection.querySelectorAll('input');
     inputs.forEach(i => { i.required = isMinor; });
+    if (isMinor && typeof reinitPadIfNeeded === 'function') reinitPadIfNeeded('guardian');
   }
   birthdayField.addEventListener('change', toggleGuardian);
 
@@ -832,6 +837,21 @@
   form.querySelectorAll('input[name="modus"]').forEach(r => r.addEventListener('change', applyModus));
 
   // ── Partner-Toggle ──────────────────────────────────────────────
+  function reinitPadIfNeeded(padKey) {
+    // Canvas in einem hidden-Container hatte beim Page-Load width=0/height=0
+    // → SignaturePad kann nicht zeichnen. Wenn der Container sichtbar wird,
+    // re-initialisieren wir das Pad mit korrekter Größe.
+    const canvas = document.querySelector('.signature-canvas[data-pad="' + padKey + '"]');
+    if (!canvas) return;
+    // Wenn das Canvas bereits eine echte Breite hat, nichts tun
+    if (pads[padKey] && canvas.width > 0 && canvas.offsetWidth > 0
+        && Math.abs(canvas.width / (window.devicePixelRatio || 1) - canvas.offsetWidth) < 4) return;
+    // Sonst neu initialisieren, nachdem Browser layout durchgelaufen ist
+    requestAnimationFrame(() => {
+      pads[padKey] = initSignaturePad(canvas);
+    });
+  }
+
   function applyPartnerToggle() {
     const joining = partnerJoinToggle.checked;
     partnerFields.hidden = !joining;
@@ -841,6 +861,7 @@
         i.required = joining;
       }
     });
+    if (joining) reinitPadIfNeeded('partner');
     updateFeeSummary();
   }
   partnerJoinToggle.addEventListener('change', applyPartnerToggle);
