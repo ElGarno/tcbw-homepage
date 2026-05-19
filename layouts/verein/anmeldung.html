@@ -17,9 +17,44 @@
 
     <form id="anmeldung-form" class="anmeldung-form" novalidate>
 
-      {{/* ── Persönliche Daten ─────────────────────────────────── */}}
+      {{/* ── Modus-Selector ─────────────────────────────────────── */}}
       <fieldset class="form-section">
-        <legend>Persönliche Daten</legend>
+        <legend>Wie möchtest du dich anmelden?</legend>
+        <div class="modus-grid">
+          <label class="modus-card">
+            <input type="radio" name="modus" value="einzel" checked>
+            <div>
+              <p class="modus-title">Einzelperson</p>
+              <p class="modus-text">Nur ich melde mich an.</p>
+            </div>
+          </label>
+          <label class="modus-card">
+            <input type="radio" name="modus" value="familie">
+            <div>
+              <p class="modus-title">Familie</p>
+              <p class="modus-text">Ich melde meine Familie an (Erwachsene + Kinder).</p>
+            </div>
+          </label>
+          <label class="modus-card">
+            <input type="radio" name="modus" value="kind">
+            <div>
+              <p class="modus-title">Kind nachmelden</p>
+              <p class="modus-text">Ich bin Mitglied, möchte ein Kind dazu anmelden.</p>
+            </div>
+          </label>
+        </div>
+
+        <label class="form-checkbox" id="schnupperjahr-toggle" style="margin-top: 18px;">
+          <input type="checkbox" name="schnupperjahr">
+          <span><strong>Schnupperjahr nutzen</strong> (50 % Rabatt im 1. Jahr, nur für Neumitglieder, einmal pro Person).
+            Gilt für alle hier angemeldeten Personen.</span>
+        </label>
+      </fieldset>
+
+      {{/* ── Persönliche Daten ─────────────────────────────────── */}}
+      <fieldset class="form-section" id="personal-section">
+        <legend id="personal-legend">Persönliche Daten</legend>
+        <p class="form-hint" id="personal-hint" hidden></p>
 
         <div class="form-row">
           <label class="form-field">
@@ -65,7 +100,80 @@
         </div>
       </fieldset>
 
-      {{/* ── Erziehungsberechtigte/r (toggleable) ──────────────── */}}
+      {{/* ── Partner/in (Familie-Modus) ────────────────────────── */}}
+      <fieldset class="form-section" id="partner-section" hidden>
+        <legend>Partner/in als zweite Person</legend>
+        <label class="form-checkbox" style="margin-bottom: 14px;">
+          <input type="checkbox" name="partner_join" id="partner-join-toggle">
+          <span>Mein/e Partner/in tritt ebenfalls als aktives Mitglied bei.</span>
+        </label>
+
+        <div id="partner-fields" hidden>
+          <div class="form-row">
+            <label class="form-field">
+              <span>Vorname <span class="req">*</span></span>
+              <input type="text" name="partner_vorname">
+            </label>
+            <label class="form-field">
+              <span>Nachname <span class="req">*</span></span>
+              <input type="text" name="partner_nachname">
+            </label>
+          </div>
+          <label class="form-field">
+            <span>Geburtsdatum <span class="req">*</span></span>
+            <input type="date" name="partner_geburtsdatum">
+          </label>
+          <div class="form-row">
+            <label class="form-field">
+              <span>E-Mail (optional)</span>
+              <input type="email" name="partner_email">
+            </label>
+            <label class="form-field">
+              <span>Telefon (optional)</span>
+              <input type="tel" name="partner_telefon">
+            </label>
+          </div>
+
+          <div class="signature-field" data-signature-for="partner_signature">
+            <label>Unterschrift Partner/in <span class="req">*</span></label>
+            <div class="signature-canvas-wrap">
+              <canvas class="signature-canvas" data-pad="partner" width="600" height="180" aria-label="Unterschriftfeld Partner/in"></canvas>
+            </div>
+            <div class="signature-actions">
+              <button type="button" class="signature-clear" data-clear="partner">Leeren</button>
+              <span class="form-hint">Bitte mit der Maus oder per Touch unterschreiben.</span>
+            </div>
+            <input type="hidden" name="partner_signature">
+          </div>
+        </div>
+      </fieldset>
+
+      {{/* ── Kinder (Familie / Kind-nachmelden) ────────────────── */}}
+      <fieldset class="form-section" id="kinder-section" hidden>
+        <legend>Kinder</legend>
+
+        <div id="existing-children-block" hidden>
+          <label class="form-checkbox" style="margin-bottom: 14px;">
+            <input type="checkbox" name="both_parents_member" id="both-parents-toggle">
+            <span>Beide Elternteile sind aktive Mitglieder des Vereins.</span>
+          </label>
+          <label class="form-field">
+            <span>Wie viele Kinder unserer Familie sind aktuell Mitglied? <span class="req">*</span></span>
+            <select name="existing_children_count">
+              <option value="0">Keines — das angemeldete Kind ist das 1. Kind</option>
+              <option value="1">1 Kind ist Mitglied — das neue ist das 2. Kind</option>
+              <option value="2">2 Kinder sind Mitglieder — das neue ist das 3. Kind</option>
+              <option value="3">3 Kinder sind Mitglieder — das neue ist das 4. Kind</option>
+            </select>
+            <span class="form-hint">Damit kann die Staffelung korrekt berechnet werden.</span>
+          </label>
+        </div>
+
+        <div id="kinder-list"></div>
+        <button type="button" id="add-kind-btn" class="add-kind-btn">+ Kind hinzufügen</button>
+      </fieldset>
+
+      {{/* ── Erziehungsberechtigte/r (Einzel-Modus, Antragsteller < 18) ── */}}
       <fieldset class="form-section" id="guardian-section" hidden>
         <legend>Erziehungsberechtigte/r</legend>
         <p class="form-hint">Bei Antragstellern unter 18 Jahren erforderlich.</p>
@@ -95,22 +203,38 @@
       <fieldset class="form-section">
         <legend>Mitgliedschaft</legend>
 
-        <label class="form-field">
+        <label class="form-field" id="kategorie-field">
           <span>Beitragskategorie <span class="req">*</span></span>
-          <select name="kategorie" required>
+          <select name="kategorie">
             <option value="" disabled selected>Bitte wählen</option>
-            <option value="Erwachsene (200 EUR)">Erwachsene — 200 EUR</option>
-            <option value="Besucher weiterführender Schulen / Studenten (100 EUR)">Besucher weiterführender Schulen / Studenten — 100 EUR</option>
-            <option value="Zweit- / Schnuppermitgliedschaft (100 EUR)">Zweit- / Schnuppermitgliedschaft — 100 EUR</option>
-            <option value="Kinder, deren Eltern Clubmitglieder sind (50 EUR)">Kinder, deren Eltern Clubmitglieder sind — 50 EUR</option>
-            <option value="Vorschul- und Grundschulkinder (40 EUR)">Vorschul- und Grundschulkinder — 40 EUR</option>
+            <option value="aktiv">Aktives Mitglied (200 €)</option>
+            <option value="zweit">Zweitmitgliedschaft (100 €)</option>
+            <option value="schueler">Schüler / Student (100 €)</option>
+            <option value="grundschulkind">Vorschul- / Grundschulkind (40 €)</option>
+            <option value="passiv">Passives Mitglied (40 €)</option>
           </select>
+          <span class="form-hint">Schnupperjahr-Rabatt wird automatisch berücksichtigt, falls oben angekreuzt.</span>
         </label>
 
         <label class="form-field">
           <span>Beginn der Mitgliedschaft <span class="req">*</span></span>
           <input type="date" name="beginn" required>
         </label>
+
+        {{/* Live-Beitrags-Übersicht */}}
+        <div class="fee-summary" id="fee-summary" hidden>
+          <h4 class="fee-summary__title">Beitrags-Übersicht</h4>
+          <table class="fee-summary__table">
+            <tbody id="fee-summary-rows"></tbody>
+            <tfoot>
+              <tr class="fee-summary__total-row">
+                <td colspan="2"><strong>Gesamt pro Jahr</strong></td>
+                <td class="fee-summary__amount"><strong id="fee-summary-total">0,00 €</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+          <p class="form-hint" id="fee-summary-note" hidden></p>
+        </div>
       </fieldset>
 
       {{/* ── Foto- & Datenfreigaben (alle freiwillig) ───────────── */}}
@@ -407,10 +531,118 @@
     color: #991b1b;
   }
 
+  /* Modus-Selector */
+  .modus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .modus-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .modus-card:hover { border-color: var(--blue-300, #6ba3eb); }
+  .modus-card input[type="radio"] { margin-top: 4px; flex-shrink: 0; }
+  .modus-card:has(input[type="radio"]:checked) {
+    border-color: var(--blue-500);
+    background: var(--blue-50);
+    box-shadow: 0 0 0 3px rgba(30, 86, 160, 0.1);
+  }
+  .modus-title { font-weight: 600; color: var(--blue-800); margin: 0 0 2px; font-size: 0.95rem; }
+  .modus-text { font-size: 0.82rem; color: var(--gray-500); margin: 0; line-height: 1.4; }
+
+  /* Kinder-Repeater */
+  .kind-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 18px 18px 12px;
+    margin-bottom: 14px;
+    background: var(--gray-50, #f9fafb);
+    position: relative;
+  }
+  .kind-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .kind-card__title {
+    font-weight: 600;
+    color: var(--blue-800);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .kind-card__remove {
+    background: none;
+    border: none;
+    color: #c0392b;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .kind-card__remove:hover { background: rgba(192, 57, 43, 0.08); }
+  .add-kind-btn {
+    background: white;
+    border: 1.5px dashed var(--blue-300, #6ba3eb);
+    color: var(--blue-700);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .add-kind-btn:hover {
+    background: var(--blue-50);
+    border-color: var(--blue-500);
+  }
+
+  /* Live-Beitrags-Übersicht */
+  .fee-summary {
+    background: linear-gradient(135deg, var(--blue-50) 0%, #ffffff 100%);
+    border: 1px solid var(--blue-100);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+  .fee-summary__title {
+    color: var(--blue-800);
+    margin: 0 0 12px;
+    font-size: 1rem;
+  }
+  .fee-summary__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  .fee-summary__table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .fee-summary__amount {
+    text-align: right;
+    color: var(--blue-800);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .fee-summary__total-row td {
+    border-bottom: none;
+    padding-top: 12px;
+    font-size: 1rem;
+  }
+
   @media (max-width: 560px) {
     .form-section { padding: 20px 18px 16px; }
     .form-row { gap: 12px; }
     .form-field--narrow { flex: 1 1 100px !important; }
+    .modus-grid { grid-template-columns: 1fr; }
   }
 </style>
 
@@ -424,29 +656,42 @@
   const submitBtn = form.querySelector('.anmeldung-submit');
   const status = document.getElementById('form-status');
   const guardianSection = document.getElementById('guardian-section');
+  const partnerSection = document.getElementById('partner-section');
+  const kinderSection = document.getElementById('kinder-section');
+  const existingChildrenBlock = document.getElementById('existing-children-block');
+  const kinderList = document.getElementById('kinder-list');
+  const addKindBtn = document.getElementById('add-kind-btn');
+  const partnerJoinToggle = document.getElementById('partner-join-toggle');
+  const partnerFields = document.getElementById('partner-fields');
+  const personalLegend = document.getElementById('personal-legend');
+  const personalHint = document.getElementById('personal-hint');
+  const kategorieField = document.getElementById('kategorie-field');
+  const kategorieSelect = form.elements['kategorie'];
+  const feeSummary = document.getElementById('fee-summary');
+  const feeRows = document.getElementById('fee-summary-rows');
+  const feeTotal = document.getElementById('fee-summary-total');
+  const feeNote = document.getElementById('fee-summary-note');
 
   // ── Signature pads ──────────────────────────────────────────────
   const pads = {};
   function initSignaturePad(canvas) {
-    // Hi-DPI: scale the canvas backing store to devicePixelRatio so strokes are crisp
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext('2d').scale(ratio, ratio);
-    const pad = new SignaturePad(canvas, { penColor: '#0a1628', minWidth: 0.8, maxWidth: 2.2 });
-    return pad;
+    return new SignaturePad(canvas, { penColor: '#0a1628', minWidth: 0.8, maxWidth: 2.2 });
   }
-  document.querySelectorAll('.signature-canvas').forEach(c => {
-    const id = c.dataset.pad;
-    pads[id] = initSignaturePad(c);
+  function setupPad(canvas) {
+    const id = canvas.dataset.pad;
+    pads[id] = initSignaturePad(canvas);
+  }
+  document.querySelectorAll('.signature-canvas').forEach(setupPad);
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.signature-clear');
+    if (!btn) return;
+    const pad = pads[btn.dataset.clear];
+    if (pad) pad.clear();
   });
-  document.querySelectorAll('.signature-clear').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const pad = pads[btn.dataset.clear];
-      if (pad) pad.clear();
-    });
-  });
-  // Re-init on resize (canvas pixel buffer scales differently than CSS)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -504,6 +749,208 @@
   vornameField.addEventListener('input', autofillKontoinhaber);
   nachnameField.addEventListener('input', autofillKontoinhaber);
 
+  // ── Modus-Logik ─────────────────────────────────────────────────
+  function currentModus() {
+    const r = form.querySelector('input[name="modus"]:checked');
+    return r ? r.value : 'einzel';
+  }
+
+  function applyModus() {
+    const modus = currentModus();
+    // Einzel-Modus: klassisches Formular
+    // Familie: Partner + Kinder; Kategorie auto = aktiv
+    // Kind: Antragsteller ist Erziehungsberechtigte/r, kein eigenes Kategorie-Feld
+    if (modus === 'einzel') {
+      personalLegend.textContent = 'Persönliche Daten';
+      personalHint.hidden = true;
+      partnerSection.hidden = true;
+      kinderSection.hidden = true;
+      existingChildrenBlock.hidden = true;
+      kategorieField.hidden = false;
+      kategorieSelect.required = true;
+      // Guardian-Toggle wird vom Geburtsdatum gesteuert
+      toggleGuardian();
+    } else if (modus === 'familie') {
+      personalLegend.textContent = '1. Erwachsener (Hauptanmelder)';
+      personalHint.textContent = 'Diese Person wird als erstes aktives Mitglied angemeldet und unterschreibt das SEPA-Mandat.';
+      personalHint.hidden = false;
+      partnerSection.hidden = false;
+      kinderSection.hidden = false;
+      existingChildrenBlock.hidden = true;
+      kategorieField.hidden = true;
+      kategorieSelect.required = false;
+      guardianSection.hidden = true;
+    } else if (modus === 'kind') {
+      personalLegend.textContent = 'Erziehungsberechtigte/r';
+      personalHint.textContent = 'Du bist bereits Mitglied und meldest ein zusätzliches Kind an. Deine Daten dienen als Ansprechpartner + SEPA-Mandat.';
+      personalHint.hidden = false;
+      partnerSection.hidden = true;
+      kinderSection.hidden = false;
+      existingChildrenBlock.hidden = false;
+      kategorieField.hidden = true;
+      kategorieSelect.required = false;
+      guardianSection.hidden = true;
+      // Sicherstellen, dass mindestens 1 Kind im Repeater steckt
+      if (kinderList.children.length === 0) addKind();
+    }
+    updateFeeSummary();
+  }
+
+  form.querySelectorAll('input[name="modus"]').forEach(r => r.addEventListener('change', applyModus));
+
+  // ── Partner-Toggle ──────────────────────────────────────────────
+  function applyPartnerToggle() {
+    const joining = partnerJoinToggle.checked;
+    partnerFields.hidden = !joining;
+    partnerFields.querySelectorAll('input').forEach(i => {
+      if (i.type === 'hidden') return;
+      if (i.name && i.name.startsWith('partner_') && i.name !== 'partner_email' && i.name !== 'partner_telefon') {
+        i.required = joining;
+      }
+    });
+    updateFeeSummary();
+  }
+  partnerJoinToggle.addEventListener('change', applyPartnerToggle);
+
+  // ── Kinder-Repeater ─────────────────────────────────────────────
+  let kindCounter = 0;
+  function addKind() {
+    kindCounter += 1;
+    const idx = kindCounter;
+    const tpl = document.createElement('div');
+    tpl.className = 'kind-card';
+    tpl.dataset.kind = idx;
+    tpl.innerHTML = `
+      <div class="kind-card__header">
+        <p class="kind-card__title">${idx}. Kind</p>
+        <button type="button" class="kind-card__remove" aria-label="Kind entfernen">Entfernen</button>
+      </div>
+      <div class="form-row">
+        <label class="form-field">
+          <span>Vorname <span class="req">*</span></span>
+          <input type="text" name="kind_${idx}_vorname" required>
+        </label>
+        <label class="form-field">
+          <span>Geburtsdatum <span class="req">*</span></span>
+          <input type="date" name="kind_${idx}_geburtsdatum" required>
+        </label>
+      </div>
+      <label class="form-field">
+        <span>Status <span class="req">*</span></span>
+        <select name="kind_${idx}_status" required>
+          <option value="" disabled selected>Bitte wählen</option>
+          <option value="grundschule">Vorschule oder Grundschule (bis 4. Klasse) — 40 €</option>
+          <option value="schule">Weiterführende Schule (ab 5. Klasse) — Staffel-Tarif</option>
+          <option value="student">Studium / Ausbildung — Staffel-Tarif</option>
+        </select>
+      </label>
+    `;
+    kinderList.appendChild(tpl);
+    tpl.querySelector('.kind-card__remove').addEventListener('click', () => {
+      tpl.remove();
+      renumberKinder();
+      updateFeeSummary();
+    });
+    tpl.querySelectorAll('input, select').forEach(el => el.addEventListener('input', updateFeeSummary));
+    updateFeeSummary();
+  }
+  function renumberKinder() {
+    [...kinderList.children].forEach((card, i) => {
+      card.querySelector('.kind-card__title').textContent = (i + 1) + '. Kind';
+    });
+  }
+  addKindBtn.addEventListener('click', addKind);
+
+  // ── Live-Beitragsrechner ────────────────────────────────────────
+  const ADULT_FEES = { aktiv: 200, zweit: 100, schueler: 100, grundschulkind: 40, passiv: 40 };
+  const KIND_STAFFEL_ONE_PARENT  = [50, 40, 30, 20]; // 1./2./3./4. Kind
+  const KIND_STAFFEL_BOTH_PARENTS = [40, 30, 20, 10];
+  const KATEGORIE_LABEL = {
+    aktiv: 'Aktives Mitglied',
+    zweit: 'Zweitmitgliedschaft',
+    schueler: 'Schüler / Student',
+    grundschulkind: 'Vorschul- / Grundschulkind',
+    passiv: 'Passives Mitglied',
+  };
+
+  function calcKindFee(status, indexInFamily, bothParentsMember) {
+    if (status === 'grundschule') return 40;
+    const staffel = bothParentsMember ? KIND_STAFFEL_BOTH_PARENTS : KIND_STAFFEL_ONE_PARENT;
+    const i = Math.min(Math.max(indexInFamily, 1), 4) - 1;
+    let fee = staffel[i];
+    // Sonderfall: wenn 1. Kind in Grundschule → 40 € (statt 50 €) — wird oben behandelt
+    return fee;
+  }
+
+  function fmtEur(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+
+  function updateFeeSummary() {
+    const modus = currentModus();
+    const schnupperjahr = form.elements['schnupperjahr'].checked;
+    const items = []; // { label, count, unit }
+
+    if (modus === 'einzel') {
+      const kat = kategorieSelect.value;
+      if (kat) items.push({ label: KATEGORIE_LABEL[kat] || kat, count: 1, unit: ADULT_FEES[kat] || 0 });
+    } else if (modus === 'familie') {
+      items.push({ label: 'Aktives Mitglied (Hauptanmelder)', count: 1, unit: 200 });
+      if (partnerJoinToggle.checked) {
+        items.push({ label: 'Aktives Mitglied (Partner/in)', count: 1, unit: 200 });
+      }
+      const bothParents = partnerJoinToggle.checked;
+      const kinder = [...kinderList.children];
+      kinder.forEach((card, i) => {
+        const status = card.querySelector('select').value;
+        if (!status) return;
+        const fee = calcKindFee(status, i + 1, bothParents);
+        const statusLabel = { grundschule: 'Grundschulkind', schule: 'Schulkind', student: 'Student' }[status] || status;
+        items.push({ label: `${i + 1}. Kind (${statusLabel})`, count: 1, unit: fee });
+      });
+    } else if (modus === 'kind') {
+      const bothParents = form.elements['both_parents_member'].checked;
+      const existing = parseInt(form.elements['existing_children_count'].value || '0', 10);
+      const kinder = [...kinderList.children];
+      kinder.forEach((card, i) => {
+        const status = card.querySelector('select').value;
+        if (!status) return;
+        const positionInFamily = existing + i + 1;
+        const fee = calcKindFee(status, positionInFamily, bothParents);
+        const statusLabel = { grundschule: 'Grundschulkind', schule: 'Schulkind', student: 'Student' }[status] || status;
+        items.push({ label: `${positionInFamily}. Kind in der Familie (${statusLabel})`, count: 1, unit: fee });
+      });
+    }
+
+    if (items.length === 0) { feeSummary.hidden = true; return; }
+    feeSummary.hidden = false;
+    feeRows.innerHTML = '';
+    let total = 0;
+    items.forEach(item => {
+      const lineTotal = item.count * item.unit;
+      const final = schnupperjahr ? lineTotal / 2 : lineTotal;
+      total += final;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.label}</td>
+        <td style="text-align:right;color:var(--gray-500);">${fmtEur(item.unit)}${schnupperjahr ? ' · 50 %' : ''}</td>
+        <td class="fee-summary__amount">${fmtEur(final)}</td>`;
+      feeRows.appendChild(tr);
+    });
+    feeTotal.textContent = fmtEur(total);
+    feeNote.hidden = !schnupperjahr;
+    feeNote.textContent = schnupperjahr
+      ? 'Schnupperjahr-Rabatt (50 %) ist eingerechnet. Im 2. Jahr fallen die regulären Beiträge an, sofern nicht bis 30. September gekündigt wird.'
+      : '';
+  }
+
+  form.elements['schnupperjahr'].addEventListener('change', updateFeeSummary);
+  kategorieSelect.addEventListener('change', updateFeeSummary);
+  if (form.elements['both_parents_member']) form.elements['both_parents_member'].addEventListener('change', updateFeeSummary);
+  if (form.elements['existing_children_count']) form.elements['existing_children_count'].addEventListener('change', updateFeeSummary);
+
+  // Initialisierung
+  applyPartnerToggle();
+  applyModus();
+
   // IBAN Mod-97 Validation (ISO 13616)
   function validateIban(raw) {
     const iban = raw.replace(/\s+/g, '').toUpperCase();
@@ -560,22 +1007,35 @@
       return;
     }
 
-    // Signatur(en) prüfen
+    // Signatur(en) prüfen (Antragsteller immer Pflicht)
     if (!pads.applicant || pads.applicant.isEmpty()) {
       markSignatureInvalid('applicant', true);
       showStatus('error', 'Bitte unterschreibe das Formular im Feld „Deine Unterschrift".');
       return;
-    } else {
-      markSignatureInvalid('applicant', false);
     }
+    markSignatureInvalid('applicant', false);
+
+    // Guardian-Sig (nur sichtbar wenn Antragsteller minderjährig, Einzel-Modus)
     if (!guardianSection.hidden) {
       if (!pads.guardian || pads.guardian.isEmpty()) {
         markSignatureInvalid('guardian', true);
         showStatus('error', 'Bitte unterschreibe auch das Feld „Unterschrift der/des Erziehungsberechtigten".');
         return;
-      } else {
-        markSignatureInvalid('guardian', false);
       }
+      markSignatureInvalid('guardian', false);
+    }
+
+    // Partner-Sig (nur sichtbar wenn Familie-Modus + Partner tritt bei)
+    const partnerJoining = !partnerSection.hidden && partnerJoinToggle.checked;
+    if (partnerJoining) {
+      if (!pads.partner || pads.partner.isEmpty()) {
+        const wrap = document.querySelector('.signature-field[data-signature-for="partner_signature"]');
+        if (wrap) wrap.setAttribute('aria-invalid', 'true');
+        showStatus('error', 'Bitte unterschreibe auch das Feld „Unterschrift Partner/in".');
+        return;
+      }
+      const wrap = document.querySelector('.signature-field[data-signature-for="partner_signature"]');
+      if (wrap) wrap.setAttribute('aria-invalid', 'false');
     }
 
     if (!WEBHOOK_URL) {
@@ -585,17 +1045,34 @@
 
     // Signaturen in Hidden-Inputs ablegen, damit sie via FormData mitkommen
     form.elements['signature'].value = pads.applicant.toDataURL('image/png');
-    if (!guardianSection.hidden && pads.guardian) {
-      form.elements['guardian_signature'].value = pads.guardian.toDataURL('image/png');
-    } else {
-      form.elements['guardian_signature'].value = '';
+    form.elements['guardian_signature'].value = (!guardianSection.hidden && pads.guardian)
+      ? pads.guardian.toDataURL('image/png') : '';
+    if (partnerJoining && pads.partner) {
+      form.elements['partner_signature'].value = pads.partner.toDataURL('image/png');
+    } else if (form.elements['partner_signature']) {
+      form.elements['partner_signature'].value = '';
     }
 
+    const modus = currentModus();
     const data = Object.fromEntries(new FormData(form).entries());
     data.iban = data.iban.replace(/\s+/g, '').toUpperCase();
     data.timestamp = new Date().toISOString();
     data.user_agent = navigator.userAgent;
     data.form = 'mitgliedsantrag';
+    data.modus = modus;
+    data.schnupperjahr = form.elements['schnupperjahr'].checked ? 'on' : '';
+
+    // Kinder-Array strukturiert mitschicken (statt nur kind_1_vorname etc.)
+    data.kinder = [];
+    [...kinderList.children].forEach((card, i) => {
+      const idx = i + 1;
+      const vorname = card.querySelector(`[name^="kind_"][name$="_vorname"]`)?.value;
+      const gd = card.querySelector(`[name^="kind_"][name$="_geburtsdatum"]`)?.value;
+      const status = card.querySelector(`[name^="kind_"][name$="_status"]`)?.value;
+      if (vorname || gd || status) {
+        data.kinder.push({ index: idx, vorname, geburtsdatum: gd, status });
+      }
+    });
 
     submitBtn.disabled = true;
     const originalLabel = submitBtn.textContent;
