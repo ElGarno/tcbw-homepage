@@ -31,6 +31,21 @@ contact_section:
   </a>
 </aside>
 
+<aside class="schnupperjahr-banner" aria-label="Schnupperjahr-Hinweis">
+  <div class="schnupperjahr-icon" aria-hidden="true">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M 4.93 4.93 a 14 14 0 0 0 14.14 14.14"/>
+      <path d="M 4.93 19.07 a 14 14 0 0 1 14.14 -14.14"/>
+    </svg>
+  </div>
+  <div class="schnupperjahr-body">
+    <p class="label-upper schnupperjahr-eyebrow">Noch nie Mitglied?</p>
+    <p class="schnupperjahr-title">Probier's mit dem Schnupperjahr — für die Hälfte.</p>
+    <p class="schnupperjahr-text">Im ersten Jahr zahlst du nur <strong>50 %</strong> des regulären Beitrags und kannst den Club in Ruhe kennenlernen. Wenn du nicht bleibst, kündigst du bis <strong>30. September</strong> — sonst geht's automatisch in die reguläre Mitgliedschaft.</p>
+  </div>
+</aside>
+
 ## Mitgliedsbeiträge
 
 ### Erwachsene
