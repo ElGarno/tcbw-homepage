@@ -61,7 +61,12 @@ const asciify = s => String(s ?? '')
   .replace(/ü/g, 'ue').replace(/Ü/g, 'Ue')
   .replace(/ß/g, 'ss');
 
-const mandateRef = 'TCBW-' + nowIso.replace(/[-:T.Z]/g,'').slice(0,12) + '-' + asciify(body.nachname).replace(/[^A-Za-z]/g,'').slice(0,8).toUpperCase();
+// Mandate reference comes from upstream Bump Mandate Counter (fortlaufende
+// Nummer aus data/mandate-counter.json, gepflegt seit Vorstandssitzung 27.05.2026).
+const mandateRef = $input.first().json.mandateRef;
+if (!mandateRef) {
+  return [{ json: { ok: false, error: 'mandateRef missing — Bump Mandate Counter node must run before Validate & Build' } }];
+}
 
 // ── Beitragsberechnung ──────────────────────────────────────────────────────
 const ADULT_FEES = { aktiv: 200, zweit: 100, schueler: 100, grundschulkind: 40, passiv: 40 };

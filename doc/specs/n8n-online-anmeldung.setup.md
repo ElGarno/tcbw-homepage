@@ -60,7 +60,48 @@ Cloudflare Dashboard → **Analytics & Logs → Browser Rendering** zeigt die
 verbrauchte Browser-Zeit. Bei stetig steigenden Anmeldungen ggf. auf
 Workers Paid umsteigen (5 €/Monat = 10 h/Tag).
 
-## 7. Vereinssatzung als zweiter Anhang
+## 7. Fortlaufende Mandatsreferenzen (Counter via GitHub)
+
+Seit 2026-05-28 erzeugt der Workflow keine timestamp-basierten Referenzen
+mehr (`TCBW-20260528223000-MUSTERMA`), sondern nimmt eine **fortlaufende
+Nummer** aus `data/mandate-counter.json` im Repo. Startwert war 2180
+(letzte vergebene Nummer 2179, Stand Übergabe Martina Franz).
+
+### Funktionsweise
+
+- **State-Datei** `data/mandate-counter.json` mit Schema
+  `{ next, lastUpdated, note }`.
+- Neuer Node **Bump Mandate Counter** zwischen *Config* und
+  *Validate & Build*: liest die Datei via GitHub Contents API,
+  verwendet `next` als Mandatsreferenz, schreibt `next + 1` direkt
+  zurück auf `main` (Commit-Message
+  `chore(anmeldung): bump mandate counter to N`).
+- *Validate & Build* generiert die Referenz nicht mehr selbst,
+  sondern liest sie aus `$input.first().json.mandateRef`.
+
+### GitHub-Token in n8n eintragen
+
+1. n8n → Workflow „Online-Anmeldung" → Node **Config** öffnen
+2. Bei `githubToken` den GitHub PAT eintragen (gleicher kann wie für
+   `n8n-nuliga-sync` verwendet werden — Scope: `repo`)
+3. `githubOwner` (`ElGarno`) und `githubRepo` (`tcbw-homepage`) sind
+   bereits vorbelegt — anpassen falls Fork
+
+### Was wenn der Counter durcheinander gerät?
+
+Falls eine Nummer manuell aus dem Tritt geraten ist:
+1. `data/mandate-counter.json` lokal editieren, `next` auf den
+   gewünschten Wert setzen
+2. Commit + Push — der nächste Anmelde-Lauf nimmt diesen Startwert
+
+### Lücken bei Validierungsfehlern
+
+Schlägt die Validierung in *Validate & Build* fehl (z. B. ungültige IBAN),
+wurde der Counter trotzdem schon erhöht — es entsteht eine Lücke (z. B.
+2183 fehlt). Bewusst akzeptiert; clientseitige Formularvalidierung macht
+das in der Praxis selten.
+
+## 8. Vereinssatzung als zweiter Anhang
 
 Seit 2026-05-28 wird zusätzlich zum unterschriebenen Antrag auch die
 **Vereinssatzung** an die Antragsteller-Bestätigungsmail angehängt.
