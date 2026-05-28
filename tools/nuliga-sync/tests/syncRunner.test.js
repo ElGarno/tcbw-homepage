@@ -170,6 +170,61 @@ test('newly entered result on liga.nu propagates into mannschaften MD', async ()
   );
 });
 
+test('newResults: filled-in scores are extracted for social-media notification', async () => {
+  // Same fixture trick as above: liga.nu has just published the Olper score (3:6).
+  const mdWithoutResult = readFileSync(join(REPO_ROOT, 'content/mannschaften/herren-30.md'), 'utf8')
+    .replace('| **TC BW Attendorn** | Olper TC | 3:6 |', '| **TC BW Attendorn** | Olper TC | - |');
+  const patchedHtml = readFileSync(join(FIXTURES, 'group-67.html'), 'utf8').replace(
+    /(Olper TC 1[\s\S]*?<\/td>\s*<td class="center">\s*)&nbsp;/,
+    '$13:6',
+  );
+  const fetchImpl = async (url) => {
+    const m = url.match(/group=(\d+)/);
+    if (!m) throw new Error(`bad url: ${url}`);
+    if (m[1] === '67') return { ok: true, status: 200, text: async () => patchedHtml };
+    return { ok: true, status: 200, text: async () => fixtureHtml(m[1]) };
+  };
+
+  const result = await runSync({
+    fetchImpl,
+    readRepoFile: repoFileReader({
+      'content/mannschaften/herren-30.md': mdWithoutResult,
+    }),
+    today: new Date('2026-04-20T05:00:00Z'),
+  });
+
+  assert.equal(result.newResults.length, 1);
+  const r = result.newResults[0];
+  assert.equal(r.team, 'Herren 30');
+  assert.equal(r.opponent, 'Olper TC 1');
+  assert.equal(r.result, '3:6');
+  assert.equal(r.isHome, true);
+});
+
+test('newResults: time-only updates are NOT extracted as new results', async () => {
+  // Time change without a score change should NOT produce a Feli-notification entry.
+  const modifiedHerren30 = readFileSync(join(REPO_ROOT, 'content/mannschaften/herren-30.md'), 'utf8')
+    .replace('| 04.07.2026 | 14:30 |', '| 04.07.2026 | 13:00 |');
+  const result = await runSync({
+    fetchImpl: fetchFromFixtures(),
+    readRepoFile: repoFileReader({
+      'content/mannschaften/herren-30.md': modifiedHerren30,
+    }),
+    today: new Date('2026-04-20T05:00:00Z'),
+  });
+  assert.equal(result.changed, true);
+  assert.equal(result.newResults.length, 0);
+});
+
+test('newResults: returns empty array when no changes detected at all', async () => {
+  const result = await runSync({
+    fetchImpl: fetchFromFixtures(),
+    readRepoFile: repoFileReader(),
+    today: new Date('2026-04-20T05:00:00Z'),
+  });
+  assert.deepEqual(result.newResults, []);
+});
+
 test('mixed run: medenspiel + pokal updates appear in same PR body', async () => {
   const modifiedHerren30 = readFileSync(join(REPO_ROOT, 'content/mannschaften/herren-30.md'), 'utf8')
     .replace('| 04.07.2026 | 14:30 |', '| 04.07.2026 | 13:00 |');

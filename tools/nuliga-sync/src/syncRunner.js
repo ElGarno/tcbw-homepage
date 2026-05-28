@@ -143,7 +143,7 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
   const hasChanges = decorated.some(d => d.updates.length || d.adds.length || d.missings.length);
 
   if (!hasChanges) {
-    return { changed: false, errors, fileChanges: [], prBody: null };
+    return { changed: false, errors, fileChanges: [], prBody: null, newResults: [] };
   }
 
   const fileChanges = [];
@@ -187,6 +187,7 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
   const branch = timestampBranchName(today);
   const commitMessage = `chore(termine): liga.nu sync ${isoToday(today)}`;
   const prTitle = `[nuliga] Sync ${isoToday(today)}: ${sumChanges(decorated)}`;
+  const newResults = extractNewResults(decorated);
 
   return {
     changed: true,
@@ -196,7 +197,44 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
     commitMessage,
     prTitle,
     prBody,
+    newResults,
   };
+}
+
+/**
+ * Extract matches whose score was just filled in (or newly-added matches that
+ * already carry a score). Used by the n8n workflow to notify the social-media
+ * lead when there's something new to post about.
+ */
+function extractNewResults(decorated) {
+  const items = [];
+  for (const d of decorated) {
+    for (const u of d.updates) {
+      if (!u.oldResult && u.newResult) {
+        items.push({
+          team: d.teamLabel,
+          opponent: u.opponent,
+          date: u.newDate ?? u.date,
+          time: u.newTime ?? u.time,
+          result: u.newResult,
+          isHome: u.isHome,
+        });
+      }
+    }
+    for (const a of d.adds) {
+      if (a.result) {
+        items.push({
+          team: d.teamLabel,
+          opponent: a.opponent,
+          date: a.newDate ?? a.date,
+          time: a.newTime ?? a.time,
+          result: a.result,
+          isHome: a.isHome,
+        });
+      }
+    }
+  }
+  return items;
 }
 
 function getIdentityLocal(m) {

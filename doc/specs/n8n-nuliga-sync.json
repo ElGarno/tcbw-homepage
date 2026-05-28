@@ -54,6 +54,18 @@
               "name": "pushoverUser",
               "value": "REPLACE_WITH_PUSHOVER_USER_KEY",
               "type": "string"
+            },
+            {
+              "id": "feli-email",
+              "name": "feliEmail",
+              "value": "felibaumhoff98@gmail.com",
+              "type": "string"
+            },
+            {
+              "id": "social-generator-url",
+              "name": "socialGeneratorUrl",
+              "value": "https://social.tc-bw-attendorn.de",
+              "type": "string"
             }
           ]
         },
@@ -70,7 +82,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// ===========================================================================\n// nuliga-sync \u2014 n8n Code node\n//\n// Setup:\n//   1. Docker env (einmalig): NODE_FUNCTION_ALLOW_EXTERNAL=cheerio,js-yaml\n//   2. Im vorgelagerten \"Config\"-Set-Node alle 5 Werte eintragen\n//      (githubToken, githubOwner, githubRepo, pushoverToken, pushoverUser)\n//   3. Unten den Platzhalter zwischen den --- PASTE BUNDLE --- Markern\n//      durch den Inhalt von tools/nuliga-sync/dist/n8n-bundle.js ersetzen.\n//\n// Output:\n//   { changed: false }                                \u2192 If-Node nimmt False-Pfad\n//   { changed: true, prUrl, prTitle, prBody, errors } \u2192 If-Node nimmt True-Pfad \u2192 Pushover\n// ===========================================================================\n\nconst cheerio = require('cheerio');\nconst yaml = require('js-yaml');\n\n// --- PASTE BUNDLE BELOW ---\n// ... entire content of tools/nuliga-sync/dist/n8n-bundle.js goes here ...\n// --- PASTE BUNDLE ABOVE ---\n\nconst config = $('Config').first().json;\nconst GITHUB_TOKEN = config.githubToken;\nconst OWNER = config.githubOwner;\nconst REPO = config.githubRepo;\nconst API = `https://api.github.com/repos/${OWNER}/${REPO}`;\n\n// GitHub API helper using n8n's built-in httpRequest (runner-sandbox-safe)\nconst gh = async (path, opts = {}) => {\n  const reqOpts = {\n    method: opts.method ?? 'GET',\n    url: `${API}${path}`,\n    headers: {\n      'Authorization': `Bearer ${GITHUB_TOKEN}`,\n      'Accept': 'application/vnd.github+json',\n      'User-Agent': 'nuliga-sync',\n    },\n    json: true,\n  };\n  if (opts.body !== undefined) {\n    reqOpts.body = typeof opts.body === 'string' ? JSON.parse(opts.body) : opts.body;\n  }\n  try {\n    return await this.helpers.httpRequest(reqOpts);\n  } catch (err) {\n    throw new Error(`GitHub API ${path}: ${err.message}`);\n  }\n};\n\n// Fetch-shim for liga.nu HTML \u2014 returns fetch-API-compatible response object\nconst fetchShim = async (url) => {\n  try {\n    const text = await this.helpers.httpRequest({\n      method: 'GET',\n      url,\n      json: false,\n    });\n    return {\n      ok: true,\n      status: 200,\n      text: async () => typeof text === 'string' ? text : String(text),\n    };\n  } catch (err) {\n    return {\n      ok: false,\n      status: err.statusCode ?? 500,\n      text: async () => err.message,\n    };\n  }\n};\n\nconst readRepoFile = async (path) => {\n  const data = await gh(`/contents/${encodeURI(path)}?ref=main`);\n  return Buffer.from(data.content, 'base64').toString('utf8');\n};\n\nconst findOpenSyncPR = async () => {\n  const pulls = await gh(`/pulls?state=open&per_page=50`);\n  return pulls.find(p => p.head.ref.startsWith('nuliga-sync/'));\n};\n\nconst commitAndOpenPR = async ({ branch, commitMessage, prTitle, prBody, fileChanges }) => {\n  const mainRef = await gh('/git/ref/heads/main');\n  const baseSha = mainRef.object.sha;\n\n  await gh('/git/refs', {\n    method: 'POST',\n    body: { ref: `refs/heads/${branch}`, sha: baseSha },\n  });\n\n  const baseCommit = await gh(`/git/commits/${baseSha}`);\n  const baseTree = baseCommit.tree.sha;\n\n  const treeEntries = fileChanges.map(f => ({\n    path: f.path,\n    mode: '100644',\n    type: 'blob',\n    content: f.content,\n  }));\n\n  const tree = await gh('/git/trees', {\n    method: 'POST',\n    body: { base_tree: baseTree, tree: treeEntries },\n  });\n\n  const commit = await gh('/git/commits', {\n    method: 'POST',\n    body: { message: commitMessage, tree: tree.sha, parents: [baseSha] },\n  });\n\n  await gh(`/git/refs/heads/${branch}`, {\n    method: 'PATCH',\n    body: { sha: commit.sha },\n  });\n\n  const pr = await gh('/pulls', {\n    method: 'POST',\n    body: {\n      title: prTitle,\n      body: prBody,\n      head: branch,\n      base: 'main',\n      draft: true,\n    },\n  });\n\n  try {\n    await gh(`/issues/${pr.number}/labels`, {\n      method: 'POST',\n      body: { labels: ['automated', 'nuliga-sync'] },\n    });\n  } catch (e) {\n    // labels optional\n  }\n\n  return pr;\n};\n\nconst commentOnPR = async (prNumber, body) => {\n  await gh(`/issues/${prNumber}/comments`, {\n    method: 'POST',\n    body: { body },\n  });\n};\n\nconst result = await runSync({\n  fetchImpl: fetchShim,\n  readRepoFile,\n  today: new Date(),\n});\n\nif (!result.changed) {\n  return [{ json: { changed: false, errors: result.errors } }];\n}\n\nconst existingPR = await findOpenSyncPR();\nif (existingPR) {\n  await commentOnPR(existingPR.number, `Zus\u00e4tzliche \u00c4nderungen seit PR-Erstellung:\\n\\n${result.prBody}`);\n  return [{\n    json: {\n      changed: true,\n      action: 'comment',\n      prUrl: existingPR.html_url,\n      prTitle: existingPR.title,\n      prBody: result.prBody,\n      errors: result.errors,\n    },\n  }];\n}\n\nconst pr = await commitAndOpenPR(result);\nreturn [{\n  json: {\n    changed: true,\n    action: 'created',\n    prUrl: pr.html_url,\n    prNumber: pr.number,\n    prTitle: result.prTitle,\n    prBody: result.prBody,\n    errors: result.errors,\n  },\n}];\n"
+        "jsCode": "// ===========================================================================\n// nuliga-sync \u2014 n8n Code node\n//\n// Setup:\n//   1. Docker env (einmalig): NODE_FUNCTION_ALLOW_EXTERNAL=cheerio,js-yaml\n//   2. Im vorgelagerten \"Config\"-Set-Node alle 5 Werte eintragen\n//      (githubToken, githubOwner, githubRepo, pushoverToken, pushoverUser)\n//   3. Unten den Platzhalter zwischen den --- PASTE BUNDLE --- Markern\n//      durch den Inhalt von tools/nuliga-sync/dist/n8n-bundle.js ersetzen.\n//\n// Output:\n//   { changed: false }                                \u2192 If-Node nimmt False-Pfad\n//   { changed: true, prUrl, prTitle, prBody, errors } \u2192 If-Node nimmt True-Pfad \u2192 Pushover\n// ===========================================================================\n\nconst cheerio = require('cheerio');\nconst yaml = require('js-yaml');\n\n// --- PASTE BUNDLE BELOW ---\n// ... entire content of tools/nuliga-sync/dist/n8n-bundle.js goes here ...\n// --- PASTE BUNDLE ABOVE ---\n\nconst config = $('Config').first().json;\nconst GITHUB_TOKEN = config.githubToken;\nconst OWNER = config.githubOwner;\nconst REPO = config.githubRepo;\nconst API = `https://api.github.com/repos/${OWNER}/${REPO}`;\n\n// GitHub API helper using n8n's built-in httpRequest (runner-sandbox-safe)\nconst gh = async (path, opts = {}) => {\n  const reqOpts = {\n    method: opts.method ?? 'GET',\n    url: `${API}${path}`,\n    headers: {\n      'Authorization': `Bearer ${GITHUB_TOKEN}`,\n      'Accept': 'application/vnd.github+json',\n      'User-Agent': 'nuliga-sync',\n    },\n    json: true,\n  };\n  if (opts.body !== undefined) {\n    reqOpts.body = typeof opts.body === 'string' ? JSON.parse(opts.body) : opts.body;\n  }\n  try {\n    return await this.helpers.httpRequest(reqOpts);\n  } catch (err) {\n    throw new Error(`GitHub API ${path}: ${err.message}`);\n  }\n};\n\n// Fetch-shim for liga.nu HTML \u2014 returns fetch-API-compatible response object\nconst fetchShim = async (url) => {\n  try {\n    const text = await this.helpers.httpRequest({\n      method: 'GET',\n      url,\n      json: false,\n    });\n    return {\n      ok: true,\n      status: 200,\n      text: async () => typeof text === 'string' ? text : String(text),\n    };\n  } catch (err) {\n    return {\n      ok: false,\n      status: err.statusCode ?? 500,\n      text: async () => err.message,\n    };\n  }\n};\n\nconst readRepoFile = async (path) => {\n  const data = await gh(`/contents/${encodeURI(path)}?ref=main`);\n  return Buffer.from(data.content, 'base64').toString('utf8');\n};\n\nconst findOpenSyncPR = async () => {\n  const pulls = await gh(`/pulls?state=open&per_page=50`);\n  return pulls.find(p => p.head.ref.startsWith('nuliga-sync/'));\n};\n\nconst commitAndOpenPR = async ({ branch, commitMessage, prTitle, prBody, fileChanges }) => {\n  const mainRef = await gh('/git/ref/heads/main');\n  const baseSha = mainRef.object.sha;\n\n  await gh('/git/refs', {\n    method: 'POST',\n    body: { ref: `refs/heads/${branch}`, sha: baseSha },\n  });\n\n  const baseCommit = await gh(`/git/commits/${baseSha}`);\n  const baseTree = baseCommit.tree.sha;\n\n  const treeEntries = fileChanges.map(f => ({\n    path: f.path,\n    mode: '100644',\n    type: 'blob',\n    content: f.content,\n  }));\n\n  const tree = await gh('/git/trees', {\n    method: 'POST',\n    body: { base_tree: baseTree, tree: treeEntries },\n  });\n\n  const commit = await gh('/git/commits', {\n    method: 'POST',\n    body: { message: commitMessage, tree: tree.sha, parents: [baseSha] },\n  });\n\n  await gh(`/git/refs/heads/${branch}`, {\n    method: 'PATCH',\n    body: { sha: commit.sha },\n  });\n\n  const pr = await gh('/pulls', {\n    method: 'POST',\n    body: {\n      title: prTitle,\n      body: prBody,\n      head: branch,\n      base: 'main',\n      draft: true,\n    },\n  });\n\n  try {\n    await gh(`/issues/${pr.number}/labels`, {\n      method: 'POST',\n      body: { labels: ['automated', 'nuliga-sync'] },\n    });\n  } catch (e) {\n    // labels optional\n  }\n\n  return pr;\n};\n\nconst commentOnPR = async (prNumber, body) => {\n  await gh(`/issues/${prNumber}/comments`, {\n    method: 'POST',\n    body: { body },\n  });\n};\n\nconst result = await runSync({\n  fetchImpl: fetchShim,\n  readRepoFile,\n  today: new Date(),\n});\n\nif (!result.changed) {\n  return [{ json: { changed: false, errors: result.errors, newResults: [] } }];\n}\n\nconst existingPR = await findOpenSyncPR();\nif (existingPR) {\n  await commentOnPR(existingPR.number, `Zus\u00e4tzliche \u00c4nderungen seit PR-Erstellung:\\n\\n${result.prBody}`);\n  return [{\n    json: {\n      changed: true,\n      action: 'comment',\n      prUrl: existingPR.html_url,\n      prTitle: existingPR.title,\n      prBody: result.prBody,\n      errors: result.errors,\n      newResults: result.newResults ?? [],\n    },\n  }];\n}\n\nconst pr = await commitAndOpenPR(result);\nreturn [{\n  json: {\n    changed: true,\n    action: 'created',\n    prUrl: pr.html_url,\n    prNumber: pr.number,\n    prTitle: result.prTitle,\n    prBody: result.prBody,\n    errors: result.errors,\n    newResults: result.newResults ?? [],\n  },\n}];\n"
       },
       "id": "sync-code",
       "name": "Sync Logic",
@@ -170,6 +182,76 @@
         1080,
         400
       ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-new-results",
+              "leftValue": "={{ $json.newResults?.length ?? 0 }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-new-results",
+      "name": "Neue Ergebnisse?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "newResults",
+        "options": {}
+      },
+      "id": "split-new-results",
+      "name": "Split newResults",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Config').first().json.feliEmail }}",
+        "subject": "=🎾 Neues Ergebnis: {{ $json.team }} vs. {{ $json.opponent }}",
+        "emailType": "html",
+        "message": "=<p>Hi Feli,</p>\n\n<p>auf liga.nu ist ein neues Ergebnis aufgetaucht:</p>\n\n<table style=\"border-collapse: collapse; margin: 12px 0;\">\n  <tr><td style=\"padding: 6px 12px;\"><strong>Mannschaft:</strong></td><td>{{ $json.team }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Gegner:</strong></td><td>{{ $json.opponent }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Datum:</strong></td><td>{{ $json.date }} &middot; {{ $json.time }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Ergebnis:</strong></td><td><strong>{{ $json.result }}</strong></td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Heim/Auswärts:</strong></td><td>{{ $json.isHome ? 'Heim' : 'Auswärts' }}</td></tr>\n</table>\n\n<p>\n  <a href=\"{{ $('Config').first().json.socialGeneratorUrl }}\"\n     style=\"display: inline-block; background: #0d3a82; color: white; padding: 10px 18px; text-decoration: none; border-radius: 6px; font-weight: 600;\">\n    Social-Media-Post erstellen &rarr;\n  </a>\n</p>\n\n<p style=\"color: #888; font-size: 13px;\">\n  Automatisch generiert vom nuliga-sync. Bei Fragen &rarr; Fabian.\n</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "gmail-feli",
+      "name": "Mail an Feli",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1560,
+        80
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail Vorstand TC BW"
+        }
+      }
     }
   ],
   "connections": {
@@ -213,11 +295,39 @@
             "node": "Pushover",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Neue Ergebnisse?",
+            "type": "main",
+            "index": 0
           }
         ],
         [
           {
             "node": "Keine Aenderungen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Neue Ergebnisse?": {
+      "main": [
+        [
+          {
+            "node": "Split newResults",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Split newResults": {
+      "main": [
+        [
+          {
+            "node": "Mail an Feli",
             "type": "main",
             "index": 0
           }
