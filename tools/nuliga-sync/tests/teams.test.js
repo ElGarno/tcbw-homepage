@@ -2,13 +2,13 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TEAMS, liganuUrl } from '../src/teams.js';
 
-test('TEAMS contains 7 medenspiel + 2 pokal entries', () => {
-  assert.equal(TEAMS.length, 9);
+test('TEAMS contains 7 medenspiel + 3 pokal entries', () => {
+  assert.equal(TEAMS.length, 10);
   const byKind = TEAMS.reduce((acc, t) => {
     acc[t.kind] = (acc[t.kind] ?? 0) + 1;
     return acc;
   }, {});
-  assert.deepEqual(byKind, { medenspiel: 7, pokal: 2 });
+  assert.deepEqual(byKind, { medenspiel: 7, pokal: 3 });
 });
 
 test('every team has a kind field', () => {

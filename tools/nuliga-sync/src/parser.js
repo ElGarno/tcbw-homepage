@@ -60,8 +60,10 @@ export function parseGroupPage(html) {
     });
   });
 
+  // Empty matches is a legitimate state (e.g. precautionary Nebenrunde group
+  // where TC BW Attendorn hasn't been seeded yet). Distinguish from "no table at all".
   if (matches.length === 0) {
-    throw new Error('No matches found — liga.nu layout may have changed');
+    return { team_name: null, matches: [] };
   }
 
   const first = matches[0];

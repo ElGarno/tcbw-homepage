@@ -18,6 +18,18 @@ export const TEAMS = [
     label: 'Herren 40-Pokal',
     pokalDetail: 'WTV Vereinspokal · Herren Ü40 LK 1,0–25,0, Heimspiel',
   },
+  // Nebenrunde Herren LK 18-25 — Vorsorge, falls TC BW Attendorn aus der Hauptrunde
+  // (group 2229674) ausscheidet, läuft die Verlierer-Runde in dieser group.
+  {
+    kind: 'pokal', slug: 'herren-pokal-nebenrunde',
+    group: '2236574', championship: 'WTV VP 2026',
+    label: 'Herren-Pokal Nebenrunde',
+    pokalDetail: 'WTV Vereinspokal · Herren LK 18,0–25,0 (Nebenrunde), Heimspiel',
+  },
+  // TODO: Nebenrunde Herren-40-Pokal — group-ID ist auf liga.nu noch nicht
+  // sichtbar (vermutlich erst nach Komplettierung der 1. Runde freigeschaltet).
+  // TC BW Attendorn hat den Herren-40-Pokal in der 1. Runde verloren und sollte
+  // dort auftauchen. Sobald die group-ID auf wtv.liga.nu erscheint, hier ergänzen.
 ];
 
 const BASE = 'https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage';
