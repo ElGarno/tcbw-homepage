@@ -1,0 +1,140 @@
+# Vorstandsmitglieder und wiederkehrende Akteure.
+# Rollen gemäß content/verein/vorstand.md (offizielle Vorstands-Funktionen).
+#
+# Der "name"-Feldwert oder einer der "aliases" wird gegen den Markdown-Heading
+# "### NAME" in der Aufgabenliste gematcht (case-insensitive).
+#
+# avatar_style: "blue" (aktiver Vorstand) oder "gray" (ehemalig / Übergabe).
+#
+# Reihenfolge = Anzeige-Reihenfolge in der Personen-Grid (oberster zuerst).
+
+# ─────────── Geschäftsführung ───────────
+
+- key: bastian-gerlach
+  name: Bastian Gerlach
+  initials: BG
+  role: 1. Geschäftsführer
+  avatar_style: blue
+  aliases:
+    - Bastian
+    - bastian
+
+- key: felix-kersting
+  name: Felix Kersting
+  initials: FK
+  role: 2. Geschäftsführer
+  avatar_style: blue
+  aliases:
+    - Felix
+    - Felix K.
+    - felix-k
+
+# ─────────── Finanzen ───────────
+
+- key: martina-franz
+  name: Martina Franz
+  initials: MF
+  role: Finanzen
+  avatar_style: blue
+  aliases:
+    - Martina
+    - martina
+
+- key: carsten-heimes
+  name: Carsten Heimes
+  initials: CH
+  role: Finanzen
+  avatar_style: blue
+  aliases:
+    - Carsten
+
+# ─────────── Marketing & Öffentlichkeitsarbeit ───────────
+
+- key: paula-kersting
+  name: Paula Kersting
+  initials: PK
+  role: Marketing & Öffentlichkeitsarbeit
+  avatar_style: blue
+  aliases:
+    - Paula
+
+- key: aaron-heseler
+  name: Aaron Heseler
+  initials: AH
+  role: Eventmanagement
+  avatar_style: blue
+  aliases:
+    - Aaron
+    - aaron
+
+# ─────────── Sport ───────────
+
+- key: moritz-muhr
+  name: Moritz Muhr
+  initials: MM
+  role: Sportwart
+  avatar_style: blue
+  aliases:
+    - Moritz
+
+- key: marc-horlacher
+  name: Marc Horlacher
+  initials: MH
+  role: Jugendsportwart
+  avatar_style: blue
+  aliases:
+    - Marc
+    - Marc H.
+    - marc
+
+# ─────────── Digitales ───────────
+
+- key: fabian-woerenkaemper
+  name: Fabian Wörenkämper
+  initials: FW
+  role: Homepage, Getränkebuchungsapp
+  avatar_style: blue
+  aliases:
+    - Fabian
+    - Fabian W.
+    - fabian
+
+# ─────────── Beisitzer ───────────
+
+- key: annika-foidl
+  name: Annika Foidl
+  initials: AF
+  role: Beisitzerin
+  avatar_style: blue
+  aliases:
+    - Annika
+
+- key: tim-maier
+  name: Tim Maier
+  initials: TM
+  role: Beisitzer
+  avatar_style: blue
+  aliases:
+    - Tim
+
+# ─────────── Weitere Akteure (kein offizieller Vorstand) ───────────
+
+- key: felicitas-baumhoff
+  name: Feli (Felicitas)
+  initials: F
+  role: Social Media
+  avatar_style: blue
+  aliases:
+    - Feli
+    - Felicitas
+    - Felicitas Baumhoff
+    - feli
+
+- key: stefan-huette
+  name: Stefan Hütte
+  initials: SH
+  role: Übergabe an Bastian Gerlach
+  avatar_style: gray
+  aliases:
+    - Stefan
+    - stefan-huette

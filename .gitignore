@@ -9,6 +9,10 @@ resources/_gen/
 # IDE
 .idea/
 .venv/
+.claude/
+
+# Protokoll-Renderer build output (regenerated on demand)
+tools/protokoll/output/
 
 # macOS
 .DS_Store

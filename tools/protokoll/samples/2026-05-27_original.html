@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Protokoll Vorstandssitzung · 27.05.2026 · TC BW Attendorn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/wappen.png">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--gray-100);
+    color: var(--fg-1);
+    font-family: var(--font-sans);
+    padding: 48px 24px 96px;
+  }
+
+  /* ─────────────── Document shell ─────────────── */
+  .doc {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  /* ─────────────── Masthead (blue band) ─────────────── */
+  .masthead {
+    background: var(--bg-hero);
+    color: var(--fg-on-dark);
+    padding: 28px 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(168, 204, 245, 0.12), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(106, 163, 235, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .masthead img { width: 56px; height: 56px; object-fit: contain; position: relative; flex-shrink: 0; }
+  .masthead-text { position: relative; line-height: 1.3; }
+  .masthead-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-200);
+    margin-bottom: 2px;
+  }
+  .masthead-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+  .masthead-tag {
+    font-size: 0.85rem;
+    color: var(--blue-100);
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  /* ─────────────── Title block ─────────────── */
+  .title-block {
+    padding: 56px 56px 32px;
+    border-bottom: var(--border);
+  }
+  .title-eyebrow {
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-500);
+    margin-bottom: 16px;
+  }
+  .title-main {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--gray-800);
+    margin: 0 0 8px;
+  }
+  .title-sub {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--gray-500);
+    margin: 0 0 32px;
+  }
+
+  /* ─────────────── Meta grid ─────────────── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px 32px;
+    padding-top: 8px;
+  }
+  .meta-item .meta-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 4px;
+  }
+  .meta-item .meta-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    line-height: 1.45;
+  }
+  .meta-item.wide { grid-column: span 2; }
+  .meta-item.full { grid-column: 1 / -1; }
+  .meta-item .meta-value.muted { color: var(--gray-500); font-weight: 400; }
+
+  /* ─────────────── Body ─────────────── */
+  .body { padding: 16px 56px 56px; }
+
+  /* TOP section */
+  .top {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .top:last-of-type { border-bottom: none; }
+  .top-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .top-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    color: var(--blue-500);
+    background: var(--blue-50);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .top-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: -0.015em;
+    color: var(--gray-800);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* Body type */
+  .body p { margin: 0 0 12px; color: var(--gray-700); font-size: 0.98rem; line-height: 1.65; }
+  .body ul { margin: 0 0 16px; padding-left: 0; list-style: none; }
+  .body ul li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 8px;
+    color: var(--gray-700);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+  .body ul li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    background: var(--blue-400);
+    border-radius: 50%;
+  }
+  .body ul ul { margin-top: 8px; margin-bottom: 4px; }
+  .body ul ul li::before { background: var(--gray-300); width: 5px; height: 5px; }
+
+  strong { font-weight: 600; color: var(--gray-800); }
+  .body em { font-style: italic; color: var(--gray-600); }
+
+  /* Decision callout */
+  .beschluss {
+    background: linear-gradient(135deg, var(--blue-50), #fafcff);
+    border-left: 3px solid var(--blue-500);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.96rem;
+    color: var(--gray-800);
+    line-height: 1.55;
+  }
+  .beschluss .b-label {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-600);
+    margin-right: 10px;
+    vertical-align: 1px;
+  }
+
+  /* Options table */
+  .opt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .opt-table th, .opt-table td {
+    text-align: left;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .opt-table th {
+    background: var(--gray-50);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .opt-table tr:last-child td { border-bottom: none; }
+  .opt-table td:first-child { font-weight: 600; color: var(--gray-800); }
+  .opt-table td:last-child { color: var(--gray-600); }
+  .opt-table .recommend td:first-child { color: var(--blue-600); }
+  .opt-table .recommend td:first-child::after {
+    content: "★";
+    margin-left: 8px;
+    color: var(--blue-400);
+    font-size: 0.85em;
+  }
+
+  /* Subsections under TOP 4 */
+  .sub {
+    padding: 16px 20px;
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    margin: 12px 0;
+  }
+  .sub-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .sub-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--gray-400);
+  }
+  .sub-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-800);
+    margin: 0;
+  }
+  .sub ul { margin-bottom: 0; }
+  .sub ul li { font-size: 0.94rem; }
+
+  /* Deadline pill */
+  .deadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff5e8;
+    color: var(--orange-600);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 2px 10px 3px;
+    border-radius: var(--radius-pill);
+    border: 1px solid #ffd7aa;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+  .deadline::before {
+    content: "";
+    width: 5px; height: 5px;
+    background: var(--orange-500);
+    border-radius: 50%;
+  }
+
+  /* ─────────────── Aufgabenliste ─────────────── */
+  .tasks-section {
+    background: var(--gray-50);
+    padding: 48px 56px 56px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .tasks-head {
+    margin-bottom: 32px;
+  }
+  .tasks-eyebrow {
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-500);
+    margin-bottom: 8px;
+  }
+  .tasks-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--gray-800);
+    margin: 0 0 6px;
+  }
+  .tasks-note {
+    font-size: 0.92rem;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .person {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: var(--transition);
+  }
+  .person:hover { border-color: var(--blue-200); box-shadow: var(--shadow-sm); }
+  .person.wide { grid-column: span 2; }
+  .person-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg-cta);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .person-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-800);
+    line-height: 1.2;
+  }
+  .person-role {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 2px;
+  }
+  .task-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+  }
+
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .task input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 5px;
+    background: var(--white);
+    cursor: pointer;
+    margin: 2px 0 0;
+    flex-shrink: 0;
+    position: relative;
+    transition: var(--transition);
+  }
+  .task input[type="checkbox"]:hover { border-color: var(--blue-400); }
+  .task input[type="checkbox"]:checked {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+  }
+  .task input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 5px; height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .task-text {
+    font-size: 0.93rem;
+    line-height: 1.5;
+    color: var(--gray-700);
+    transition: var(--transition);
+  }
+  .task input[type="checkbox"]:checked + .task-text {
+    text-decoration: line-through;
+    color: var(--gray-400);
+  }
+
+  /* Footer */
+  .doc-foot {
+    padding: 32px 56px 40px;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+  }
+  .signoff {
+    font-size: 0.86rem;
+    color: var(--gray-500);
+    line-height: 1.55;
+  }
+  .signoff strong { color: var(--gray-800); font-weight: 600; }
+  .sig-block {
+    text-align: right;
+  }
+  .sig-line {
+    width: 220px;
+    border-bottom: 1px solid var(--gray-400);
+    margin: 0 0 6px auto;
+    height: 32px;
+    position: relative;
+  }
+  .sig-line::before {
+    content: "Fabian Wörenkämper";
+    position: absolute;
+    bottom: 4px; left: 8px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--blue-700);
+    transform: rotate(-3deg);
+    transform-origin: bottom left;
+  }
+  .sig-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  /* Brand stripe at very top of doc */
+  .stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--blue-700) 0%, var(--blue-500) 50%, var(--crest-red) 100%);
+  }
+
+  /* Quick links bar */
+  .toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 24px 12px 64px; }
+    .masthead { padding: 20px 28px; }
+    .title-block, .body, .tasks-section, .doc-foot { padding-left: 28px; padding-right: 28px; }
+    .title-block { padding-top: 36px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .person-grid { grid-template-columns: 1fr; }
+    .person.wide { grid-column: span 1; }
+    .doc-foot { flex-direction: column; align-items: flex-start; }
+    .sig-block { text-align: left; }
+    .sig-line { margin: 0 0 6px 0; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .top { break-inside: avoid; }
+    .person { break-inside: avoid; }
+    .tasks-section { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<article class="doc" data-screen-label="Protokoll">
+
+  <div class="stripe"></div>
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <img src="assets/wappen.png" alt="Wappen TC Blau-Weiss Attendorn">
+    <div class="masthead-text">
+      <div class="masthead-eyebrow">Tennisclub Blau-Weiss Attendorn e.V.</div>
+      <div class="masthead-name">Vorstand · Protokoll</div>
+      <div class="masthead-tag">Tennis an der Burg Schnellenberg — seit 1931</div>
+    </div>
+  </header>
+
+  <!-- Title -->
+  <section class="title-block">
+    <div class="title-eyebrow">Protokoll der Vorstandssitzung</div>
+    <h1 class="title-main">Vorstandssitzung</h1>
+    <p class="title-sub">Mittwoch, 27. Mai 2026 · Clubhaus</p>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Datum</div>
+        <div class="meta-value">27.05.2026</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Beginn</div>
+        <div class="meta-value">20:09 Uhr</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Ende</div>
+        <div class="meta-value">21:20 Uhr</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Dauer</div>
+        <div class="meta-value muted">1 Std 11 Min</div>
+      </div>
+
+      <div class="meta-item full">
+        <div class="meta-label">Ort</div>
+        <div class="meta-value">Clubhaus des Tennisclub „Blau-Weiss" Attendorn e.V.</div>
+      </div>
+
+      <div class="meta-item wide">
+        <div class="meta-label">Anwesende</div>
+        <div class="meta-value">Aaron Heseler, Felix Kersting, Martina Franz, Bastian Gerlach, Fabian Wörenkämper, Felicitas Baumhoff, Carsten Heimes</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Entschuldigt</div>
+        <div class="meta-value muted">Marc Horlacher, Annika Foidl, Paula Kersting</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Protokollführung</div>
+        <div class="meta-value">Fabian Wörenkämper</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- TOP 1 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 1</span>
+        <h2 class="top-title">Social Media</h2>
+      </div>
+      <ul>
+        <li>Verantwortlich: Feli (Felicitas) Baumhoff</li>
+        <li>Feli erhält freie Hand, sich auf den Vereinskanälen „auszuleben".</li>
+        <li>Als Orientierung dient der bestehende <strong>Facebook-Auftritt</strong> (Instagram wird aktuell nur rudimentär gepflegt).</li>
+      </ul>
+      <div class="beschluss">
+        <span class="b-label">Beschluss</span>
+        Fabian erweitert den bestehenden n8n-Workflow so, dass Feli automatisch eine Benachrichtigung erhält, sobald ein Spielergebnis auf nuLiga hochgeladen wurde.
+      </div>
+    </section>
+
+    <!-- TOP 2 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 2</span>
+        <h2 class="top-title">Vereinsleben</h2>
+      </div>
+      <ul>
+        <li><strong>Aaron Heseler</strong> tritt als <strong>Eventmanager</strong> auf und hat kurz berichtet, welche Formate er in dieser Funktion organisieren möchte.</li>
+        <li>Zwei Optionen wurden vorgestellt:</li>
+      </ul>
+
+      <table class="opt-table">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Charakter</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Clubmeisterschaft</td>
+            <td>kompetitiver, klassisch</td>
+          </tr>
+          <tr class="recommend">
+            <td>Tenniscamp-Revival / Schleifchenturnier</td>
+            <td>gesellig, offen für alle Spielstärken</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul>
+        <li><strong>Tendenz:</strong> klar zum <strong>Tenniscamp / Schleifchenturnier mit anschließendem Sommerfest</strong>.</li>
+        <li><strong>Terminvorschläge:</strong> <strong>29.08.2026</strong> oder <strong>12.09.2026</strong> — Abstimmung läuft in der Vorstands-WhatsApp-Gruppe.</li>
+      </ul>
+    </section>
+
+    <!-- TOP 3 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 3</span>
+        <h2 class="top-title">Getränkewart</h2>
+      </div>
+      <div class="beschluss">
+        <span class="b-label">Beschluss</span>
+        Neuer Getränkewart ist <strong>Felix Kersting</strong>, unterstützt von <strong>Carsten Heimes</strong>.
+      </div>
+    </section>
+
+    <!-- TOP 4 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 4</span>
+        <h2 class="top-title">Verschiedenes</h2>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.1</span>
+          <h3 class="sub-title">Sonnensegel</h3>
+        </div>
+        <ul>
+          <li><strong>Marc H.</strong> <em></em> kümmert sich um den Einbau einer <strong>Öse für den Abfluss von Regenwasser</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.2</span>
+          <h3 class="sub-title">Clubhaus — Entsorgungen</h3>
+        </div>
+        <ul>
+          <li><strong>Felix Kersting</strong> kümmert sich um:
+            <ul>
+              <li><strong>Entsorgung des Grills</strong>, der sich derzeit in der Damenumkleide befindet.</li>
+              <li>Entsorgung der Anzeigetafeln.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.3</span>
+          <h3 class="sub-title">Digitale Schließanlage</h3>
+        </div>
+        <ul>
+          <li><strong>Felix Kersting</strong> klärt die Umsetzung über <strong>Daniel Guttstein</strong> (Arbeitskollege).</li>
+          <li><strong>Alternative zu prüfen:</strong> klassisches <strong>Vorhängeschloss</strong> — die Kosten beider Varianten sind gegenüberzustellen und die Sinnhaftigkeit der digitalen Schließanlage abschließend zu bewerten.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.4</span>
+          <h3 class="sub-title">Jugendarbeit</h3>
+        </div>
+        <ul>
+          <li><strong>Antrag Jugendarbeit muss bis zum 31.05.2026 gestellt sein</strong> <span class="deadline">Frist 31.05.</span></li>
+          <li><strong>Martina Franz</strong> übernimmt und erinnert <strong>Stefan Hütte</strong> <em>(n.a.)</em> an die Umsetzung.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.5</span>
+          <h3 class="sub-title">Homepage-Änderungen</h3>
+        </div>
+        <ul>
+          <li>Telefonnummer Clubhaus <strong>entfernen</strong>.</li>
+          <li>Impressum korrigieren: <strong>Tennisclub „Blau-Weiss" Attendorn e.V.</strong> (Anführungszeichen fehlen aktuell).</li>
+          <li>Umsetzung durch <strong>Fabian Wörenkämper</strong> (Webmaster).</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.6</span>
+          <h3 class="sub-title">Automatische Aktualisierung Termine &amp; Ergebnisse</h3>
+        </div>
+        <ul>
+          <li><strong>Offene Frage:</strong> Ist die <strong>Nebenrunde Pokal</strong> durch den bestehenden Automatismus abgedeckt?</li>
+          <li><strong>Fabian Wörenkämper</strong> prüft.</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">4.7</span>
+          <h3 class="sub-title">Übergabe Stefan Hütte → Bastian Gerlach</h3>
+        </div>
+        <ul>
+          <li>Aufgaben und Akten werden <strong>bedarfsabhängig</strong> übergeben.</li>
+          <li>Externe Kontakte werden durch Stefan Hütte <em>(n.a.)</em> selbständig an Bastian Gerlach umgeleitet.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOP 5 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 5</span>
+        <h2 class="top-title">Digitale Vereinsanmeldung</h2>
+      </div>
+      <ul>
+        <li><strong>Martina Franz</strong> liefert Fabian die <strong>Mandatsreferenz</strong>.</li>
+        <li>Ab dieser Referenz wird <strong>fortlaufend nummeriert</strong> für neue Mitglieder (Überweiser).</li>
+      </ul>
+    </section>
+
+    <!-- TOP 6 -->
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP 6</span>
+        <h2 class="top-title">Abrechnung</h2>
+      </div>
+      <ul>
+        <li><strong>Fabian Wörenkämper</strong> automatisiert die Abrechnung <strong>mit Unterstützung von Martina Franz</strong> (bei Gelegenheit).</li>
+        <li><strong>Erwarteter Nutzen:</strong> Einsparung von ca. <strong>2 Arbeitstagen</strong> für Martina.</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <!-- Aufgaben -->
+  <section class="tasks-section">
+    <header class="tasks-head">
+      <div class="tasks-eyebrow">Anhang</div>
+      <h2 class="tasks-title">Aufgabenliste</h2>
+      <p class="tasks-note">Nach Personen gruppiert · Häkchen werden lokal im Browser gespeichert.</p>
+    </header>
+
+    <div class="person-grid">
+
+      <div class="person wide">
+        <div class="person-head">
+          <div class="avatar">FW</div>
+          <div>
+            <div class="person-name">Fabian Wörenkämper</div>
+            <div class="person-role">Webmaster · Protokoll</div>
+          </div>
+          <div class="task-count">5 Aufgaben</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="fw-1"><span class="task-text">n8n-Workflow erweitern: nuLiga-Ergebnis → Benachrichtigung an Feli</span></label>
+        <label class="task"><input type="checkbox" data-key="fw-2"><span class="task-text">Homepage: Clubhaus-Telefonnummer entfernen</span></label>
+        <label class="task"><input type="checkbox" data-key="fw-3"><span class="task-text">Homepage: Impressum korrigieren — Anführungszeichen bei „Blau-Weiss" ergänzen</span></label>
+        <label class="task"><input type="checkbox" data-key="fw-4"><span class="task-text">Prüfen, ob Nebenrunde Pokal in der Termin-/Ergebnis-Automatisierung enthalten ist</span></label>
+        <label class="task"><input type="checkbox" data-key="fw-5"><span class="task-text">Abrechnungs-Automatisierung umsetzen (mit Martina)</span></label>
+      </div>
+
+      <div class="person">
+        <div class="person-head">
+          <div class="avatar">FK</div>
+          <div>
+            <div class="person-name">Felix Kersting</div>
+            <div class="person-role">Getränkewart</div>
+          </div>
+          <div class="task-count">4</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="felix-1"><span class="task-text">Übernahme Funktion Getränkewart (mit Carsten Heimes)</span></label>
+        <label class="task"><input type="checkbox" data-key="felix-2"><span class="task-text">Grill aus Damenumkleide entsorgen</span></label>
+        <label class="task"><input type="checkbox" data-key="felix-3"><span class="task-text">Anzeigetafeln entsorgen</span></label>
+        <label class="task"><input type="checkbox" data-key="felix-4"><span class="task-text">Digitale Schließanlage via Daniel Guttstein klären — inkl. Kostenvergleich zu Vorhängeschloss-Alternative</span></label>
+      </div>
+
+      <div class="person">
+        <div class="person-head">
+          <div class="avatar">MF</div>
+          <div>
+            <div class="person-name">Martina Franz</div>
+            <div class="person-role">Kassenwartin</div>
+          </div>
+          <div class="task-count">4</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="mf-1"><span class="task-text">Antrag Jugendarbeit stellen <span class="deadline">31.05.2026</span></span></label>
+        <label class="task"><input type="checkbox" data-key="mf-2"><span class="task-text">Stefan Hütte an Antrag Jugendarbeit erinnern</span></label>
+        <label class="task"><input type="checkbox" data-key="mf-3"><span class="task-text">Mandatsreferenz an Fabian liefern</span></label>
+        <label class="task"><input type="checkbox" data-key="mf-4"><span class="task-text">Unterstützung Fabian bei Abrechnungs-Automatisierung</span></label>
+      </div>
+
+      <div class="person">
+        <div class="person-head">
+          <div class="avatar">AH</div>
+          <div>
+            <div class="person-name">Aaron Heseler</div>
+            <div class="person-role">Eventmanager</div>
+          </div>
+          <div class="task-count">2</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="ah-1"><span class="task-text">Organisation Schleifchenturnier + Sommerfest</span></label>
+        <label class="task"><input type="checkbox" data-key="ah-2"><span class="task-text">Finale Terminentscheidung koordinieren (29.08. / 12.09.)</span></label>
+      </div>
+
+      <div class="person">
+        <div class="person-head">
+          <div class="avatar">F</div>
+          <div>
+            <div class="person-name">Feli (Felicitas)</div>
+            <div class="person-role">Social Media</div>
+          </div>
+          <div class="task-count">1</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="feli-1"><span class="task-text">Social-Media-Pflege ausbauen (Schwerpunkt Facebook, Instagram nachziehen)</span></label>
+      </div>
+
+      <div class="person">
+        <div class="person-head">
+          <div class="avatar" style="background: linear-gradient(135deg, var(--gray-500), var(--gray-700));">M</div>
+          <div>
+            <div class="person-name">Marc</div>
+            <div class="person-role">n.a.</div>
+          </div>
+          <div class="task-count">1</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="marc-1"><span class="task-text">Öse am Sonnensegel für Regenwasserabfluss einbauen</span></label>
+      </div>
+
+      <div class="person wide">
+        <div class="person-head">
+          <div class="avatar" style="background: linear-gradient(135deg, var(--gray-500), var(--gray-700));">SH</div>
+          <div>
+            <div class="person-name">Stefan Hütte <span style="color:var(--gray-400); font-weight:400; font-size:0.85em;">→ Bastian Gerlach</span></div>
+            <div class="person-role">Übergabe</div>
+          </div>
+          <div class="task-count">2 Aufgaben</div>
+        </div>
+        <label class="task"><input type="checkbox" data-key="sh-1"><span class="task-text">Bedarfsweise Übergabe von Aufgaben und Akten an Bastian Gerlach</span></label>
+        <label class="task"><input type="checkbox" data-key="sh-2"><span class="task-text">Externe Kontakte werden durch Stefan Hütte an Bastian Gerlach umgeleitet</span></label>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer / Sign-off -->
+  <footer class="doc-foot">
+    <div class="signoff">
+      Aufgenommen durch <strong>Fabian Wörenkämper</strong>, Webmaster.<br>
+      Tennisclub „Blau-Weiss" Attendorn e.V. · Schnellenberg 1, 57439 Attendorn<br>
+      <span style="color:var(--gray-400);">tc-bw-attendorn.de · Protokoll generiert am 27.05.2026</span>
+    </div>
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-label">Protokollführer</div>
+    </div>
+  </footer>
+
+</article>
+
+<script>
+  // Persist task checkbox states in localStorage
+  const STORAGE_KEY = 'tcbw-protokoll-2026-05-27-tasks';
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  const state = loadState();
+  document.querySelectorAll('.task input[type="checkbox"]').forEach(cb => {
+    const key = cb.dataset.key;
+    if (state[key]) cb.checked = true;
+    cb.addEventListener('change', () => {
+      state[key] = cb.checked;
+      saveState(state);
+    });
+  });
+</script>
+
+</body>
+</html>

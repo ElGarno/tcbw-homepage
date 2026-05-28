@@ -1,0 +1,185 @@
+/* =============================================================
+   TC BW Attendorn — Colors & Type
+   Tennisclub Blau-Weiss Attendorn e.V., gegr. 1931
+   Source: ElGarno/tcbw-homepage (Hugo) – static/css/main.css
+   ============================================================= */
+
+/* Playfair Display — local TTFs (variable font preferred, static weights as fallback) */
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-VariableFont_wght.ttf") format("truetype-variations"), url("fonts/PlayfairDisplay-Regular.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf") format("truetype-variations"), url("fonts/PlayfairDisplay-Italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-Medium.ttf") format("truetype");          font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-MediumItalic.ttf") format("truetype");    font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-SemiBold.ttf") format("truetype");        font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-SemiBoldItalic.ttf") format("truetype");  font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-Bold.ttf") format("truetype");            font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-BoldItalic.ttf") format("truetype");      font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-ExtraBold.ttf") format("truetype");       font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-ExtraBoldItalic.ttf") format("truetype"); font-weight: 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-Black.ttf") format("truetype");           font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/PlayfairDisplay-BlackItalic.ttf") format("truetype");     font-weight: 900; font-style: italic; font-display: swap; }
+
+/* DM Sans — local TTFs (variable optical sizes 18/24/36pt available; default uses non-suffixed TTFs which are auto-optical-size) */
+/* DM Sans — variable font preferred (axes: opsz 9–40, wght 100–900); static TTFs as fallback */
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-VariableFont_opsz_wght.ttf") format("truetype-variations"), url("fonts/DMSans-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Italic-VariableFont_opsz_wght.ttf") format("truetype-variations"), url("fonts/DMSans-Italic.ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Thin.ttf") format("truetype");        font-weight: 100; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-ThinItalic.ttf") format("truetype");  font-weight: 100; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-ExtraLight.ttf") format("truetype");        font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-ExtraLightItalic.ttf") format("truetype");  font-weight: 200; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Light.ttf") format("truetype");        font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-LightItalic.ttf") format("truetype");  font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Regular.ttf") format("truetype");      font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Italic.ttf") format("truetype");       font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Medium.ttf") format("truetype");       font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-MediumItalic.ttf") format("truetype"); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-SemiBold.ttf") format("truetype");       font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-SemiBoldItalic.ttf") format("truetype"); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Bold.ttf") format("truetype");       font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-BoldItalic.ttf") format("truetype"); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-ExtraBold.ttf") format("truetype");       font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-ExtraBoldItalic.ttf") format("truetype"); font-weight: 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-Black.ttf") format("truetype");       font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("fonts/DMSans-BlackItalic.ttf") format("truetype"); font-weight: 900; font-style: italic; font-display: swap; }
+
+:root {
+  /* ── Brand / club crest colors (from wappen.png) ───────────── */
+  --crest-blue:    #1a4080;   /* shield blue (matches blue-600) */
+  --crest-red:     #c1272d;   /* crescent moon red */
+  --crest-black:   #111111;   /* iron-cross black */
+  --crest-white:   #ffffff;
+
+  /* ── Primary blue scale (deep navy → ice) ──────────────────── */
+  --blue-900: #0a1628;        /* deepest, used for footer + dark sections */
+  --blue-800: #0f2240;
+  --blue-700: #153266;        /* hero gradient stop */
+  --blue-600: #1a4080;        /* primary CTA, headings on light */
+  --blue-500: #1e56a0;        /* primary action, eyebrow accents */
+  --blue-400: #3a7bd5;
+  --blue-300: #6ba3eb;
+  --blue-200: #a8ccf5;
+  --blue-100: #dceafb;
+  --blue-50:  #f0f6fe;        /* hover wash on nav links */
+
+  /* ── Neutrals (cool gray, paired with the blues) ───────────── */
+  --white:    #ffffff;
+  --gray-50:  #f8f9fb;        /* alternating section bg */
+  --gray-100: #f0f2f5;
+  --gray-200: #e2e5ea;        /* hairline borders */
+  --gray-300: #c8cdd5;
+  --gray-400: #9aa1ad;        /* meta / quiet text */
+  --gray-500: #6b7280;        /* body secondary */
+  --gray-600: #4b5563;        /* body */
+  --gray-700: #374151;
+  --gray-800: #1f2937;        /* primary text */
+
+  /* ── Semantic accents (used sparingly) ─────────────────────── */
+  --green-500: #10b981;       /* "Platz buchen" / event category */
+  --green-600: #059669;
+  --orange-500: #f97316;      /* Pokal category */
+  --orange-600: #ea580c;
+  --orange-50:  #fff7ed;
+
+  /* ── Type families ─────────────────────────────────────────── */
+  --font-sans:    "DM Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* ── Type tokens ───────────────────────────────────────────── */
+  --fs-display-1: clamp(2.5rem, 6vw, 4.5rem);   /* hero title */
+  --fs-display-2: clamp(1.75rem, 3vw, 2.5rem);  /* section title */
+  --fs-display-3: clamp(1.5rem, 3vw, 2rem);     /* CTA title */
+  --fs-h1:    1.5rem;
+  --fs-h2:    1.2rem;
+  --fs-h3:    1.05rem;
+  --fs-body:  1rem;
+  --fs-body-lg: 1.05rem;
+  --fs-small: 0.9rem;
+  --fs-xs:    0.8rem;
+  --fs-eyebrow: 0.75rem;
+
+  --lh-tight: 1.15;
+  --lh-snug:  1.3;
+  --lh-base:  1.6;
+  --lh-loose: 1.85;
+
+  /* ── Radius / elevation ────────────────────────────────────── */
+  --radius:    12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+
+  --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.06), 0 1px 2px rgba(10, 22, 40, 0.04);
+  --shadow-md: 0 4px 16px rgba(10, 22, 40, 0.08), 0 2px 4px rgba(10, 22, 40, 0.04);
+  --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.12), 0 4px 12px rgba(10, 22, 40, 0.06);
+  --shadow-cta: 0 2px 8px rgba(30, 86, 160, 0.25);
+  --shadow-cta-hover: 0 4px 16px rgba(30, 86, 160, 0.35);
+
+  /* ── Motion ────────────────────────────────────────────────── */
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ────────────────────────────────────────────────── */
+  --container: 1200px;
+  --gutter:    24px;
+
+  /* ── Semantic foreground / background tokens ───────────────── */
+  --fg-1: var(--gray-800);    /* primary text */
+  --fg-2: var(--gray-600);    /* body secondary */
+  --fg-3: var(--gray-500);    /* meta */
+  --fg-4: var(--gray-400);    /* tertiary / dates */
+  --fg-link: var(--blue-600);
+  --fg-on-dark: var(--white);
+  --fg-on-dark-2: var(--blue-200);
+  --fg-on-dark-3: var(--blue-300);
+
+  --bg-1: var(--white);
+  --bg-2: var(--gray-50);     /* alternating section */
+  --bg-3: var(--gray-100);
+  --bg-dark: var(--blue-900);
+  --bg-hero: linear-gradient(160deg, var(--blue-700) 0%, var(--blue-800) 40%, var(--blue-900) 100%);
+  --bg-cta: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-800) 100%);
+
+  --border: 1px solid var(--gray-200);
+  --border-hover: 1px solid var(--blue-300);
+}
+
+/* =============================================================
+   Base + semantic type
+   ============================================================= */
+
+body {
+  font-family: var(--font-sans);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.heading-display,
+h1.display, h2.display, h3.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+}
+
+h1 { font-size: var(--fs-display-2); font-weight: 700; line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-h1); font-weight: 700; }
+h3 { font-size: var(--fs-h3); font-weight: 700; }
+
+.label-upper,
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-500);
+}
+
+p { line-height: var(--lh-base); }
+.lead { font-size: var(--fs-body-lg); color: var(--fg-2); line-height: 1.75; }
+.meta { font-size: var(--fs-xs); color: var(--fg-4); }
+
+a { color: inherit; text-decoration: none; }
+a.link { color: var(--fg-link); }
+a.link:hover { color: var(--blue-700); }

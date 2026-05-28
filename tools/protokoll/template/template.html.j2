@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Protokoll {{ meta.title }} · {{ meta.date_de }} · TC BW Attendorn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/wappen.png">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--gray-100);
+    color: var(--fg-1);
+    font-family: var(--font-sans);
+    padding: 48px 24px 96px;
+  }
+
+  /* ─────────────── Document shell ─────────────── */
+  .doc {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  /* ─────────────── Masthead (blue band) ─────────────── */
+  .masthead {
+    background: var(--bg-hero);
+    color: var(--fg-on-dark);
+    padding: 28px 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(168, 204, 245, 0.12), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(106, 163, 235, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .masthead img { width: 56px; height: 56px; object-fit: contain; position: relative; flex-shrink: 0; }
+  .masthead-text { position: relative; line-height: 1.3; }
+  .masthead-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-200);
+    margin-bottom: 2px;
+  }
+  .masthead-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+  .masthead-tag {
+    font-size: 0.85rem;
+    color: var(--blue-100);
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  /* ─────────────── Title block ─────────────── */
+  .title-block {
+    padding: 56px 56px 32px;
+    border-bottom: var(--border);
+  }
+  .title-eyebrow {
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-500);
+    margin-bottom: 16px;
+  }
+  .title-main {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--gray-800);
+    margin: 0 0 8px;
+  }
+  .title-sub {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--gray-500);
+    margin: 0 0 32px;
+  }
+
+  /* ─────────────── Meta grid ─────────────── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px 32px;
+    padding-top: 8px;
+  }
+  .meta-item .meta-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 4px;
+  }
+  .meta-item .meta-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    line-height: 1.45;
+  }
+  .meta-item.wide { grid-column: span 2; }
+  .meta-item.full { grid-column: 1 / -1; }
+  .meta-item .meta-value.muted { color: var(--gray-500); font-weight: 400; }
+
+  /* ─────────────── Body ─────────────── */
+  .body { padding: 16px 56px 56px; }
+
+  /* TOP section */
+  .top {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .top:last-of-type { border-bottom: none; }
+  .top-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .top-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    color: var(--blue-500);
+    background: var(--blue-50);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .top-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: -0.015em;
+    color: var(--gray-800);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* Body type */
+  .body p { margin: 0 0 12px; color: var(--gray-700); font-size: 0.98rem; line-height: 1.65; }
+  .body ul { margin: 0 0 16px; padding-left: 0; list-style: none; }
+  .body ul li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 8px;
+    color: var(--gray-700);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+  .body ul li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    background: var(--blue-400);
+    border-radius: 50%;
+  }
+  .body ul ul { margin-top: 8px; margin-bottom: 4px; }
+  .body ul ul li::before { background: var(--gray-300); width: 5px; height: 5px; }
+
+  strong { font-weight: 600; color: var(--gray-800); }
+  .body em { font-style: italic; color: var(--gray-600); }
+
+  /* Decision callout */
+  .beschluss {
+    background: linear-gradient(135deg, var(--blue-50), #fafcff);
+    border-left: 3px solid var(--blue-500);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.96rem;
+    color: var(--gray-800);
+    line-height: 1.55;
+  }
+  .beschluss .b-label {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-600);
+    margin-right: 10px;
+    vertical-align: 1px;
+  }
+
+  /* Options table */
+  .opt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .opt-table th, .opt-table td {
+    text-align: left;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .opt-table th {
+    background: var(--gray-50);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .opt-table tr:last-child td { border-bottom: none; }
+  .opt-table td:first-child { font-weight: 600; color: var(--gray-800); }
+  .opt-table td:last-child { color: var(--gray-600); }
+  .opt-table .recommend td:first-child { color: var(--blue-600); }
+  .opt-table .recommend td:first-child::after {
+    content: "★";
+    margin-left: 8px;
+    color: var(--blue-400);
+    font-size: 0.85em;
+  }
+
+  /* Subsections under TOP 4 */
+  .sub {
+    padding: 16px 20px;
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    margin: 12px 0;
+  }
+  .sub-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .sub-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--gray-400);
+  }
+  .sub-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-800);
+    margin: 0;
+  }
+  .sub ul { margin-bottom: 0; }
+  .sub ul li { font-size: 0.94rem; }
+
+  /* Deadline pill */
+  .deadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff5e8;
+    color: var(--orange-600);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 2px 10px 3px;
+    border-radius: var(--radius-pill);
+    border: 1px solid #ffd7aa;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+  .deadline::before {
+    content: "";
+    width: 5px; height: 5px;
+    background: var(--orange-500);
+    border-radius: 50%;
+  }
+
+  /* ─────────────── Aufgabenliste ─────────────── */
+  .tasks-section {
+    background: var(--gray-50);
+    padding: 48px 56px 56px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .tasks-head {
+    margin-bottom: 32px;
+  }
+  .tasks-eyebrow {
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-500);
+    margin-bottom: 8px;
+  }
+  .tasks-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--gray-800);
+    margin: 0 0 6px;
+  }
+  .tasks-note {
+    font-size: 0.92rem;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .person {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: var(--transition);
+  }
+  .person:hover { border-color: var(--blue-200); box-shadow: var(--shadow-sm); }
+  .person.wide { grid-column: span 2; }
+  .person-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg-cta);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .avatar.gray { background: linear-gradient(135deg, var(--gray-500), var(--gray-700)); }
+  .person-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-800);
+    line-height: 1.2;
+  }
+  .person-role {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 2px;
+  }
+  .task-count {
+    margin-left: auto;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+  }
+
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .task input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 5px;
+    background: var(--white);
+    cursor: pointer;
+    margin: 2px 0 0;
+    flex-shrink: 0;
+    position: relative;
+    transition: var(--transition);
+  }
+  .task input[type="checkbox"]:hover { border-color: var(--blue-400); }
+  .task input[type="checkbox"]:checked {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+  }
+  .task input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 5px; height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .task-text {
+    font-size: 0.93rem;
+    line-height: 1.5;
+    color: var(--gray-700);
+    transition: var(--transition);
+  }
+  .task input[type="checkbox"]:checked + .task-text {
+    text-decoration: line-through;
+    color: var(--gray-400);
+  }
+
+  /* Footer */
+  .doc-foot {
+    padding: 32px 56px 40px;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+  }
+  .signoff {
+    font-size: 0.86rem;
+    color: var(--gray-500);
+    line-height: 1.55;
+  }
+  .signoff strong { color: var(--gray-800); font-weight: 600; }
+  .sig-block {
+    text-align: right;
+  }
+  .sig-line {
+    width: 220px;
+    border-bottom: 1px solid var(--gray-400);
+    margin: 0 0 6px auto;
+    height: 32px;
+    position: relative;
+  }
+  .sig-line::before {
+    content: "{{ meta.protokollfuehrung }}";
+    position: absolute;
+    bottom: 4px; left: 8px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--blue-700);
+    transform: rotate(-3deg);
+    transform-origin: bottom left;
+  }
+  .sig-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  /* Brand stripe at very top of doc */
+  .stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--blue-700) 0%, var(--blue-500) 50%, var(--crest-red) 100%);
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 24px 12px 64px; }
+    .masthead { padding: 20px 28px; }
+    .title-block, .body, .tasks-section, .doc-foot { padding-left: 28px; padding-right: 28px; }
+    .title-block { padding-top: 36px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .person-grid { grid-template-columns: 1fr; }
+    .person.wide { grid-column: span 1; }
+    .doc-foot { flex-direction: column; align-items: flex-start; }
+    .sig-block { text-align: left; }
+    .sig-line { margin: 0 0 6px 0; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .doc { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .top { break-inside: avoid; }
+    .person { break-inside: avoid; }
+    .tasks-section { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<article class="doc" data-screen-label="Protokoll">
+
+  <div class="stripe"></div>
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <img src="assets/wappen.png" alt="Wappen TC Blau-Weiss Attendorn">
+    <div class="masthead-text">
+      <div class="masthead-eyebrow">Tennisclub Blau-Weiss Attendorn e.V.</div>
+      <div class="masthead-name">Vorstand · Protokoll</div>
+      <div class="masthead-tag">Tennis an der Burg Schnellenberg — seit 1931</div>
+    </div>
+  </header>
+
+  <!-- Title -->
+  <section class="title-block">
+    <div class="title-eyebrow">Protokoll der {{ meta.title }}</div>
+    <h1 class="title-main">{{ meta.title }}</h1>
+    <p class="title-sub">{{ meta.subtitle }}</p>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Datum</div>
+        <div class="meta-value">{{ meta.date_de }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Beginn</div>
+        <div class="meta-value">{{ meta.beginn }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Ende</div>
+        <div class="meta-value">{{ meta.ende }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Dauer</div>
+        <div class="meta-value muted">{{ meta.dauer }}</div>
+      </div>
+
+      <div class="meta-item full">
+        <div class="meta-label">Ort</div>
+        <div class="meta-value">{{ meta.ort }}</div>
+      </div>
+
+      <div class="meta-item wide">
+        <div class="meta-label">Anwesende</div>
+        <div class="meta-value">{{ meta.anwesende }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Entschuldigt</div>
+        <div class="meta-value muted">{{ meta.entschuldigt }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Protokollführung</div>
+        <div class="meta-value">{{ meta.protokollfuehrung }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <div class="body">
+    {% for top in tops %}
+    <section class="top">
+      <div class="top-head">
+        <span class="top-num">TOP {{ top.num }}</span>
+        <h2 class="top-title">{{ top.title }}</h2>
+      </div>
+      {% if top.content_html %}{{ top.content_html|safe }}{% endif %}
+      {% if top.beschluss_html %}
+      <div class="beschluss">
+        <span class="b-label">Beschluss</span>
+        {{ top.beschluss_html|safe }}
+      </div>
+      {% endif %}
+      {% for sub in top.subs %}
+      <div class="sub">
+        <div class="sub-head">
+          <span class="sub-num">{{ sub.num }}</span>
+          <h3 class="sub-title">{{ sub.title }}</h3>
+        </div>
+        {% if sub.content_html %}{{ sub.content_html|safe }}{% endif %}
+        {% if sub.beschluss_html %}
+        <div class="beschluss">
+          <span class="b-label">Beschluss</span>
+          {{ sub.beschluss_html|safe }}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </div>
+
+  <!-- Aufgaben -->
+  {% if persons %}
+  <section class="tasks-section">
+    <header class="tasks-head">
+      <div class="tasks-eyebrow">Anhang</div>
+      <h2 class="tasks-title">Aufgabenliste</h2>
+      <p class="tasks-note">Nach Personen gruppiert · Häkchen werden lokal im Browser gespeichert.</p>
+    </header>
+
+    <div class="person-grid">
+      {% for person in persons %}
+      <div class="person{% if person.wide %} wide{% endif %}">
+        <div class="person-head">
+          <div class="avatar{% if person.avatar_style == 'gray' %} gray{% endif %}">{{ person.initials }}</div>
+          <div>
+            <div class="person-name">{{ person.display_name|safe }}</div>
+            <div class="person-role">{{ person.role }}</div>
+          </div>
+          <div class="task-count">{{ person.tasks|length }}{% if person.wide %} Aufgaben{% endif %}</div>
+        </div>
+        {% for task in person.tasks %}
+        <label class="task"><input type="checkbox" data-key="{{ task.id }}"><span class="task-text">{{ task.text_html|safe }}</span></label>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Footer / Sign-off -->
+  <footer class="doc-foot">
+    <div class="signoff">
+      Aufgenommen durch <strong>{{ meta.protokollfuehrung }}</strong>, Webmaster.<br>
+      Tennisclub „Blau-Weiss" Attendorn e.V. · Schnellenberg 1, 57439 Attendorn<br>
+      <span style="color:var(--gray-400);">tc-bw-attendorn.de · Protokoll generiert am {{ meta.date_de }}</span>
+    </div>
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-label">Protokollführer</div>
+    </div>
+  </footer>
+
+</article>
+
+<script>
+  // Persist task checkbox states in localStorage
+  const STORAGE_KEY = '{{ storage_key }}';
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  const state = loadState();
+  document.querySelectorAll('.task input[type="checkbox"]').forEach(cb => {
+    const key = cb.dataset.key;
+    if (state[key]) cb.checked = true;
+    cb.addEventListener('change', () => {
+      state[key] = cb.checked;
+      saveState(state);
+    });
+  });
+</script>
+
+</body>
+</html>
