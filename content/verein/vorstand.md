@@ -42,6 +42,4 @@ departments:
       - "Tim Maier"
 contact:
   email: "vorstand@tc-bw-attendorn.de"
-  phone: "0151-43168187"
-  phone_label: "Telefon Clubhaus"
 ---

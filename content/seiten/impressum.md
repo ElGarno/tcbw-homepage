@@ -4,7 +4,7 @@ title: "Impressum"
 
 ## Angaben gemäß § 5 TMG
 
-**Tennisclub Blau-Weiss Attendorn e.V.**<br>
+**Tennisclub „Blau-Weiss" Attendorn e.V.**<br>
 Schnellenberg 1<br>
 57439 Attendorn
 
@@ -13,8 +13,7 @@ Bastian Gerlach (1. Geschäftsführer)<br>
 Felix Kersting (2. Geschäftsführer)
 
 **Kontakt**<br>
-E-Mail: [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de)<br>
-Telefon Clubhaus: 0151-43168187
+E-Mail: [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de)
 
 **Vereinsregister**<br>
 Amtsgericht Siegen<br>
