@@ -161,7 +161,9 @@ const kinderSection_html = kinder.length ? section('Kinder',
 ) : '';
 
 const feeBlock = section('Beiträge' + (schnupperjahr ? ' (Schnupperjahr — 50 %)' : ''),
-  feeMailRows + row('<strong>Gesamtbeitrag pro Jahr</strong>', '<strong>' + fmtEur(total) + '</strong>')
+  feeMailRows +
+    '<tr><td style="padding:8px 12px;border-top:2px solid #1e56a0;color:#0a1628;width:200px;font-weight:700;">Gesamtbeitrag pro Jahr</td>' +
+    '<td style="padding:8px 12px;border-top:2px solid #1e56a0;font-weight:700;">' + esc(fmtEur(total)) + '</td></tr>'
 );
 
 const vorstandHtml =
