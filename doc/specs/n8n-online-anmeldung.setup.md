@@ -59,3 +59,24 @@ Bei Fehlern in Render PDF:
 Cloudflare Dashboard → **Analytics & Logs → Browser Rendering** zeigt die
 verbrauchte Browser-Zeit. Bei stetig steigenden Anmeldungen ggf. auf
 Workers Paid umsteigen (5 €/Monat = 10 h/Tag).
+
+## 7. Vereinssatzung als zweiter Anhang
+
+Seit 2026-05-28 wird zusätzlich zum unterschriebenen Antrag auch die
+**Vereinssatzung** an die Antragsteller-Bestätigungsmail angehängt.
+
+Funktionsweise:
+- PDF liegt unter `static/dokumente/Satzung_TCBW_2022_neukomplett.pdf`
+  und wird über Cloudflare Pages öffentlich ausgeliefert.
+- Neuer Node **Fetch Satzung** (HTTP Request) zwischen *Forward PDF Binary*
+  und *Bestätigung an Antragsteller* lädt das PDF als Binary-Property
+  `satzung` herunter.
+- *Bestätigung an Antragsteller* listet beide Binaries im
+  `attachments`-Feld: `data,satzung`.
+
+Aktualisierung der Satzung:
+1. Neue PDF in `static/dokumente/` ablegen (alten Dateinamen behalten,
+   sonst auch die URL im Fetch-Satzung-Node anpassen).
+2. Commit + Push → Cloudflare Pages deployed automatisch.
+3. Beim nächsten Anmelde-Lauf wird die neue Version mitgeschickt — kein
+   n8n-Eingriff nötig.
