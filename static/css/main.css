@@ -343,17 +343,13 @@
       font-size: clamp(1rem, 2vw, 1.25rem);
       color: var(--blue-200);
       font-weight: 400;
-      margin-bottom: 6px;
+      margin-bottom: 40px;
       animation: fadeUp 0.6s ease 0.45s both;
     }
 
-    .hero-year {
-      font-size: 0.9rem;
+    .hero-since {
       color: var(--blue-300);
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      margin-bottom: 40px;
-      animation: fadeUp 0.6s ease 0.5s both;
+      white-space: nowrap;
     }
 
     .hero-actions {

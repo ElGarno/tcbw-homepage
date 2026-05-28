@@ -12,8 +12,7 @@
   <div class="hero-content">
     <p class="label-upper hero-eyebrow">{{ .eyebrow }}</p>
     <h1 class="heading-display hero-title">Tennisclub Blau-Weiss<br>Attendorn e.V.</h1>
-    <p class="hero-subtitle">{{ .subtitle }}</p>
-    <p class="hero-year">Seit {{ $.Site.Params.founded }}</p>
+    <p class="hero-subtitle">{{ .subtitle }} <span class="hero-since">· seit {{ $.Site.Params.founded }}</span></p>
     <div class="hero-actions">
       {{ with .cta_primary }}<a href="{{ .url }}" class="btn btn-primary">{{ .text }}</a>{{ end }}
       {{ with .cta_secondary }}<a href="{{ .url }}" class="btn btn-outline">{{ .text }}</a>{{ end }}
