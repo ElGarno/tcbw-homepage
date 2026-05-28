@@ -67,10 +67,11 @@ Erweitert um:
 - True-Output → Loop / SplitInBatches über `newResults`
 - False-Output → wird verworfen
 
-### Neuer Gmail-Node (oder SMTP)
+### Neuer SMTP-Send-Node (`n8n-nodes-base.emailSend`)
 
-- An: `felibaumhoff98@gmail.com`
-- Von: `vorstand@tc-bw-attendorn.de` oder eine andere bestätigte Adresse
+- Credential: existierendes IONOS-SMTP-Credential (`vorstand@tc-bw-attendorn.de`)
+- Von: `vorstand@tc-bw-attendorn.de`
+- An: `felibaumhoff98@gmail.com` (über `Config`-Variable `feliEmail`)
 - Betreff: `🎾 Neues Ergebnis: {{ $json.team }} vs. {{ $json.opponent }}`
 - Body (HTML):
 
@@ -117,10 +118,10 @@ selektiv die neuen Nodes ergänzen:
 2. **„Sync Logic"-Code-Node** aktualisieren: zwischen den `--- PASTE BUNDLE ---`
    Markern den Inhalt von `tools/nuliga-sync/dist/n8n-bundle.js` (aktueller
    Build, enthält `extractNewResults`) einsetzen
-3. **Gmail-Credential** in n8n hinzufügen falls noch nicht vorhanden:
-   `Add credential → Gmail OAuth2 → Account vorstand@tc-bw-attendorn.de`
-   Die `id` aus dem Credential dann in der JSON beim Node „Mail an Feli"
-   eintragen (Platzhalter `REPLACE_WITH_GMAIL_CREDENTIAL_ID`)
+3. **SMTP-Credential `Vereins-SMTP`** wiederverwenden — dieselbe IONOS-
+   Credential wird bereits vom `n8n-online-anmeldung`-Workflow benutzt
+   und funktioniert. `id` aus dem bestehenden Credential beim Node
+   „Mail an Feli" eintragen (Platzhalter `REPLACE_WITH_SMTP_CRED_ID`).
 4. **Workflow-Import:** entweder das aktualisierte JSON komplett importieren
    (überschreibt den alten Workflow) oder die 3 neuen Nodes manuell anlegen
    und die Connection von „Aenderungen?" True auf „Neue Ergebnisse?" parallel

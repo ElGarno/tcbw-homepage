@@ -230,26 +230,27 @@
     },
     {
       "parameters": {
-        "sendTo": "={{ $('Config').first().json.feliEmail }}",
+        "fromEmail": "vorstand@tc-bw-attendorn.de",
+        "toEmail": "={{ $('Config').first().json.feliEmail }}",
         "subject": "=🎾 Neues Ergebnis: {{ $json.team }} vs. {{ $json.opponent }}",
         "emailType": "html",
-        "message": "=<p>Hi Feli,</p>\n\n<p>auf liga.nu ist ein neues Ergebnis aufgetaucht:</p>\n\n<table style=\"border-collapse: collapse; margin: 12px 0;\">\n  <tr><td style=\"padding: 6px 12px;\"><strong>Mannschaft:</strong></td><td>{{ $json.team }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Gegner:</strong></td><td>{{ $json.opponent }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Datum:</strong></td><td>{{ $json.date }} &middot; {{ $json.time }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Ergebnis:</strong></td><td><strong>{{ $json.result }}</strong></td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Heim/Auswärts:</strong></td><td>{{ $json.isHome ? 'Heim' : 'Auswärts' }}</td></tr>\n</table>\n\n<p>\n  <a href=\"{{ $('Config').first().json.socialGeneratorUrl }}\"\n     style=\"display: inline-block; background: #0d3a82; color: white; padding: 10px 18px; text-decoration: none; border-radius: 6px; font-weight: 600;\">\n    Social-Media-Post erstellen &rarr;\n  </a>\n</p>\n\n<p style=\"color: #888; font-size: 13px;\">\n  Automatisch generiert vom nuliga-sync. Bei Fragen &rarr; Fabian.\n</p>",
+        "html": "=<p>Hi Feli,</p>\n\n<p>auf liga.nu ist ein neues Ergebnis aufgetaucht:</p>\n\n<table style=\"border-collapse: collapse; margin: 12px 0;\">\n  <tr><td style=\"padding: 6px 12px;\"><strong>Mannschaft:</strong></td><td>{{ $json.team }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Gegner:</strong></td><td>{{ $json.opponent }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Datum:</strong></td><td>{{ $json.date }} &middot; {{ $json.time }}</td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Ergebnis:</strong></td><td><strong>{{ $json.result }}</strong></td></tr>\n  <tr><td style=\"padding: 6px 12px;\"><strong>Heim/Auswärts:</strong></td><td>{{ $json.isHome ? 'Heim' : 'Auswärts' }}</td></tr>\n</table>\n\n<p>\n  <a href=\"{{ $('Config').first().json.socialGeneratorUrl }}\"\n     style=\"display: inline-block; background: #0d3a82; color: white; padding: 10px 18px; text-decoration: none; border-radius: 6px; font-weight: 600;\">\n    Social-Media-Post erstellen &rarr;\n  </a>\n</p>\n\n<p style=\"color: #888; font-size: 13px;\">\n  Automatisch generiert vom nuliga-sync. Bei Fragen &rarr; Fabian.\n</p>",
         "options": {
-          "appendAttribution": false
+          "replyTo": "vorstand@tc-bw-attendorn.de"
         }
       },
-      "id": "gmail-feli",
+      "id": "smtp-feli",
       "name": "Mail an Feli",
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
       "position": [
         1560,
         80
       ],
       "credentials": {
-        "gmailOAuth2": {
-          "id": "REPLACE_WITH_GMAIL_CREDENTIAL_ID",
-          "name": "Gmail Vorstand TC BW"
+        "smtp": {
+          "id": "REPLACE_WITH_SMTP_CRED_ID",
+          "name": "Vereins-SMTP"
         }
       }
     }
