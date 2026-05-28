@@ -495,11 +495,17 @@
   }
 
   @media print {
+    /* Force background colors/gradients to print (masthead, bullets, callouts, badges) */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
     body { background: white; padding: 0; }
     .doc { box-shadow: none; border-radius: 0; max-width: 100%; }
     .top { break-inside: avoid; }
     .person { break-inside: avoid; }
-    .tasks-section { background: white; }
+    .beschluss { break-inside: avoid; }
+    .sub { break-inside: avoid; }
   }
 </style>
 </head>
