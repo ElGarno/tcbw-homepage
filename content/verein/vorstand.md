@@ -20,7 +20,10 @@ departments:
   - name: "Marketing & Öffentlichkeitsarbeit"
     icon: "megaphone"
     members:
-      - "Paula Kersting"
+      - name: "Paula Kersting"
+        role: "Social Media"
+      - name: "Felicitas Baumhoff"
+        role: "Social Media"
       - name: "Aaron Heseler"
         role: "Eventmanagement"
   - name: "Sport"
