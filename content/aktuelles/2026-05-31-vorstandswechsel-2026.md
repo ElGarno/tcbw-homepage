@@ -18,6 +18,8 @@ Auch **Lisa Heiche** ist von ihrem Amt als Beisitzerin zurückgetreten. Der Vere
 
 **Felix Kersting** verstärkt den Vorstand im Ressort Geschäftsführung. **Bastian Gerlach** wechselt vom Ressort Marketing & Öffentlichkeitsarbeit ins Ressort Geschäftsführung.
 
+Ebenfalls neu im Vorstand ist **Felicitas Baumhoff**, die das Ressort Marketing & Öffentlichkeitsarbeit im Bereich Social Media verstärkt.
+
 Als neue Beisitzer begrüßen wir **Aaron Heseler** und **Fabian Wörenkämper**. Sie kümmern sich um die Bereiche Events und Digitales.
 
 Das komplette Vorstandsteam 2026: Aaron Heseler, Tim Maier, Carsten Heimes, Martina Franz, Felix Kersting, Bastian Gerlach, Marc Horlacher, Fabian Wörenkämper, Paula Kersting, Felicitas Baumhoff, Annika Foidl und Moritz Muhr.
