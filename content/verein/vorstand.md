@@ -9,7 +9,6 @@ departments:
     members:
       - name: "Bastian Gerlach"
         role: "1. Geschäftsführer"
-        image: "/images/vorstand/patron.jpg"
       - name: "Felix Kersting"
         role: "2. Geschäftsführer (Handwerkliche Tätigkeiten)"
   - name: "Finanzen"
