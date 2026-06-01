@@ -1,5 +1,0 @@
-# Canonicalize to the apex domain (matches baseURL in hugo.toml).
-# Also fixes the membership form: the n8n webhook only accepts requests
-# from https://tc-bw-attendorn.de, so visitors on the www host must land
-# on the apex before submitting.
-https://www.tc-bw-attendorn.de/* https://tc-bw-attendorn.de/:splat 301!
