@@ -19,4 +19,4 @@ Auch **Lisa Heiche** ist von ihrem Amt als Beisitzerin zurückgetreten. Der Vere
 
 Als neue Beisitzer begrüßen wir **Aaron Heseler** und **Fabian Wörenkämper**. Sie kümmern sich um die Bereiche Events und Digitales.
 
-Das komplette Vorstandsteam 2026: Aaron Heseler, Tim Maier, Carsten Heimes, Martina Franz, Felix Kersting, Bastian Gerlach, Marc Horlacher, Fabian Wörenkämper, Paula Kersting, Annika Foidl und Moritz Muhr.
+Das komplette Vorstandsteam 2026: Aaron Heseler, Tim Maier, Carsten Heimes, Martina Franz, Felix Kersting, Bastian Gerlach, Marc Horlacher, Fabian Wörenkämper, Paula Kersting, Felicitas Baumhoff, Annika Foidl und Moritz Muhr.
