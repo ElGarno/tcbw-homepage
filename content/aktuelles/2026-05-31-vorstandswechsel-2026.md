@@ -2,6 +2,7 @@
 title: "Neuer Vorstand gewählt"
 date: 2026-05-31
 description: "Die Jahreshauptversammlung 2026 brachte Veränderungen in der Vorstandsbesetzung mit sich."
+image: "/images/news/vorstand-2026.png"
 tags: ["Vorstand", "Vereinsleitung", "JHV"]
 ---
 

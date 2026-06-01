@@ -2,6 +2,7 @@
 title: "Kurz notiert: Neues aus dem Verein"
 date: 2026-05-31
 description: "Neue Homepage, überarbeitete Getränkeapp, angepasste Mitgliedsbeiträge und eine Übergangslösung an Platz 1."
+image: "/images/fotos-2025-anlage/img-01.jpg"
 tags: ["Verein", "Clubhaus", "Platzbetrieb", "Digital"]
 ---
 
