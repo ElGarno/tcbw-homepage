@@ -1,5 +1,5 @@
 {
-  "next": 2180,
-  "lastUpdated": "2026-05-28",
+  "next": 2181,
+  "lastUpdated": "2026-06-01",
   "note": "Fortlaufende SEPA-Mandatsreferenzen. Startwert 2180 — letzte vergebene Nummer war 2179 (Übergabe Martina Franz, Vorstandssitzung 27.05.2026). Wird vom n8n-online-anmeldung-Workflow nach jeder erfolgreichen Anmeldung automatisch erhöht. Manuell zurückgesetzt nach Test-Runs."
 }
