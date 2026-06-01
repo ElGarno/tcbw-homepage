@@ -26,7 +26,7 @@
           <p class="quick-card-title">Keine Termine</p>
           <p class="quick-card-detail">Aktuell stehen keine Termine an</p>
         {{ end }}
-        <span class="quick-card-link">Alle Termine &rarr;</span>
+        <span class="quick-card-link">Alle Termine</span>
       </a>
 
       {{/* Remaining static cards */}}
@@ -35,7 +35,7 @@
         <p class="label-upper quick-card-label">{{ .label }}</p>
         <p class="quick-card-title">{{ .title }}</p>
         {{ with .detail }}<p class="quick-card-detail">{{ . }}</p>{{ end }}
-        {{ if .link_text }}<span class="quick-card-link">{{ .link_text }} &rarr;</span>{{ end }}
+        {{ if .link_text }}<span class="quick-card-link">{{ .link_text }}</span>{{ end }}
       </a>
       {{ end }}
     </div>
