@@ -7,7 +7,7 @@
         "path": "tcbw-anmeldung",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "https://tc-bw-attendorn.de"
+          "allowedOrigins": "https://tc-bw-attendorn.de,https://www.tc-bw-attendorn.de"
         }
       },
       "id": "webhook",
@@ -78,7 +78,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "https://tc-bw-attendorn.de"
+                "value": "={{ $('Webhook').item.json.headers.origin || 'https://tc-bw-attendorn.de' }}"
               }
             ]
           }
@@ -103,7 +103,7 @@
             "entries": [
               {
                 "name": "Access-Control-Allow-Origin",
-                "value": "https://tc-bw-attendorn.de"
+                "value": "={{ $('Webhook').item.json.headers.origin || 'https://tc-bw-attendorn.de' }}"
               }
             ]
           }
@@ -161,7 +161,8 @@
           "attachments": "data",
           "replyTo": "vorstand@tc-bw-attendorn.de"
         },
-        "html": "={{ $('Validate & Build').item.json.vorstandHtml }}"
+        "html": "={{ $('Validate & Build').item.json.vorstandHtml }}",
+        "emailFormat": "html"
       },
       "id": "mail-vorstand",
       "name": "Mail an Vorstand",
@@ -188,7 +189,8 @@
           "attachments": "data,satzung",
           "replyTo": "vorstand@tc-bw-attendorn.de"
         },
-        "html": "={{ $('Validate & Build').item.json.applicantHtml }}"
+        "html": "={{ $('Validate & Build').item.json.applicantHtml }}",
+        "emailFormat": "html"
       },
       "id": "mail-applicant",
       "name": "Bestätigung an Antragsteller",
