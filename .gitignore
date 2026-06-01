@@ -21,3 +21,7 @@ tools/protokoll/output/
 TC-BW-Fotos/
 mockup/fotos-preview/
 mockup/fotos-preview.html
+
+# n8n workflow exports — contain plaintext credentials (GitHub PAT etc.), never commit
+TC-BW*.json
+*.n8n.json
