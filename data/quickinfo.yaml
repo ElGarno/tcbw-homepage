@@ -17,3 +17,7 @@
   link_text: "Jetzt buchen"
   link_url: "https://tc-bw-attendorn.courtbooking.de/login?standard=true"
   accent: "green"
+- label: "Klubhaus"
+  title: "Getränkeapp neu"
+  detail: "Ab sofort im Klubhaus verfügbar"
+  accent: "green"
