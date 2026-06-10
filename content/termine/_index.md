@@ -85,6 +85,14 @@ events:
     category: "medenspiel"
     team: "herren-40"
     opponent: "TV Plettenberg"
+  - title: "Herren-Pokal vs. TuS Elch Holzwickede 1"
+    date: 2026-06-23
+    time: "18:00 Uhr"
+    detail: "WTV Vereinspokal · Herren LK 18,0–25,0, Heimspiel"
+    category: "pokal"
+    opponent: "TuS Elch Holzwickede 1"
+    liga_championship: "WTV VP 2026"
+    liga_group: "2229674"
   - title: "Mixed U12 vs. TC 71 Netphen"
     date: 2026-06-26
     time: "15:30 Uhr"
