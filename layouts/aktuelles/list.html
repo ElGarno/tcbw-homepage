@@ -10,7 +10,7 @@
       <a href="{{ .RelPermalink }}" class="news-card reveal">
         {{ partial "news-card-image.html" . }}
         <div class="news-card-body">
-          <p class="news-card-date">{{ .Date.Format "2. January 2006" }}</p>
+          <p class="news-card-date">{{ time.Format "2. January 2006" .Date }}</p>
           <h3 class="news-card-title">{{ .Title }}</h3>
           <p class="news-card-excerpt">{{ .Description }}</p>
         </div>

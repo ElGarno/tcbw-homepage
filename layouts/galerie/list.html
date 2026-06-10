@@ -19,7 +19,7 @@
           {{ end }}
         </div>
         <div class="news-card-body">
-          <p class="news-card-date">{{ .Date.Format "2. January 2006" }}{{ with .Params.images }} &middot; {{ len . }} Bilder{{ end }}</p>
+          <p class="news-card-date">{{ time.Format "2. January 2006" .Date }}{{ with .Params.images }} &middot; {{ len . }} Bilder{{ end }}</p>
           <h3 class="news-card-title">{{ .Title }}</h3>
           {{ with .Description }}<p class="news-card-excerpt">{{ . }}</p>{{ end }}
         </div>
