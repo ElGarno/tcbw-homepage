@@ -1,4 +1,6 @@
 baseURL = "https://tc-bw-attendorn.de/"
+defaultContentLanguage = "de"
+languageCode = "de-de"
 locale = "de"
 title = "Tennisclub Blau-Weiss Attendorn e.V."
 

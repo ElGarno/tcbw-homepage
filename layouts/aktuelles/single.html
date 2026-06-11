@@ -4,7 +4,7 @@
     <div class="container" style="max-width: 760px;">
       <a href="/aktuelles/" class="article-detail-back">&larr; Alle Berichte</a>
       <div class="article-detail-meta">
-        <time class="article-detail-date">{{ .Date.Format "2. January 2006" }}</time>
+        <time class="article-detail-date">{{ time.Format "2. January 2006" .Date }}</time>
         {{ with .Params.tags }}
         <div class="article-detail-tags">
           {{ range . }}<span class="article-detail-tag">{{ . }}</span>{{ end }}

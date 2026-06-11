@@ -10,7 +10,7 @@ weight: 20
 
 Der TC BW Attendorn gehört zu den traditionsreichsten Tennisclubs im Kreis Olpe. Gegründet wurde der Verein im Mai 1931 von 51 Gründungsmitgliedern. Die damalige Anlage befand sich auf dem Schelmeskamp.
 
-Nach dem das Gelände für die Errichtung von Flüchtlingsbaracken benötigt wurde, bot der Paechter des Fürstenberg'schen Besitzes Burg Schnellenberg ein geeignetes Gelände dem Club im Jahre 1951 an. Noch im gleichen Jahr konnten auf der neu errichteten Anlage die Rackets geschwungen werden.
+Nach dem das Gelände für die Errichtung von Flüchtlingsbaracken benötigt wurde, bot der Pächter des Fürstenberg'schen Besitzes Burg Schnellenberg ein geeignetes Gelände dem Club im Jahre 1951 an. Noch im gleichen Jahr konnten auf der neu errichteten Anlage die Rackets geschwungen werden.
 
 ![Blick auf die Burg und Plätze](/images/historie/Burgansicht_Plaetze.jpg)
 
