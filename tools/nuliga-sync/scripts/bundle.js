@@ -18,6 +18,8 @@ const FILES = [
   'termineUpdater.js',
   'prBody.js',
   'teams.js',
+  'pokalPath.js',
+  'pokalData.js',
   'syncRunner.js',
 ];
 

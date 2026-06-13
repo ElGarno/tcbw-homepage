@@ -1992,3 +1992,29 @@
       .signup-cta__button { width: 100%; justify-content: center; }
     }
 
+/* ── Pokalbaum ───────────────────────────────────────────── */
+.pokal-team { margin: 0 0 56px; }
+.pokal-team-name { font-size: 1.5rem; font-weight: 700; color: var(--gray-900, #111827); margin: 0 0 4px; }
+.pokal-team-detail { color: var(--gray-600, #4b5563); margin: 0 0 20px; }
+.pokal-stage {
+  font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--blue-600, #1d4ed8); margin: 18px 0 10px;
+}
+.pokal-fork { color: #dc2626; font-weight: 700; font-size: 0.85rem; margin: 6px 0 6px 8px; }
+.pokal-timeline { display: flex; flex-direction: column; gap: 12px; }
+.pokal-round {
+  border: 1px solid #e5e7eb; border-left-width: 5px; border-radius: var(--radius-lg, 12px);
+  padding: 14px 16px; background: var(--white, #fff); box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.pokal-round-head { display: flex; align-items: center; justify-content: space-between; }
+.pokal-round-no { font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: #6b7280; }
+.pokal-badge { font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: #3949ab; }
+.pokal-round-date { font-size: 0.8rem; color: #6b7280; margin: 4px 0 2px; }
+.pokal-round-opp { font-weight: 600; color: #1f2937; font-size: 1.05rem; margin: 0; }
+.pokal-round-score { margin: 8px 0 0; font-size: 1.15rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pokal-win  { border-left-color: #16a34a; } .pokal-win  .pokal-round-score { color: #16a34a; }
+.pokal-loss { border-left-color: #dc2626; } .pokal-loss .pokal-round-score { color: #dc2626; }
+.pokal-open { border-left-color: #94a3b8; }
+.pokal-round.pokal-open { background: #f8fafc; }
+.pokal-round-score.pokal-open { color: #64748b; font-weight: 600; font-size: 0.95rem; }
+

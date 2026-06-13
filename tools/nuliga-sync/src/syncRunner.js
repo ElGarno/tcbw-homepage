@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { TEAMS, liganuUrl } from './teams.js';
+import { TEAMS, POKAL_TEAMS, liganuUrl } from './teams.js';
 import { parseGroupPage } from './parser.js';
 import { readMannschaftMd } from './mdReader.js';
 import { writeMannschaftMd } from './mdWriter.js';
@@ -7,9 +7,11 @@ import { diffMatches, isEmptyChangeSet } from './diff.js';
 import { applyTermineChanges } from './termineUpdater.js';
 import { renderPrBody } from './prBody.js';
 import { normalizeOpponent } from './normalize.js';
+import { buildPokalPath } from './pokalPath.js';
+import { renderPokalYaml, parsePokalYaml, collectNewResults } from './pokalData.js';
 
 const TERMINE_PATH = 'content/termine/_index.md';
-const ATTENDORN_HOME_NAME = 'TC Blau-Weiß Attendorn 1';
+const POKAL_DATA_PATH = 'data/pokal.yaml';
 
 function pad(n) {
   return String(n).padStart(2, '0');
@@ -24,9 +26,6 @@ function isoToday(d = new Date()) {
 }
 
 function isDateLike(v) {
-  // Cross-realm-safe Date detection — `instanceof Date` fails inside the
-  // n8n runner sandbox because js-yaml's Date instances come from a different
-  // realm. Duck-type check on `toISOString` is reliable.
   return v != null && typeof v.toISOString === 'function';
 }
 
@@ -34,11 +33,9 @@ function pokalExistingFromTermine(events, ligaGroup) {
   return events
     .filter(e => e.category === 'pokal' && e.liga_group === ligaGroup)
     .map(e => ({
-      date: isDateLike(e.date)
-        ? e.date.toISOString().slice(0, 10)
-        : String(e.date),
+      date: isDateLike(e.date) ? e.date.toISOString().slice(0, 10) : String(e.date),
       time: String(e.time).replace(/\s*Uhr\s*$/, ''),
-      home: ATTENDORN_HOME_NAME,
+      home: 'TC Blau-Weiß Attendorn 1',
       guest: e.opponent,
     }));
 }
@@ -75,7 +72,6 @@ function decorateTeamChange(tc, team, events) {
     opponent: opponentFromMatch(m),
     isHome: m.home?.includes('Attendorn') ?? Boolean(m.isHome),
   }));
-  // Termine cross-update only applies to medenspiel (pokal entries ARE the termine entry).
   const termineUpdates = team.kind === 'medenspiel'
     ? buildTermineUpdateEntries({ team: team.slug, updates }, events)
     : [];
@@ -99,82 +95,114 @@ function opponentFromMatch(m) {
   return isHome ? m.guest : m.home;
 }
 
+async function readRepoFileSafe(readRepoFile, path) {
+  try {
+    return await readRepoFile(path);
+  } catch {
+    return '';
+  }
+}
+
 export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
   const teamReports = [];
   const errors = [];
 
-  // Read termine MD once up-front; pokal teams need it to look up existing matches.
   const termineMd = await readRepoFile(TERMINE_PATH);
   const termineFmMatch = termineMd.match(/^---\n([\s\S]*?)\n---/);
   const termineEvents = termineFmMatch
     ? yaml.load(termineFmMatch[1]).events ?? []
     : [];
 
+  // --- Medenspiel teams (one group each) ---
   for (const team of TEAMS) {
     try {
       const url = liganuUrl(team.group, team.championship ?? 'SW 2026');
       const res = await fetchImpl(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const html = await res.text();
-      const liga = parseGroupPage(html);
+      const liga = parseGroupPage(await res.text());
 
-      if (team.kind === 'pokal') {
-        const ligaHome = liga.matches.filter(m => m.home.includes('Attendorn'));
-        const existing = pokalExistingFromTermine(termineEvents, team.group);
-        const cs = diffMatches(existing, ligaHome);
-        // Termine schema (_index.md) has no `result:` field; drop pokal updates whose only diff
-        // is a new result, otherwise we produce PRs with no file changes. Add a `result:` column
-        // to the termine schema + a frontend renderer to lift this filter.
-        cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
-        teamReports.push({ team, cs, existingMatches: existing, ligaMatches: ligaHome });
-      } else {
-        const existingMd = await readRepoFile(team.file);
-        const { matches: existing, frontmatter, body } = readMannschaftMd(existingMd);
-        const cs = diffMatches(existing, liga.matches);
-        teamReports.push({ team, cs, existingMd, frontmatter, body, existingMatches: existing, ligaMatches: liga.matches });
-      }
+      const existingMd = await readRepoFile(team.file);
+      const { matches: existing, frontmatter, body } = readMannschaftMd(existingMd);
+      const cs = diffMatches(existing, liga.matches);
+      teamReports.push({ team, cs, existingMd, frontmatter, body, existingMatches: existing, ligaMatches: liga.matches });
     } catch (err) {
       errors.push({ team: team.slug, error: err.message });
     }
   }
 
+  // --- Cup teams (haupt + neben group each) ---
+  const pokalPaths = [];
+  const labelBySlug = {};
+  for (const pt of POKAL_TEAMS) {
+    try {
+      const branchMatches = {};
+      for (const [branchName, groupId] of Object.entries(pt.branches)) {
+        const res = await fetchImpl(liganuUrl(groupId, pt.championship));
+        if (!res.ok) throw new Error(`HTTP ${res.status} (${branchName})`);
+        branchMatches[branchName] = parseGroupPage(await res.text()).matches;
+
+        // Termine home announcements for this branch: only UPCOMING (unplayed)
+        // home games. A played home game (has a result) belongs to the bracket,
+        // not the announcements list. Termine has no result field anyway.
+        const home = branchMatches[branchName].filter(m => m.home.includes('Attendorn') && !m.result);
+        if (home.length) {
+          const existing = pokalExistingFromTermine(termineEvents, groupId);
+          const cs = diffMatches(existing, home);
+          cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
+          cs.missings = []; // played games drop out of `home`; don't churn termine — display filters past dates
+          const termineTeam = {
+            kind: 'pokal',
+            slug: `${pt.slug}-${branchName}`,
+            label: pt.label,
+            group: groupId,
+            championship: pt.championship,
+            pokalDetail: pt.detail,
+          };
+          teamReports.push({ team: termineTeam, cs, existingMatches: existing, ligaMatches: home });
+        }
+      }
+
+      pokalPaths.push(buildPokalPath(pt, branchMatches.haupt ?? [], branchMatches.neben ?? []));
+      labelBySlug[pt.slug] = pt.label;
+    } catch (err) {
+      errors.push({ team: pt.slug, error: err.message });
+    }
+  }
+
   const decorated = teamReports.map(r => decorateTeamChange(r.cs, r.team, termineEvents));
+  const termineHasChanges = decorated.some(d => d.updates.length || d.adds.length || d.missings.length);
 
-  const hasChanges = decorated.some(d => d.updates.length || d.adds.length || d.missings.length);
+  const oldPokalRaw = await readRepoFileSafe(readRepoFile, POKAL_DATA_PATH);
+  const newPokalRaw = pokalPaths.length ? renderPokalYaml(pokalPaths) : oldPokalRaw;
+  const pokalChanged = pokalPaths.length > 0 && newPokalRaw !== oldPokalRaw;
+  const pokalNewResults = pokalPaths.length
+    ? collectNewResults(parsePokalYaml(oldPokalRaw), pokalPaths, labelBySlug)
+    : [];
 
+  const hasChanges = termineHasChanges || pokalChanged;
   if (!hasChanges) {
-    return { changed: false, errors, fileChanges: [], prBody: null, newResults: [] };
+    return { changed: false, errors, fileChanges: [], prBody: null, newResults: pokalNewResults };
   }
 
   const fileChanges = [];
 
   for (const report of teamReports) {
     if (isEmptyChangeSet(report.cs)) continue;
-    if (report.team.kind === 'pokal') continue;  // pokal touches only _index.md
+    if (report.team.kind === 'pokal') continue; // pokal touches only termine + data/pokal.yaml
 
     const nextMatches = [...report.existingMatches];
-
     for (const u of report.cs.updates) {
       const identity = getIdentityLocal(u);
       const idx = nextMatches.findIndex(m => getIdentityLocal(m) === identity);
       if (idx !== -1) {
-        nextMatches[idx] = {
-          ...nextMatches[idx],
-          date: u.newDate,
-          time: u.newTime,
-          result: u.newResult ?? nextMatches[idx].result,
-        };
+        nextMatches[idx] = { ...nextMatches[idx], date: u.newDate, time: u.newTime, result: u.newResult ?? nextMatches[idx].result };
       }
     }
     for (const a of report.cs.adds) {
       nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: a.result ?? null });
     }
 
-    const newMdContent = writeMannschaftMd({
-      frontmatter: report.frontmatter,
-      body: report.body,
-      matches: nextMatches,
-    });
+    const newMdContent = writeMannschaftMd({ frontmatter: report.frontmatter, body: report.body, matches: nextMatches });
     fileChanges.push({ path: report.team.file, content: newMdContent });
   }
 
@@ -183,54 +211,30 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
     fileChanges.push({ path: TERMINE_PATH, content: newTermineMd });
   }
 
+  if (pokalChanged) {
+    fileChanges.push({ path: POKAL_DATA_PATH, content: newPokalRaw });
+  }
+
   const prBody = renderPrBody(isoToday(today), decorated);
   const branch = timestampBranchName(today);
   const commitMessage = `chore(termine): liga.nu sync ${isoToday(today)}`;
   const prTitle = `[nuliga] Sync ${isoToday(today)}: ${sumChanges(decorated)}`;
-  const newResults = extractNewResults(decorated);
+  const newResults = [...extractNewResults(decorated), ...pokalNewResults];
 
-  return {
-    changed: true,
-    errors,
-    fileChanges,
-    branch,
-    commitMessage,
-    prTitle,
-    prBody,
-    newResults,
-  };
+  return { changed: true, errors, fileChanges, branch, commitMessage, prTitle, prBody, newResults };
 }
 
-/**
- * Extract matches whose score was just filled in (or newly-added matches that
- * already carry a score). Used by the n8n workflow to notify the social-media
- * lead when there's something new to post about.
- */
 function extractNewResults(decorated) {
   const items = [];
   for (const d of decorated) {
     for (const u of d.updates) {
       if (!u.oldResult && u.newResult) {
-        items.push({
-          team: d.teamLabel,
-          opponent: u.opponent,
-          date: u.newDate ?? u.date,
-          time: u.newTime ?? u.time,
-          result: u.newResult,
-          isHome: u.isHome,
-        });
+        items.push({ team: d.teamLabel, opponent: u.opponent, date: u.newDate ?? u.date, time: u.newTime ?? u.time, result: u.newResult, isHome: u.isHome });
       }
     }
     for (const a of d.adds) {
       if (a.result) {
-        items.push({
-          team: d.teamLabel,
-          opponent: a.opponent,
-          date: a.newDate ?? a.date,
-          time: a.newTime ?? a.time,
-          result: a.result,
-          isHome: a.isHome,
-        });
+        items.push({ team: d.teamLabel, opponent: a.opponent, date: a.newDate ?? a.date, time: a.newTime ?? a.time, result: a.result, isHome: a.isHome });
       }
     }
   }
