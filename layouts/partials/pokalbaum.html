@@ -1,0 +1,39 @@
+{{- $months := slice "" "Jan." "Feb." "März" "Apr." "Mai" "Juni" "Juli" "Aug." "Sep." "Okt." "Nov." "Dez." -}}
+<div class="pokal-team">
+  <h3 class="pokal-team-name">{{ .label }}</h3>
+  <p class="pokal-team-detail">{{ .detail }}</p>
+
+  {{- $branches := slice "haupt" "neben" -}}
+  {{- $branchTitles := dict "haupt" "Hauptrunde" "neben" "Nebenrunde" -}}
+  {{- range $branch := $branches -}}
+    {{- $rounds := where $.rounds "branch" $branch -}}
+    {{- if $rounds -}}
+      {{- if eq $branch "neben" }}<div class="pokal-fork">↳ ausgeschieden — weiter in der Nebenrunde</div>{{ end -}}
+      <p class="pokal-stage">{{ index $branchTitles $branch }}</p>
+      <div class="pokal-timeline">
+        {{- range $r := $rounds -}}
+        {{- $d := time $r.date -}}
+        <div class="pokal-round pokal-{{ $r.outcome }}">
+          <div class="pokal-round-head">
+            <span class="pokal-round-no">Runde {{ $r.round }}</span>
+            <span class="pokal-badge">{{ if $r.home }}Heim{{ else }}Auswärts{{ end }}</span>
+          </div>
+          <p class="pokal-round-date">{{ $d.Day }}. {{ index $months (int $d.Month) }} {{ $d.Year }}</p>
+          <p class="pokal-round-opp">{{ $r.opponent }}</p>
+          {{- if $r.result }}
+          <p class="pokal-round-score">{{ $r.result }}{{ if eq $r.outcome "win" }} · gewonnen{{ else if eq $r.outcome "loss" }} · verloren{{ end }}</p>
+          {{- else }}
+          <p class="pokal-round-score pokal-open">noch offen</p>
+          {{- end }}
+        </div>
+        {{- end -}}
+      </div>
+    {{- end -}}
+  {{- end -}}
+
+  {{- with .liga_url }}
+  <a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-primary" style="background: var(--blue-600); color: var(--white); margin-top: 16px;">
+    Ergebnisse &amp; Tabelle auf liga.nu &#8599;
+  </a>
+  {{- end }}
+</div>
