@@ -174,7 +174,7 @@ test('newResults: time-only updates are NOT extracted as new results', async () 
   assert.equal(result.newResults.length, 0);
 });
 
-test('newResults: returns empty array when no changes detected at all', async () => {
+test('newResults: a date-only schedule change yields no result events', async () => {
   const result = await runSync({
     fetchImpl: fetchFromFixtures(),
     readRepoFile: repoFileReader(),
