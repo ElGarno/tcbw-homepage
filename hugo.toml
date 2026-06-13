@@ -40,6 +40,10 @@ title = "Tennisclub Blau-Weiss Attendorn e.V."
     url = "/termine/"
     weight = 40
   [[menus.main]]
+    name = "Pokal"
+    url = "/pokal/"
+    weight = 45
+  [[menus.main]]
     name = "Galerie"
     url = "/galerie/"
     weight = 50
