@@ -479,30 +479,27 @@ const TEAMS = [
   { kind: 'medenspiel', slug: 'gemischt-1', file: 'content/mannschaften/gemischt-1.md', group: '120', label: 'Gemischt 1' },
   { kind: 'medenspiel', slug: 'gemischt-2', file: 'content/mannschaften/gemischt-2.md', group: '129', label: 'Gemischt 2' },
   { kind: 'medenspiel', slug: 'mixed-u12',  file: 'content/mannschaften/mixed-u12.md',  group: '205', label: 'Mixed U12' },
+];
+
+// Cup teams: each logical team plays a Hauptrunde (winner branch) and, after a
+// Hauptrunde loss, a Nebenrunde (loser branch). Each branch is its own liga.nu group.
+const POKAL_TEAMS = [
   {
-    kind: 'pokal', slug: 'herren-pokal',
-    group: '2229674', championship: 'WTV VP 2026',
-    label: 'Herren-Pokal',
-    pokalDetail: 'WTV Vereinspokal · Herren LK 18,0–25,0, Heimspiel',
+    kind: 'pokal',
+    slug: 'herren-lk18-25',
+    label: 'Herren-Pokal LK 18–25',
+    championship: 'WTV VP 2026',
+    detail: 'WTV Vereinspokal · Herren LK 18,0–25,0',
+    branches: { haupt: '2229674', neben: '2236574' },
   },
   {
-    kind: 'pokal', slug: 'herren-40-pokal',
-    group: '2229754', championship: 'WTV VP 2026',
-    label: 'Herren 40-Pokal',
-    pokalDetail: 'WTV Vereinspokal · Herren Ü40 LK 1,0–25,0, Heimspiel',
+    kind: 'pokal',
+    slug: 'herren-40',
+    label: 'Herren-40-Pokal',
+    championship: 'WTV VP 2026',
+    detail: 'WTV Vereinspokal · Herren Ü40 LK 1,0–25,0',
+    branches: { haupt: '2229754', neben: '2236634' },
   },
-  // Nebenrunde Herren LK 18-25 — Vorsorge, falls TC BW Attendorn aus der Hauptrunde
-  // (group 2229674) ausscheidet, läuft die Verlierer-Runde in dieser group.
-  {
-    kind: 'pokal', slug: 'herren-pokal-nebenrunde',
-    group: '2236574', championship: 'WTV VP 2026',
-    label: 'Herren-Pokal Nebenrunde',
-    pokalDetail: 'WTV Vereinspokal · Herren LK 18,0–25,0 (Nebenrunde), Heimspiel',
-  },
-  // TODO: Nebenrunde Herren-40-Pokal — group-ID ist auf liga.nu noch nicht
-  // sichtbar (vermutlich erst nach Komplettierung der 1. Runde freigeschaltet).
-  // TC BW Attendorn hat den Herren-40-Pokal in der 1. Runde verloren und sollte
-  // dort auftauchen. Sobald die group-ID auf wtv.liga.nu erscheint, hier ergänzen.
 ];
 
 const BASE = 'https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage';
@@ -515,9 +512,150 @@ function liganuUrl(group, championship = 'SW 2026') {
   return `${BASE}?championship=${encQuery(championship)}&group=${encQuery(group)}`;
 }
 
+// ── pokalPath.js ──
+// "TV Rönkhausen 1892 e.V. TA 1" -> "TV Rönkhausen 1892 TA"
+function displayName(raw) {
+  return String(raw)
+    .replace(/\s+e\.V\.?/gi, '')
+    .replace(/\s+1$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function matchOutcome(match) {
+  if (!match.result) return 'open';
+  const m = match.result.match(/(\d+):(\d+)/);
+  if (!m) return 'open';
+  const homeScore = Number(m[1]);
+  const guestScore = Number(m[2]);
+  const isHome = match.home.includes('Attendorn');
+  const ours = isHome ? homeScore : guestScore;
+  const theirs = isHome ? guestScore : homeScore;
+  if (ours > theirs) return 'win';
+  if (ours < theirs) return 'loss';
+  return 'open'; // no draws in a cup; defensive
+}
+
+function attendornMatches(matches) {
+  return matches
+    .filter(m => m.home.includes('Attendorn') || m.guest.includes('Attendorn'))
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+
+function toRound(m, branch, round) {
+  const isHome = m.home.includes('Attendorn');
+  const opponent = isHome ? m.guest : m.home;
+  return {
+    branch,
+    round,
+    date: m.date,
+    time: m.time,
+    home: isHome,
+    opponent: displayName(opponent),
+    result: m.result ?? null,
+    outcome: matchOutcome(m),
+  };
+}
+
+/**
+ * Build one cup team's path. hauptRaw/nebenRaw are the *full* parsed match lists
+ * of each branch group (Attendorn filtering happens here).
+ */
+function buildPokalPath(team, hauptRaw, nebenRaw) {
+  const haupt = attendornMatches(hauptRaw);
+  const neben = attendornMatches(nebenRaw);
+
+  const rounds = haupt.map((m, i) => toRound(m, 'haupt', i + 1));
+  const lostHaupt = rounds.some(r => r.outcome === 'loss');
+  if (lostHaupt && neben.length) {
+    neben.forEach((m, i) => rounds.push(toRound(m, 'neben', i + 1)));
+  }
+
+  const activeGroup = (lostHaupt && neben.length) ? team.branches.neben : team.branches.haupt;
+  return {
+    slug: team.slug,
+    label: team.label,
+    detail: team.detail,
+    liga_url: liganuUrl(activeGroup, team.championship),
+    rounds,
+  };
+}
+
+// ── pokalData.js ──
+function q(s) {
+  return `"${String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+}
+
+// Narrow serializer for the data/pokal.yaml shape. Avoids yaml.dump (crashes in
+// the n8n runner sandbox — see termineUpdater.js for the same reason).
+function renderPokalYaml(paths) {
+  const lines = ['teams:'];
+  for (const t of paths) {
+    lines.push(`  - slug: ${q(t.slug)}`);
+    lines.push(`    label: ${q(t.label)}`);
+    lines.push(`    detail: ${q(t.detail)}`);
+    lines.push(`    liga_url: ${q(t.liga_url)}`);
+    lines.push('    rounds:');
+    for (const r of t.rounds) {
+      lines.push(`      - branch: ${r.branch}`);
+      lines.push(`        round: ${r.round}`);
+      lines.push(`        date: ${r.date}`);
+      lines.push(`        time: ${q(r.time)}`);
+      lines.push(`        home: ${r.home}`);
+      lines.push(`        opponent: ${q(r.opponent)}`);
+      lines.push(`        result: ${r.result == null ? '~' : q(r.result)}`);
+      lines.push(`        outcome: ${r.outcome}`);
+    }
+  }
+  return lines.join('\n') + '\n';
+}
+
+function parsePokalYaml(text) {
+  if (!text || !text.trim()) return [];
+  const data = yaml.load(text);
+  return (data && data.teams) ? data.teams : [];
+}
+
+function isoToGerman(iso) {
+  const [y, m, d] = String(iso).slice(0, 10).split('-');
+  return `${d}.${m}.${y}`;
+}
+
+/**
+ * Emit a result event for every round in newPaths that has a score which was
+ * absent before (open->scored, or a brand-new already-scored round).
+ * labelBySlug maps a team slug to its display label.
+ */
+function collectNewResults(oldPaths, newPaths, labelBySlug) {
+  const oldByKey = new Map();
+  for (const t of oldPaths) {
+    for (const r of t.rounds ?? []) {
+      oldByKey.set(`${t.slug}|${r.branch}|${r.round}`, r.result ?? null);
+    }
+  }
+  const events = [];
+  for (const t of newPaths) {
+    for (const r of t.rounds ?? []) {
+      if (r.result == null) continue;
+      const prev = oldByKey.get(`${t.slug}|${r.branch}|${r.round}`);
+      if (prev == null || prev !== r.result) {
+        events.push({
+          team: labelBySlug[t.slug] ?? t.label,
+          opponent: r.opponent,
+          date: isoToGerman(r.date),
+          time: r.time,
+          result: r.result,
+          isHome: r.home,
+        });
+      }
+    }
+  }
+  return events;
+}
+
 // ── syncRunner.js ──
 const TERMINE_PATH = 'content/termine/_index.md';
-const ATTENDORN_HOME_NAME = 'TC Blau-Weiß Attendorn 1';
+const POKAL_DATA_PATH = 'data/pokal.yaml';
 
 function pad(n) {
   return String(n).padStart(2, '0');
@@ -532,9 +670,6 @@ function isoToday(d = new Date()) {
 }
 
 function isDateLike(v) {
-  // Cross-realm-safe Date detection — `instanceof Date` fails inside the
-  // n8n runner sandbox because js-yaml's Date instances come from a different
-  // realm. Duck-type check on `toISOString` is reliable.
   return v != null && typeof v.toISOString === 'function';
 }
 
@@ -542,11 +677,9 @@ function pokalExistingFromTermine(events, ligaGroup) {
   return events
     .filter(e => e.category === 'pokal' && e.liga_group === ligaGroup)
     .map(e => ({
-      date: isDateLike(e.date)
-        ? e.date.toISOString().slice(0, 10)
-        : String(e.date),
+      date: isDateLike(e.date) ? e.date.toISOString().slice(0, 10) : String(e.date),
       time: String(e.time).replace(/\s*Uhr\s*$/, ''),
-      home: ATTENDORN_HOME_NAME,
+      home: 'TC Blau-Weiß Attendorn 1',
       guest: e.opponent,
     }));
 }
@@ -583,7 +716,6 @@ function decorateTeamChange(tc, team, events) {
     opponent: opponentFromMatch(m),
     isHome: m.home?.includes('Attendorn') ?? Boolean(m.isHome),
   }));
-  // Termine cross-update only applies to medenspiel (pokal entries ARE the termine entry).
   const termineUpdates = team.kind === 'medenspiel'
     ? buildTermineUpdateEntries({ team: team.slug, updates }, events)
     : [];
@@ -607,82 +739,114 @@ function opponentFromMatch(m) {
   return isHome ? m.guest : m.home;
 }
 
+async function readRepoFileSafe(readRepoFile, path) {
+  try {
+    return await readRepoFile(path);
+  } catch {
+    return '';
+  }
+}
+
 async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
   const teamReports = [];
   const errors = [];
 
-  // Read termine MD once up-front; pokal teams need it to look up existing matches.
   const termineMd = await readRepoFile(TERMINE_PATH);
   const termineFmMatch = termineMd.match(/^---\n([\s\S]*?)\n---/);
   const termineEvents = termineFmMatch
     ? yaml.load(termineFmMatch[1]).events ?? []
     : [];
 
+  // --- Medenspiel teams (one group each) ---
   for (const team of TEAMS) {
     try {
       const url = liganuUrl(team.group, team.championship ?? 'SW 2026');
       const res = await fetchImpl(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const html = await res.text();
-      const liga = parseGroupPage(html);
+      const liga = parseGroupPage(await res.text());
 
-      if (team.kind === 'pokal') {
-        const ligaHome = liga.matches.filter(m => m.home.includes('Attendorn'));
-        const existing = pokalExistingFromTermine(termineEvents, team.group);
-        const cs = diffMatches(existing, ligaHome);
-        // Termine schema (_index.md) has no `result:` field; drop pokal updates whose only diff
-        // is a new result, otherwise we produce PRs with no file changes. Add a `result:` column
-        // to the termine schema + a frontend renderer to lift this filter.
-        cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
-        teamReports.push({ team, cs, existingMatches: existing, ligaMatches: ligaHome });
-      } else {
-        const existingMd = await readRepoFile(team.file);
-        const { matches: existing, frontmatter, body } = readMannschaftMd(existingMd);
-        const cs = diffMatches(existing, liga.matches);
-        teamReports.push({ team, cs, existingMd, frontmatter, body, existingMatches: existing, ligaMatches: liga.matches });
-      }
+      const existingMd = await readRepoFile(team.file);
+      const { matches: existing, frontmatter, body } = readMannschaftMd(existingMd);
+      const cs = diffMatches(existing, liga.matches);
+      teamReports.push({ team, cs, existingMd, frontmatter, body, existingMatches: existing, ligaMatches: liga.matches });
     } catch (err) {
       errors.push({ team: team.slug, error: err.message });
     }
   }
 
+  // --- Cup teams (haupt + neben group each) ---
+  const pokalPaths = [];
+  const labelBySlug = {};
+  for (const pt of POKAL_TEAMS) {
+    try {
+      const branchMatches = {};
+      for (const [branchName, groupId] of Object.entries(pt.branches)) {
+        const res = await fetchImpl(liganuUrl(groupId, pt.championship));
+        if (!res.ok) throw new Error(`HTTP ${res.status} (${branchName})`);
+        branchMatches[branchName] = parseGroupPage(await res.text()).matches;
+
+        // Termine home announcements for this branch: only UPCOMING (unplayed)
+        // home games. A played home game (has a result) belongs to the bracket,
+        // not the announcements list. Termine has no result field anyway.
+        const home = branchMatches[branchName].filter(m => m.home.includes('Attendorn') && !m.result);
+        if (home.length) {
+          const existing = pokalExistingFromTermine(termineEvents, groupId);
+          const cs = diffMatches(existing, home);
+          cs.updates = cs.updates.filter(u => u.oldDate !== u.newDate || u.oldTime !== u.newTime);
+          cs.missings = []; // played games drop out of `home`; don't churn termine — display filters past dates
+          const termineTeam = {
+            kind: 'pokal',
+            slug: `${pt.slug}-${branchName}`,
+            label: pt.label,
+            group: groupId,
+            championship: pt.championship,
+            pokalDetail: pt.detail,
+          };
+          teamReports.push({ team: termineTeam, cs, existingMatches: existing, ligaMatches: home });
+        }
+      }
+
+      pokalPaths.push(buildPokalPath(pt, branchMatches.haupt ?? [], branchMatches.neben ?? []));
+      labelBySlug[pt.slug] = pt.label;
+    } catch (err) {
+      errors.push({ team: pt.slug, error: err.message });
+    }
+  }
+
   const decorated = teamReports.map(r => decorateTeamChange(r.cs, r.team, termineEvents));
+  const termineHasChanges = decorated.some(d => d.updates.length || d.adds.length || d.missings.length);
 
-  const hasChanges = decorated.some(d => d.updates.length || d.adds.length || d.missings.length);
+  const oldPokalRaw = await readRepoFileSafe(readRepoFile, POKAL_DATA_PATH);
+  const newPokalRaw = pokalPaths.length ? renderPokalYaml(pokalPaths) : oldPokalRaw;
+  const pokalChanged = pokalPaths.length > 0 && newPokalRaw !== oldPokalRaw;
+  const pokalNewResults = pokalPaths.length
+    ? collectNewResults(parsePokalYaml(oldPokalRaw), pokalPaths, labelBySlug)
+    : [];
 
+  const hasChanges = termineHasChanges || pokalChanged;
   if (!hasChanges) {
-    return { changed: false, errors, fileChanges: [], prBody: null, newResults: [] };
+    return { changed: false, errors, fileChanges: [], prBody: null, newResults: pokalNewResults };
   }
 
   const fileChanges = [];
 
   for (const report of teamReports) {
     if (isEmptyChangeSet(report.cs)) continue;
-    if (report.team.kind === 'pokal') continue;  // pokal touches only _index.md
+    if (report.team.kind === 'pokal') continue; // pokal touches only termine + data/pokal.yaml
 
     const nextMatches = [...report.existingMatches];
-
     for (const u of report.cs.updates) {
       const identity = getIdentityLocal(u);
       const idx = nextMatches.findIndex(m => getIdentityLocal(m) === identity);
       if (idx !== -1) {
-        nextMatches[idx] = {
-          ...nextMatches[idx],
-          date: u.newDate,
-          time: u.newTime,
-          result: u.newResult ?? nextMatches[idx].result,
-        };
+        nextMatches[idx] = { ...nextMatches[idx], date: u.newDate, time: u.newTime, result: u.newResult ?? nextMatches[idx].result };
       }
     }
     for (const a of report.cs.adds) {
       nextMatches.push({ date: a.date, time: a.time, home: a.home, guest: a.guest, result: a.result ?? null });
     }
 
-    const newMdContent = writeMannschaftMd({
-      frontmatter: report.frontmatter,
-      body: report.body,
-      matches: nextMatches,
-    });
+    const newMdContent = writeMannschaftMd({ frontmatter: report.frontmatter, body: report.body, matches: nextMatches });
     fileChanges.push({ path: report.team.file, content: newMdContent });
   }
 
@@ -691,54 +855,30 @@ async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
     fileChanges.push({ path: TERMINE_PATH, content: newTermineMd });
   }
 
+  if (pokalChanged) {
+    fileChanges.push({ path: POKAL_DATA_PATH, content: newPokalRaw });
+  }
+
   const prBody = renderPrBody(isoToday(today), decorated);
   const branch = timestampBranchName(today);
   const commitMessage = `chore(termine): liga.nu sync ${isoToday(today)}`;
   const prTitle = `[nuliga] Sync ${isoToday(today)}: ${sumChanges(decorated)}`;
-  const newResults = extractNewResults(decorated);
+  const newResults = [...extractNewResults(decorated), ...pokalNewResults];
 
-  return {
-    changed: true,
-    errors,
-    fileChanges,
-    branch,
-    commitMessage,
-    prTitle,
-    prBody,
-    newResults,
-  };
+  return { changed: true, errors, fileChanges, branch, commitMessage, prTitle, prBody, newResults };
 }
 
-/**
- * Extract matches whose score was just filled in (or newly-added matches that
- * already carry a score). Used by the n8n workflow to notify the social-media
- * lead when there's something new to post about.
- */
 function extractNewResults(decorated) {
   const items = [];
   for (const d of decorated) {
     for (const u of d.updates) {
       if (!u.oldResult && u.newResult) {
-        items.push({
-          team: d.teamLabel,
-          opponent: u.opponent,
-          date: u.newDate ?? u.date,
-          time: u.newTime ?? u.time,
-          result: u.newResult,
-          isHome: u.isHome,
-        });
+        items.push({ team: d.teamLabel, opponent: u.opponent, date: u.newDate ?? u.date, time: u.newTime ?? u.time, result: u.newResult, isHome: u.isHome });
       }
     }
     for (const a of d.adds) {
       if (a.result) {
-        items.push({
-          team: d.teamLabel,
-          opponent: a.opponent,
-          date: a.newDate ?? a.date,
-          time: a.newTime ?? a.time,
-          result: a.result,
-          isHome: a.isHome,
-        });
+        items.push({ team: d.teamLabel, opponent: a.opponent, date: a.newDate ?? a.date, time: a.newTime ?? a.time, result: a.result, isHome: a.isHome });
       }
     }
   }
