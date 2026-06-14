@@ -78,6 +78,14 @@ events:
     category: "medenspiel"
     team: "damen-6er"
     opponent: "TC Halver 1960"
+  - title: "Herren-40-Pokal vs. TC GW Meinerzhagen 1"
+    date: 2026-06-17
+    time: "18:00 Uhr"
+    detail: "WTV Vereinspokal · Herren Ü40 LK 1,0–25,0"
+    category: "pokal"
+    opponent: "TC GW Meinerzhagen 1"
+    liga_championship: "WTV VP 2026"
+    liga_group: "2236634"
   - title: "Herren 40 vs. TV Plettenberg"
     date: 2026-06-20
     time: "13:00 Uhr"
@@ -94,8 +102,8 @@ events:
     liga_championship: "WTV VP 2026"
     liga_group: "2229674"
   - title: "Mixed U12 vs. TC 71 Netphen"
-    date: 2026-06-26
-    time: "15:30 Uhr"
+    date: 2026-06-24
+    time: "17:00 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
     team: "mixed-u12"

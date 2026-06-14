@@ -15,6 +15,6 @@ Herren 30 6er Mannschaft in der Kreisliga (Gr. 067 SI), Saison Sommer 2026.
 | Datum | Uhrzeit | Heim | Gast | Ergebnis |
 |-------|---------|------|------|----------|
 | 09.05.2026 | 13:00 | **TC BW Attendorn** | Olper TC | 3:6 |
-| 13.06.2026 | 10:00 | TV Rosenthal 1899 2 | **TC BW Attendorn** | - |
+| 13.06.2026 | 10:00 | TV Rosenthal 1899 2 | **TC BW Attendorn** | 5:4 |
 | 20.06.2026 | 13:00 | TC Ludwigseck Salchendorf | **TC BW Attendorn** | - |
 | 04.07.2026 | 14:30 | **TC BW Attendorn** | TuS Ferndorf 2 | - |
