@@ -4,6 +4,8 @@ league: "Kreisklasse"
 weight: 70
 captain: "Horlacher Marc"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+2026&group=205"
+image: "/images/mannschaften/mixed-u12.jpg"
+image_alt: "Mannschaftsfoto Mixed U12 des TC Blau-Weiss Attendorn"
 ---
 
 Mixed U12 2er Mannschaft in der Kreisklasse (Gr. 205 SI), Saison Sommer 2026.
