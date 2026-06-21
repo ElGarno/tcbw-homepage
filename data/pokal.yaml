@@ -36,24 +36,3 @@ teams:
         opponent: "TuS Elch Holzwickede"
         result: ~
         outcome: open
-  - slug: "herren-40"
-    label: "Herren-40-Pokal"
-    detail: "WTV Vereinspokal · Herren Ü40 LK 1,0–25,0"
-    liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=WTV+VP+2026&group=2236634"
-    rounds:
-      - branch: haupt
-        round: 1
-        date: 2026-05-06
-        time: "18:00"
-        home: true
-        opponent: "TV Rosenthal 1899"
-        result: "1:2"
-        outcome: loss
-      - branch: neben
-        round: 1
-        date: 2026-06-17
-        time: "18:00"
-        home: true
-        opponent: "TC GW Meinerzhagen"
-        result: ~
-        outcome: open
