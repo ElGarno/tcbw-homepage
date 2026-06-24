@@ -34,8 +34,8 @@ teams:
         time: "18:00"
         home: true
         opponent: "TuS Elch Holzwickede"
-        result: ~
-        outcome: open
+        result: "1:2"
+        outcome: loss
   - slug: "herren-40"
     label: "Herren-40-Pokal"
     detail: "WTV Vereinspokal · Herren Ü40 LK 1,0–25,0"
