@@ -2,6 +2,7 @@
 <div class="pokal-team">
   <h3 class="pokal-team-name">{{ .label }}</h3>
   <p class="pokal-team-detail">{{ .detail }}</p>
+  {{- with .result }}<p class="pokal-team-result">{{ . }}</p>{{ end }}
 
   {{- $branches := slice "haupt" "neben" -}}
   {{- $branchTitles := dict "haupt" "Hauptrunde" "neben" "Nebenrunde" -}}

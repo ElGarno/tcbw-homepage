@@ -7,13 +7,38 @@
       <p class="section-subtitle">{{ .Description }}</p>
     </div>
 
-    {{ with site.Data.pokal }}
-      {{ range .teams }}
-        {{ partial "pokalbaum.html" . }}
+    {{- $live := site.Data.pokal }}
+    {{- $archive := site.Data.pokal_archive }}
+    {{- $hasLive := and $live $live.teams }}
+    {{- $hasArchive := and $archive $archive.seasons }}
+
+    {{- if $hasLive }}
+      <div class="pokal-section">
+        <p class="label-upper pokal-season-eyebrow">Laufende Saison</p>
+        {{ range $live.teams }}
+          {{ partial "pokalbaum.html" . }}
+        {{ end }}
+      </div>
+    {{- end }}
+
+    {{- if $hasArchive }}
+      {{ range $archive.seasons }}
+        <div class="pokal-section pokal-archive-season">
+          <div class="pokal-archive-head">
+            <p class="label-upper pokal-season-eyebrow">Archiv</p>
+            <h3 class="pokal-season-title">{{ .championship }}</h3>
+            <span class="pokal-season-status">Abgeschlossen</span>
+          </div>
+          {{ range .teams }}
+            {{ partial "pokalbaum.html" . }}
+          {{ end }}
+        </div>
       {{ end }}
-    {{ else }}
+    {{- end }}
+
+    {{- if not (or $hasLive $hasArchive) }}
       <p>Aktuell keine Pokaldaten verfügbar.</p>
-    {{ end }}
+    {{- end }}
   </div>
 </section>
 {{ end }}

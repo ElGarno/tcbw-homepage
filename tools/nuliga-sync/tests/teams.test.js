@@ -14,18 +14,10 @@ test('medenspiel teams have file path', () => {
   }
 });
 
-test('POKAL_TEAMS has both cup teams with haupt+neben branches', () => {
-  assert.equal(POKAL_TEAMS.length, 2);
-  for (const t of POKAL_TEAMS) {
-    assert.equal(t.kind, 'pokal');
-    assert.ok(t.branches.haupt, `${t.slug} missing haupt`);
-    assert.ok(t.branches.neben, `${t.slug} missing neben`);
-    assert.equal(t.championship, 'WTV VP 2026');
-    assert.ok(t.label && t.detail);
-  }
-  const byid = Object.fromEntries(POKAL_TEAMS.map(t => [t.slug, t.branches]));
-  assert.deepEqual(byid['herren-lk18-25'], { haupt: '2229674', neben: '2236574' });
-  assert.deepEqual(byid['herren-40'], { haupt: '2229754', neben: '2236634' });
+test('POKAL_TEAMS is empty between seasons (2026 archived to data/pokal_archive.yaml)', () => {
+  // Season over: cup teams are cleared so the sync stops regenerating
+  // data/pokal.yaml. Next season re-adds them with the new liga.nu groups.
+  assert.deepEqual(POKAL_TEAMS, []);
 });
 
 test('liganuUrl builds a WTV VP group url', () => {
