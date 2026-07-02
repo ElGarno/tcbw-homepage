@@ -1,6 +1,6 @@
 ---
 title: "Pokal"
-description: "Der Weg unserer Teams durch den WTV Vereinspokal 2026."
+description: "Der Weg unserer Teams durch den WTV Vereinspokal — Runde für Runde."
 ---
 
-Unsere beiden Pokalteams im WTV Vereinspokal 2026 — Runde für Runde.
+Hier dokumentieren wir den Weg unserer Teams durch den WTV Vereinspokal. Die Saison 2026 ist abgeschlossen und unten im Archiv festgehalten.

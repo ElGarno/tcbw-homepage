@@ -2018,3 +2018,22 @@
 .pokal-round.pokal-open { background: #f8fafc; }
 .pokal-round-score.pokal-open { color: #64748b; font-weight: 600; font-size: 0.95rem; }
 
+/* ── Pokal: Saison-Sektionen & Archiv ────────────────────── */
+.pokal-section { margin: 0 0 16px; }
+.pokal-season-eyebrow { color: var(--blue-600, #1d4ed8); margin: 0 0 4px; }
+.pokal-archive-head {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+  padding-bottom: 12px; margin: 40px 0 28px; border-bottom: 1px solid #e5e7eb;
+}
+.pokal-archive-season:first-of-type .pokal-archive-head { margin-top: 8px; }
+.pokal-season-title { font-size: 1.25rem; font-weight: 800; color: var(--gray-900, #111827); margin: 0; }
+.pokal-season-status {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; background: #f1f5f9; color: #475569;
+}
+.pokal-team-result {
+  font-weight: 700; font-size: 0.95rem; color: #475569;
+  background: #f1f5f9; border-radius: 999px; display: inline-block;
+  padding: 4px 12px; margin: 0 0 18px;
+}
+

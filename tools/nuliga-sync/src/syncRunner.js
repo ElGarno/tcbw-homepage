@@ -103,7 +103,7 @@ async function readRepoFileSafe(readRepoFile, path) {
   }
 }
 
-export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
+export async function runSync({ fetchImpl, readRepoFile, today = new Date(), pokalTeams = POKAL_TEAMS }) {
   const teamReports = [];
   const errors = [];
 
@@ -133,7 +133,7 @@ export async function runSync({ fetchImpl, readRepoFile, today = new Date() }) {
   // --- Cup teams (haupt + neben group each) ---
   const pokalPaths = [];
   const labelBySlug = {};
-  for (const pt of POKAL_TEAMS) {
+  for (const pt of pokalTeams) {
     try {
       const branchMatches = {};
       for (const [branchName, groupId] of Object.entries(pt.branches)) {

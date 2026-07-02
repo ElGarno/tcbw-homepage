@@ -190,6 +190,21 @@ const GROUP_FIXTURE = {
   '2236634': 'pokal-h40-neben.html',
 };
 
+// POKAL_TEAMS is empty in src (2026 archived); inject the season explicitly so
+// the cup sync path stays under test for when a future season re-populates it.
+const POKAL_2026 = [
+  {
+    kind: 'pokal', slug: 'herren-lk18-25', label: 'Herren-Pokal LK 18–25',
+    championship: 'WTV VP 2026', detail: 'WTV Vereinspokal · Herren LK 18,0–25,0',
+    branches: { haupt: '2229674', neben: '2236574' },
+  },
+  {
+    kind: 'pokal', slug: 'herren-40', label: 'Herren-40-Pokal',
+    championship: 'WTV VP 2026', detail: 'WTV Vereinspokal · Herren Ü40 LK 1,0–25,0',
+    branches: { haupt: '2229754', neben: '2236634' },
+  },
+];
+
 const TERMINE_MD = `---
 title: "Termine"
 events:
@@ -223,7 +238,7 @@ test('cup results (home AND away) reach newResults; data/pokal.yaml is written',
     if (p in repo) return repo[p];
     throw new Error(`404 ${p}`);
   };
-  const out = await runSync({ fetchImpl: makeCupFetch(), readRepoFile });
+  const out = await runSync({ fetchImpl: makeCupFetch(), readRepoFile, pokalTeams: POKAL_2026 });
 
   assert.equal(out.changed, true);
   const pokalFile = out.fileChanges.find(f => f.path === 'data/pokal.yaml');

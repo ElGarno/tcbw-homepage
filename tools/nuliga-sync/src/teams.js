@@ -10,24 +10,17 @@ export const TEAMS = [
 
 // Cup teams: each logical team plays a Hauptrunde (winner branch) and, after a
 // Hauptrunde loss, a Nebenrunde (loser branch). Each branch is its own liga.nu group.
-export const POKAL_TEAMS = [
-  {
-    kind: 'pokal',
-    slug: 'herren-lk18-25',
-    label: 'Herren-Pokal LK 18–25',
-    championship: 'WTV VP 2026',
-    detail: 'WTV Vereinspokal · Herren LK 18,0–25,0',
-    branches: { haupt: '2229674', neben: '2236574' },
-  },
-  {
-    kind: 'pokal',
-    slug: 'herren-40',
-    label: 'Herren-40-Pokal',
-    championship: 'WTV VP 2026',
-    detail: 'WTV Vereinspokal · Herren Ü40 LK 1,0–25,0',
-    branches: { haupt: '2229754', neben: '2236634' },
-  },
-];
+//
+// Saison-Wechsel = manueller Touch-Point (vgl. Spec 2026-05-04-nuliga-sync-pokal):
+// Ist eine Saison vorbei, wird der finale Stand aus data/pokal.yaml nach
+// data/pokal_archive.yaml übernommen und POKAL_TEAMS wieder geleert, damit der
+// Sync das archivierte File nicht überschreibt. Für die nächste Saison hier
+// einfach die neuen Gruppen-IDs eintragen.
+//
+// Archiviert – Saison 2026 (data/pokal_archive.yaml):
+//   herren-lk18-25  championship 'WTV VP 2026'  branches { haupt: '2229674', neben: '2236574' }
+//   herren-40       championship 'WTV VP 2026'  branches { haupt: '2229754', neben: '2236634' }
+export const POKAL_TEAMS = [];
 
 const BASE = 'https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage';
 
