@@ -102,7 +102,7 @@ events:
     liga_championship: "WTV VP 2026"
     liga_group: "2229674"
   - title: "Mixed U12 vs. TC 71 Netphen"
-    date: 2026-06-24
+    date: 2026-07-15
     time: "17:00 Uhr"
     detail: "Kreisklasse, Heimspiel"
     category: "medenspiel"
