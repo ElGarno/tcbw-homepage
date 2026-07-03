@@ -5,9 +5,12 @@
 {{ range .Params.events }}
   {{ $d := time .date }}
   {{ if ge $d.Unix $cutoff.Unix }}
-    {{ $upcoming = $upcoming | append . }}
+    {{ $tm := "00:00" }}
+    {{ with .time }}{{ $tm = substr (replaceRE `[^0-9:]` "" .) 0 5 }}{{ end }}
+    {{ $upcoming = $upcoming | append (merge . (dict "sortkey" (printf "%s %s" ($d.Format "2006-01-02") $tm))) }}
   {{ end }}
 {{ end }}
+{{ $upcoming = sort $upcoming "sortkey" "asc" }}
 {{ if $upcoming }}
 <section class="section" id="termine">
   <div class="container">
