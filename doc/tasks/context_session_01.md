@@ -5,9 +5,9 @@ Modernize the homepage of tennis club TC-BW-Attendorn (https://tc-bw-attendorn.d
 Replace the outdated, insecure site with a modern, maintainable solution.
 
 ## Current Status
-- **Phase**: deployed + automation; new sub-project "Social Media Generator" ready for implementation in separate repo
-- **Last Updated**: 2026-05-08
-- **Blockers**: None — nuliga-sync läuft produktiv (PR #10 auto-gemerged 2026-05-06); Social-Tools-Implementation startet in fresh Claude-Session in `~/PycharmProjects/tcbw-social-tools/`
+- **Phase**: deployed + automation; Pokalbaum-Feature live (PR #21 gemerged 2026-06-13)
+- **Last Updated**: 2026-06-18
+- **Blockers**: None — nuliga-sync läuft produktiv; n8n "Sync Logic"-Node wurde mit dem Pokal-Bundle aktualisiert (vom User bestätigt)
 
 ## Tasks
 - [x] Analyze current homepage
@@ -56,6 +56,8 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Mannschafts-Daten-Lookup (`teams-data.js`) inkl. Liga 1:1, Spielplan-Dropdown füllt Datum/Uhrzeit/Gegner auto
 - [x] Spec für Social-Media-Generator: `doc/specs/2026-05-08-tcbw-social-tools.md`
 - [x] Implementation-Plan: `doc/plans/2026-05-08-tcbw-social-tools-implementation.md` (13 Tasks, TDD wo sinnvoll)
+- [x] Pokalbaum-Feature: `/pokal/`-Seite + nuliga-sync schreibt `data/pokal.yaml` + Pokal-Ergebnisse (Heim/Auswärts) in Feli-Benachrichtigung (PR #21, 2026-06-13)
+- [x] Mixed U12 Mannschaftsfoto eingebunden (2026-06-18)
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -78,6 +80,17 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Nächster Schritt:** In neuer Claude-Console im neuen Repo den Plan abarbeiten — Pfad: `cd ~/PycharmProjects && mkdir tcbw-social-tools && cd tcbw-social-tools && claude`. Erste Prompt: Plan + Spec lesen lassen und Tasks abarbeiten.
 
 ## Progress Log
+### 2026-06-18
+- **Pokalbaum-Feature ausgeliefert** (PR #21 gemerged 2026-06-13 nach `main`, Branch gelöscht):
+  - Ausgangsproblem: neue Herren-LK-18-25-Pokalergebnisse wurden „nicht gefunden". Root Cause (keine Bug, strukturelle Lücke): `syncRunner.js` verwarf result-only-Pokal-Updates vor `extractNewResults` und ignorierte Auswärtsspiele → Feli-Benachrichtigung feuerte nie für Pokal.
+  - WTV-Pokal ist K.-o. mit Loser-Branch; ganzer LK-Baum liegt als flache Spielliste in *einer* group-Seite. Fehlende H40-Nebenrunde-group `2236634` über `leaguePage?championship=WTV+VP+2026` (Tab 3) gefunden.
+  - Backend (`tools/nuliga-sync`): `POKAL_TEAMS` mit Haupt+Neben-Branches; neuer Pfad-Builder `pokalPath.js` (win/loss/open, Knick nach Hauptrunden-Niederlage); `pokalData.js` (Serializer ohne yaml.dump + Result-Diff); `runSync` schreibt `data/pokal.yaml` und leitet Pokal-Ergebnisse (Heim **und** Auswärts) in `newResults` → Feli-Mail. Termine bleibt heim-only und zeigt nur ungespielte Heimspiele.
+  - Frontend: neue `/pokal/`-Seite + Nav-Eintrag, `pokalbaum.html`-Partial (vertikale Timeline, grün/rot/grau, Heim/Auswärts-Badge, Nebenrunde-Knick), CSS in `main.css`.
+  - 85 Backend-Tests grün; Subagent-Driven umgesetzt mit Spec- + opus-Reviews. Spec/Plan: `docs/superpowers/specs/2026-06-13-pokalbaum-frontend-design.md`, `docs/superpowers/plans/2026-06-13-pokalbaum-frontend.md`.
+  - n8n: nur der `jsCode` des „Sync Logic"-Nodes muss getauscht werden (keine neuen Nodes); `doc/specs/n8n-nuliga-sync.json` enthält jetzt den eingebetteten aktuellen Bundle (Commit `c8b3d92`). User hat den Node aktualisiert.
+- **Mixed U12 Mannschaftsfoto** ergänzt: `static/images/mannschaften/mixed-u12.jpg` (auf 1600×1200/508 KB skaliert, Konvention der anderen Teams) + `image`/`image_alt` im Frontmatter (Commit `8f39fe9`).
+- Nebenbei geklärt (kein Code): fehlende n8n-Execution-History = automatisches Pruning (`EXECUTIONS_DATA_MAX_AGE` Default 336h/14 Tage). Workflows >14 Tage ohne Lauf haben keine Executions mehr.
+
 ### 2026-05-08
 - nuliga-sync: bestätigt produktiv laufend — PR #10 (`liga.nu sync 2026-05-06`) wurde 2026-05-06 auto-gemerged. Diverse Bugfixes seit 2026-04-24: n8n 2.x Sandbox-Compat (URLSearchParams, yaml.dump, cross-realm Date), `this.helpers.httpRequest` statt globalem fetch (commits 312846d, 3217320)
 - Termine-Fix: Events am Spieltag bleiben sichtbar, ausblenden erst um Mitternacht (commit 1ad2778)
