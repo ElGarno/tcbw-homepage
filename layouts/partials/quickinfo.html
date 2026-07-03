@@ -2,24 +2,51 @@
   <div class="container">
     <div class="quick-info-grid">
       {{/* Dynamic next event card */}}
+      {{ $months := slice "" "Januar" "Februar" "März" "April" "Mai" "Juni" "Juli" "August" "September" "Oktober" "November" "Dezember" }}
       {{ $termine := .Site.GetPage "/termine" }}
       {{ $nextEvent := false }}
+      {{ $dayGames := slice }}
       {{ with $termine }}
         {{ $now := now.Format "2006-01-02" }}
+        {{/* Build a date+time sort key so same-day events order by kickoff, not file order */}}
+        {{ $keyed := slice }}
         {{ range .Params.events }}
+          {{ $d := (time .date).Format "2006-01-02" }}
+          {{ $tm := "00:00" }}
+          {{ with .time }}{{ $tm = substr (replaceRE `[^0-9:]` "" .) 0 5 }}{{ end }}
+          {{ $keyed = $keyed | append (merge . (dict "sortkey" (printf "%s %s" $d $tm))) }}
+        {{ end }}
+        {{ $sorted := sort $keyed "sortkey" "asc" }}
+        {{ range $sorted }}
           {{ if not $nextEvent }}
-            {{ $eventDate := time .date }}
-            {{ if ge ($eventDate.Format "2006-01-02") $now }}
+            {{ if ge ((time .date).Format "2006-01-02") $now }}
               {{ $nextEvent = . }}
             {{ end }}
           {{ end }}
         {{ end }}
-      {{ end }}
-      <a href="/termine/" class="quick-card reveal" style="text-decoration: none; color: inherit;">
-        <p class="label-upper quick-card-label">Nächster Termin</p>
+        {{/* On the next event's day, collect all home games (for the "Doppelheimspieltag" highlight) */}}
         {{ if $nextEvent }}
+          {{ $nextDate := (time $nextEvent.date).Format "2006-01-02" }}
+          {{ range $sorted }}
+            {{ if and (eq ((time .date).Format "2006-01-02") $nextDate) (and .detail (in .detail "Heimspiel")) }}
+              {{ $dayGames = $dayGames | append . }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{ $doppel := ge (len $dayGames) 2 }}
+      <a href="/termine/" class="quick-card reveal{{ if $doppel }} quick-card--doppel{{ end }}" style="text-decoration: none; color: inherit;">
+        {{ if $doppel }}<span class="quick-card-badge">★ Doppelheimspieltag!</span>{{ end }}
+        <p class="label-upper quick-card-label">Nächster Termin</p>
+        {{ if $doppel }}
+          {{ range $i, $g := $dayGames }}
+            {{ if $i }}<hr class="quick-card-divider">{{ end }}
+            <p class="quick-card-title">{{ $g.title }}</p>
+            {{ $d := time $g.date }}
+            <p class="quick-card-detail">{{ $d.Day }}. {{ index $months (int $d.Month) }} {{ $d.Year }}{{ with $g.time }}, {{ . }}{{ end }}</p>
+          {{ end }}
+        {{ else if $nextEvent }}
           <p class="quick-card-title">{{ $nextEvent.title }}</p>
-          {{ $months := slice "" "Januar" "Februar" "Maerz" "April" "Mai" "Juni" "Juli" "August" "September" "Oktober" "November" "Dezember" }}
           {{ $d := time $nextEvent.date }}
           <p class="quick-card-detail">{{ $d.Day }}. {{ index $months (int $d.Month) }} {{ $d.Year }}{{ with $nextEvent.time }}, {{ . }}{{ end }}</p>
         {{ else }}

@@ -478,6 +478,36 @@
 
     .quick-card-link::after { content: '\2192'; }
 
+    /* ── Doppelheimspieltag highlight ── */
+    .quick-card--doppel {
+      background: var(--orange-50);
+      border-color: #fed7aa;
+    }
+
+    .quick-card.quick-card--doppel::before { background: var(--orange-500); }
+
+    .quick-card--doppel .quick-card-label,
+    .quick-card--doppel .quick-card-link { color: var(--orange-600); }
+
+    .quick-card-badge {
+      display: inline-block;
+      background: var(--orange-500);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .quick-card-divider {
+      border: none;
+      border-top: 1px solid #fed7aa;
+      margin: 12px 0;
+    }
+
     /* ── Section Styles ── */
     .section {
       padding: 80px 0;
