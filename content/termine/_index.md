@@ -101,13 +101,6 @@ events:
     opponent: "TuS Elch Holzwickede 1"
     liga_championship: "WTV VP 2026"
     liga_group: "2229674"
-  - title: "Mixed U12 vs. TC 71 Netphen"
-    date: 2026-07-15
-    time: "17:00 Uhr"
-    detail: "Kreisklasse, Heimspiel"
-    category: "medenspiel"
-    team: "mixed-u12"
-    opponent: "TC 71 Netphen"
   - title: "Damen vs. TC BW Sundern"
     date: 2026-06-28
     time: "10:00 Uhr"
@@ -129,6 +122,13 @@ events:
     category: "medenspiel"
     team: "herren-60"
     opponent: "TuS Hachen"
+  - title: "Mixed U12 vs. TC 71 Netphen"
+    date: 2026-07-15
+    time: "17:00 Uhr"
+    detail: "Kreisklasse, Heimspiel"
+    category: "medenspiel"
+    team: "mixed-u12"
+    opponent: "TC 71 Netphen"
   - title: "Gemischt 1 vs. Höinger SV"
     date: 2026-07-25
     time: "13:00 Uhr"
