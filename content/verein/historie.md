@@ -18,6 +18,10 @@ Im Jahre 1976 wurden drei weitere Plätze oberhalb der Clubanlage errichtet. Ein
 
 ![Plätze und Clubhaus](/images/historie/Platze_Clubhaus.jpg)
 
+![Die 3. Herren um 1978](/images/historie/3-herren-ca1978.jpg)
+
+*Die 3. Herren um 1978, v.l.: Reinhold Hengstebeck, Klaus Ortmann, Helmut Rokitte, Günter Wörenkämper, Gerd Bisenius, Winfried Schmidt („Schmidts Eis").*
+
 Leider musste der Verein im Jahr 2007 die Plätze direkt vor der Toranlage der Burg Schnellenberg aufgeben, so dass sich das gesamte Clubleben ab diesem Zeitpunkt auf den oberen Tennisfeldern abspielt.
 
 Auch heute noch schwärmen die Gäste von der herrlich gelegenen Platzanlage, die umgeben von Buchen und Fichten, eingebettet in das Schnellenberger Tal, das Sporttreiben mit der kleinen Filzkugel in freier Natur gestattet.
