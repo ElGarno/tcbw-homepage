@@ -101,13 +101,6 @@ events:
     opponent: "TuS Elch Holzwickede 1"
     liga_championship: "WTV VP 2026"
     liga_group: "2229674"
-  - title: "Damen vs. TC BW Sundern"
-    date: 2026-06-28
-    time: "10:00 Uhr"
-    detail: "Bezirksliga, Heimspiel"
-    category: "medenspiel"
-    team: "damen-6er"
-    opponent: "TC Blau-Weiß Sundern"
   - title: "Herren 30 vs. TuS Ferndorf 2"
     date: 2026-07-04
     time: "14:30 Uhr"
@@ -129,6 +122,13 @@ events:
     category: "medenspiel"
     team: "mixed-u12"
     opponent: "TC 71 Netphen"
+  - title: "Damen vs. TC BW Sundern"
+    date: 2026-07-19
+    time: "10:00 Uhr"
+    detail: "Bezirksliga, Heimspiel"
+    category: "medenspiel"
+    team: "damen-6er"
+    opponent: "TC Blau-Weiß Sundern"
   - title: "Gemischt 1 vs. Höinger SV"
     date: 2026-07-25
     time: "13:00 Uhr"
