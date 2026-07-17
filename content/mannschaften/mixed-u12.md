@@ -15,4 +15,4 @@ Mixed U12 2er Mannschaft in der Kreisklasse (Gr. 205 SI), Saison Sommer 2026.
 | Datum | Uhrzeit | Heim | Gast | Ergebnis |
 |-------|---------|------|------|----------|
 | 15.06.2026 | 17:00 | TC 71 Netphen | **TC BW Attendorn** | 0:3 |
-| 15.07.2026 | 17:00 | **TC BW Attendorn** | TC 71 Netphen | - |
+| 15.07.2026 | 17:00 | **TC BW Attendorn** | TC 71 Netphen | 2:1 |
