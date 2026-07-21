@@ -18,4 +18,4 @@ Herren 60 4er Mannschaft in der Bezirksliga (Gr. 109), Saison Sommer 2026.
 | 16.05.2026 | 10:00 | TC Esseltal | **TC BW Attendorn** | 2:4 |
 | 13.06.2026 | 09:30 | **TC BW Attendorn** | TC SSV Elspe 2 | 2:4 |
 | 04.07.2026 | 09:30 | **TC BW Attendorn** | TuS Hachen | 3:3 |
-| 19.07.2026 | 09:00 | SSV Allendorf TA | **TC BW Attendorn** | - |
+| 19.07.2026 | 09:00 | SSV Allendorf TA | **TC BW Attendorn** | 5:1 |
