@@ -30,10 +30,16 @@
     </div>
 
     {{ with .Params.cta }}
+    {{ $cta := . }}
     <div class="cta-banner reveal">
       <h2 class="heading-display cta-banner-title">{{ .title }}</h2>
       <p class="cta-banner-text">{{ .text }}</p>
-      <a href="{{ .button_url }}" class="btn btn-primary">{{ .button_text }}</a>
+      <div class="cta-banner-actions">
+        <a href="{{ .button_url }}" class="btn btn-primary">{{ .button_text }}</a>
+        {{ with .button_secondary_url }}
+        <a href="{{ . }}" class="btn btn-outline">{{ $cta.button_secondary_text }}</a>
+        {{ end }}
+      </div>
     </div>
     {{ end }}
 

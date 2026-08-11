@@ -6,9 +6,11 @@ image: "/images/news/meet-and-play.jpg"
 tags: ["Meet & Play", "Mitspielen", "Verein"]
 cta:
   title: "Bist Du dabei?"
-  text: "Schreib uns eine Nachricht auf Instagram — wir laden Dich in die WhatsApp-Gruppe ein."
+  text: "Schreib uns auf Instagram oder per E-Mail — wir laden Dich in die WhatsApp-Gruppe ein."
   button_text: "Auf Instagram schreiben"
   button_url: "https://instagram.com/tcbwattendorn/"
+  button_secondary_text: "E-Mail an den Vorstand"
+  button_secondary_url: "mailto:vorstand@tc-bw-attendorn.de"
 ---
 
 Lust auf mehr Tennis und nette Leute? Wir starten mit **Meet & Play** eine Gruppe für alle, die Tennis spielen, neue Spielpartner kennenlernen und sich unkompliziert zum Spielen oder Trainieren verabreden möchten.
@@ -23,4 +25,4 @@ Los geht's am Mittwoch, 26. August, ab 18 Uhr nach Feierabend auf unserer Anlage
 
 ## Mitmachen
 
-Die Absprachen laufen über eine WhatsApp-Gruppe. Schreib uns bei Interesse einfach eine Nachricht über Instagram [@tcbwattendorn](https://instagram.com/tcbwattendorn/) — dann laden wir Dich ein. Die Einladung darfst Du gerne an andere Tennisinteressierte weiterleiten, egal ob Mitglied oder nicht.
+Die Absprachen laufen über eine WhatsApp-Gruppe. Schreib uns bei Interesse einfach eine Nachricht über Instagram [@tcbwattendorn](https://instagram.com/tcbwattendorn/) oder eine E-Mail an [vorstand@tc-bw-attendorn.de](mailto:vorstand@tc-bw-attendorn.de) — dann laden wir Dich ein. Die Einladung darfst Du gerne an andere Tennisinteressierte weiterleiten, egal ob Mitglied oder nicht.

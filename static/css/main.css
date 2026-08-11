@@ -1678,6 +1678,18 @@
       padding: clamp(32px, 6vw, 56px) clamp(24px, 5vw, 48px);
     }
 
+    .article-detail .cta-banner .btn {
+      font-size: 1rem;
+      padding: 16px 36px;
+    }
+
+    .cta-banner-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .article-detail-content a {
       color: var(--blue-600);
       text-decoration: underline;
