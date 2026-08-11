@@ -29,6 +29,14 @@
       {{ .Content }}
     </div>
 
+    {{ with .Params.cta }}
+    <div class="cta-banner reveal">
+      <h2 class="heading-display cta-banner-title">{{ .title }}</h2>
+      <p class="cta-banner-text">{{ .text }}</p>
+      <a href="{{ .button_url }}" class="btn btn-primary">{{ .button_text }}</a>
+    </div>
+    {{ end }}
+
     <div class="article-detail-footer">
       <a href="/aktuelles/" class="btn-secondary">&larr; Zurück zu Aktuelles</a>
     </div>

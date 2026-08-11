@@ -4,6 +4,11 @@ date: 2026-08-11
 description: "Neue offene Gruppe für alle, die unkompliziert Spielpartner finden wollen. Auftakt mit Grillen am Mittwoch, 26. August, ab 18 Uhr."
 image: "/images/news/meet-and-play.jpg"
 tags: ["Meet & Play", "Mitspielen", "Verein"]
+cta:
+  title: "Bist Du dabei?"
+  text: "Schreib uns eine Nachricht auf Instagram — wir laden Dich in die WhatsApp-Gruppe ein."
+  button_text: "Auf Instagram schreiben"
+  button_url: "https://instagram.com/tcbwattendorn/"
 ---
 
 Lust auf mehr Tennis und nette Leute? Wir starten mit **Meet & Play** eine Gruppe für alle, die Tennis spielen, neue Spielpartner kennenlernen und sich unkompliziert zum Spielen oder Trainieren verabreden möchten.
@@ -18,4 +23,4 @@ Los geht's am Mittwoch, 26. August, ab 18 Uhr nach Feierabend auf unserer Anlage
 
 ## Mitmachen
 
-Die Absprachen laufen über eine WhatsApp-Gruppe. Schreib uns bei Interesse einfach eine Nachricht über Instagram [@tcbwattendorn](https://instagram.com/tcbwattendorn/), dann laden wir dich ein. Die Einladung darfst du gerne an andere Tennisinteressierte weiterleiten.
+Die Absprachen laufen über eine WhatsApp-Gruppe. Schreib uns bei Interesse einfach eine Nachricht über Instagram [@tcbwattendorn](https://instagram.com/tcbwattendorn/) — dann laden wir Dich ein. Die Einladung darfst Du gerne an andere Tennisinteressierte weiterleiten, egal ob Mitglied oder nicht.

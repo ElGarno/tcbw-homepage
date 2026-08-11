@@ -1672,6 +1672,23 @@
       display: block;
     }
 
+    /* CTA banner reused inside the narrower article column */
+    .article-detail .cta-banner {
+      margin: 0 0 40px;
+      padding: clamp(32px, 6vw, 56px) clamp(24px, 5vw, 48px);
+    }
+
+    .article-detail-content a {
+      color: var(--blue-600);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .article-detail-content a:hover {
+      color: var(--blue-800);
+    }
+
     .article-detail-content {
       font-size: 1.05rem;
       line-height: 1.85;
