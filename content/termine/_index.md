@@ -155,6 +155,11 @@ events:
     time: "15:00 Uhr"
     detail: "Familienprogramm, Schleifchenturnier, Grillabend"
     category: "event"
+  - title: "Meet & Play — Auftakt mit Grillen"
+    date: 2026-08-26
+    time: "18:00 Uhr"
+    detail: "Auftakt der neuen Meet-&-Play-Gruppe nach Feierabend, anschließend Grillen — Mitglieder und Nichtmitglieder willkommen"
+    category: "event"
   - title: "Gemischt 1 vs. TuS 1900 Eisern"
     date: 2026-09-05
     time: "10:00 Uhr"
