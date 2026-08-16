@@ -4,6 +4,8 @@ league: "Bezirksklasse"
 weight: 50
 captain: "Muhr Moritz"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+2026&group=120"
+image: "/images/mannschaften/gemischt-1.jpg"
+image_alt: "Mannschaftsfoto der Gemischten Mannschaft 1 des TC Blau-Weiss Attendorn"
 ---
 
 Gemischte 4er Mannschaft in der Bezirksklasse (Gr. 120), Saison Sommer 2026.
