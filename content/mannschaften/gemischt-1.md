@@ -14,5 +14,5 @@ Gemischte 4er Mannschaft in der Bezirksklasse (Gr. 120), Saison Sommer 2026.
 |-------|---------|------|------|----------|
 | 25.07.2026 | 13:00 | **TC BW Attendorn** | Höinger SV | 2:4 |
 | 08.08.2026 | 13:00 | TC Wilgersdorf | **TC BW Attendorn** | 1:5 |
-| 15.08.2026 | 13:00 | TV Plettenberg | **TC BW Attendorn** | - |
+| 15.08.2026 | 13:00 | TV Plettenberg | **TC BW Attendorn** | 0:6 |
 | 05.09.2026 | 10:00 | **TC BW Attendorn** | TuS 1900 Eisern | - |
