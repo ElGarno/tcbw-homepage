@@ -5,8 +5,8 @@ Modernize the homepage of tennis club TC-BW-Attendorn (https://tc-bw-attendorn.d
 Replace the outdated, insecure site with a modern, maintainable solution.
 
 ## Current Status
-- **Phase**: deployed + automation; Pokalbaum-Feature live (PR #21 gemerged 2026-06-13)
-- **Last Updated**: 2026-06-18
+- **Phase**: deployed + automation; laufende Content-Pflege (Mannschaftsfotos)
+- **Last Updated**: 2026-08-16
 - **Blockers**: None — nuliga-sync läuft produktiv; n8n "Sync Logic"-Node wurde mit dem Pokal-Bundle aktualisiert (vom User bestätigt)
 
 ## Tasks
@@ -58,6 +58,7 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Implementation-Plan: `doc/plans/2026-05-08-tcbw-social-tools-implementation.md` (13 Tasks, TDD wo sinnvoll)
 - [x] Pokalbaum-Feature: `/pokal/`-Seite + nuliga-sync schreibt `data/pokal.yaml` + Pokal-Ergebnisse (Heim/Auswärts) in Feli-Benachrichtigung (PR #21, 2026-06-13)
 - [x] Mixed U12 Mannschaftsfoto eingebunden (2026-06-18)
+- [x] Gemischte 1 Mannschaftsfoto eingebunden (2026-08-16)
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -80,6 +81,14 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Nächster Schritt:** In neuer Claude-Console im neuen Repo den Plan abarbeiten — Pfad: `cd ~/PycharmProjects && mkdir tcbw-social-tools && cd tcbw-social-tools && claude`. Erste Prompt: Plan + Spec lesen lassen und Tasks abarbeiten.
 
 ## Progress Log
+### 2026-08-16
+- **Gemischte 1 Mannschaftsfoto** ergänzt (Commit `64587bf`, direkt auf `main` gepusht):
+  - Original war Hochformat (3840×5120) — auf 4:3 gecroppt (`crop=3840:2880:0:1700`) und auf 1600×1200 skaliert, damit es zur Konvention der übrigen Teamfotos passt. Hochformat würde die Single-Page extrem lang machen, da `layouts/mannschaften/single.html` das Bild in voller Breite mit `height: auto` rendert.
+  - Tooling-Hinweis: ImageMagick ist auf dem Rechner **nicht** installiert, `ffmpeg` und `sips` schon → Crop/Resize via `ffmpeg -vf "crop=...,scale=..." -q:v 4` (q:v 4 landet bei ~510 KB, q:v 3 bei ~615 KB; die anderen Fotos liegen bei 420–510 KB).
+  - `image` + `image_alt` im Frontmatter von `content/mannschaften/gemischt-1.md` ergänzt; Hugo-Build verifiziert.
+  - Original-JPG aus dem Repo-Root gelöscht.
+- Damit haben alle Mannschaften außer **Herren 40** ein Mannschaftsfoto.
+
 ### 2026-06-18
 - **Pokalbaum-Feature ausgeliefert** (PR #21 gemerged 2026-06-13 nach `main`, Branch gelöscht):
   - Ausgangsproblem: neue Herren-LK-18-25-Pokalergebnisse wurden „nicht gefunden". Root Cause (keine Bug, strukturelle Lücke): `syncRunner.js` verwarf result-only-Pokal-Updates vor `extractNewResults` und ignorierte Auswärtsspiele → Feli-Benachrichtigung feuerte nie für Pokal.
@@ -196,7 +205,14 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - Echte Fotos für Homepage: Galerie-Bilder, Instagram-Feed, Vereins-Sektionsbild
 - Mail-to-Homepage: Encoding-Probleme bei GMX noch vollständig gelöst? (fixEncoding Funktion)
 - n8n Version 2.1.4 hat Einschränkungen (IMAP Node, Error Workflows) — Update erwägen?
+- Mannschaftsfoto **Herren 40** fehlt noch als einziges — beim Verein anfragen
+- Untracked im Repo-Root/Arbeitsverzeichnis liegen weiterhin `current_homepage/Wappen_TC_BW_Attendorn.png`, `current_homepage/wappen_cleaned.png`, `mockup/court-comparison.html`, `new_images/` — committen oder aufräumen?
 - **tcbw-social-tools: Email-Whitelist für Cloudflare Access** muss vom User festgelegt werden (Vorstand + Mannschaftsführer + Marketing). Initial mindestens: vorstand@tc-bw-attendorn.de + Bastian Gerlach + Felix Kersting + Paula Kersting
+
+## Files Modified (Session 2026-08-16)
+- `static/images/mannschaften/gemischt-1.jpg` — NEU: Mannschaftsfoto Gemischte 1 (1600×1200, 513 KB)
+- `content/mannschaften/gemischt-1.md` — `image` + `image_alt` im Frontmatter
+- Commit: `64587bf`
 
 ## Files Modified (Session 2026-05-08)
 - `claude-design/Instagram Templates.html` — neuer Skill (gestaged + committed)
