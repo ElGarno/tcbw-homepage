@@ -150,11 +150,6 @@ events:
     category: "medenspiel"
     team: "gemischt-2"
     opponent: "TC Gottfried von Cramm 2"
-  - title: "Sommerfest"
-    date: 2026-08-23
-    time: "15:00 Uhr"
-    detail: "Familienprogramm, Schleifchenturnier, Grillabend"
-    category: "event"
   - title: "Meet & Play — Auftakt mit Grillen"
     date: 2026-08-26
     time: "18:00 Uhr"
