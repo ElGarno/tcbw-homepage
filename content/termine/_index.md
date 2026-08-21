@@ -169,4 +169,9 @@ events:
     category: "medenspiel"
     team: "gemischt-2"
     opponent: "TV Hoffnung Littfeld 2"
+  - title: "Schleifchenturnier"
+    date: 2026-09-12
+    time: "11:00 Uhr"
+    detail: "Mixed-Doppel auf den Plätzen 2 & 3, Teams werden per Schlägerroulette gelost"
+    category: "event"
 ---
