@@ -102,10 +102,10 @@ function stripBold(s) {
 }
 
 function readMannschaftMd(content) {
-  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---(?:\n([\s\S]*))?$/);
   if (!fmMatch) throw new Error('Missing frontmatter');
   const frontmatter = fmMatch[1];
-  const body = fmMatch[2];
+  const body = fmMatch[2] ?? '';
 
   const matches = [];
   for (const line of body.split('\n')) {
@@ -305,10 +305,10 @@ function buildEventEntry(tc, addMatch) {
 }
 
 function applyTermineChanges(content, teamChanges) {
-  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---(?:\n([\s\S]*))?$/);
   if (!fmMatch) throw new Error('No frontmatter');
   const data = yaml.load(fmMatch[1]);
-  const body = fmMatch[2];
+  const body = fmMatch[2] ?? '';
 
   const events = data.events ?? [];
 

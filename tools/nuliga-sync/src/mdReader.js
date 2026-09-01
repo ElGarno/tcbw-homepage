@@ -9,10 +9,10 @@ function stripBold(s) {
 }
 
 export function readMannschaftMd(content) {
-  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---(?:\n([\s\S]*))?$/);
   if (!fmMatch) throw new Error('Missing frontmatter');
   const frontmatter = fmMatch[1];
-  const body = fmMatch[2];
+  const body = fmMatch[2] ?? '';
 
   const matches = [];
   for (const line of body.split('\n')) {

@@ -187,3 +187,14 @@ test('cross-contamination: medenspiel sync does NOT update pokal entry with same
   const medenspiel = events.find(e => e.category === 'medenspiel' && e.team === 'herren-30' && e.opponent === 'TV Rönkhausen 1892 TA');
   assert.equal(medenspiel.time, '15:00 Uhr');
 });
+
+test('frontmatter without trailing newline after closing --- is accepted', () => {
+  // Files edited by the mail-to-homepage automation can lose the final newline.
+  const teamChanges = [
+    { kind: 'medenspiel', team: 'herren-30', updates: [{ opponent: 'TuS Ferndorf 2', isHome: true, newDate: '2026-07-04', newTime: '14:30' }], adds: [], missings: [] },
+  ];
+  const out = applyTermineChanges(fixture.trimEnd(), teamChanges);
+  const events = parseEvents(out);
+  const ferndorf = events.find(e => e.title.includes('Ferndorf'));
+  assert.equal(ferndorf.time, '14:30 Uhr');
+});
