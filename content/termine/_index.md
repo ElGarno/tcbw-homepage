@@ -86,13 +86,6 @@ events:
     opponent: "TC GW Meinerzhagen 1"
     liga_championship: "WTV VP 2026"
     liga_group: "2236634"
-  - title: "Herren 40 vs. TV Plettenberg"
-    date: 2026-06-20
-    time: "13:00 Uhr"
-    detail: "Südwestfalenliga, Heimspiel"
-    category: "medenspiel"
-    team: "herren-40"
-    opponent: "TV Plettenberg"
   - title: "Herren-Pokal vs. TuS Elch Holzwickede 1"
     date: 2026-06-23
     time: "18:00 Uhr"
@@ -155,6 +148,13 @@ events:
     time: "18:00 Uhr"
     detail: "Auftakt der neuen Meet-&-Play-Gruppe nach Feierabend, anschließend Grillen — Mitglieder und Nichtmitglieder willkommen"
     category: "event"
+  - title: "Herren 40 vs. TV Plettenberg"
+    date: 2026-08-30
+    time: "10:00 Uhr"
+    detail: "Südwestfalenliga, Heimspiel"
+    category: "medenspiel"
+    team: "herren-40"
+    opponent: "TV Plettenberg"
   - title: "Gemischt 1 vs. TuS 1900 Eisern"
     date: 2026-09-05
     time: "10:00 Uhr"
