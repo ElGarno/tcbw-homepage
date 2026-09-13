@@ -174,4 +174,14 @@ events:
     time: "11:00 Uhr"
     detail: "Mixed-Doppel auf den Plätzen 2 & 3, Teams werden per Schlägerroulette gelost"
     category: "event"
+  - title: "Schleifchenturnier 2.0"
+    date: 2026-09-27
+    time: "11:00 Uhr"
+    detail: "Heiße Matches im Doppelmixedmodus. Anmeldung per Mail oder PN bei Aaron oder Bastian."
+    category: "event"
+  - title: "Herbstarbeitseinsatz"
+    date: 2026-10-18
+    time: "10:00 Uhr"
+    detail: "Wir freuen uns über viele helfende Hände. Mit dem Ende der Meisterschaftssaison stehen unsere Plätze noch etwa einen Monat für sportliche Aktivitäten zur Verfügung."
+    category: "event"
 ---
