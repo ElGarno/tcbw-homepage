@@ -5,9 +5,9 @@ Modernize the homepage of tennis club TC-BW-Attendorn (https://tc-bw-attendorn.d
 Replace the outdated, insecure site with a modern, maintainable solution.
 
 ## Current Status
-- **Phase**: deployed + automation; laufende Content-Pflege (Mannschaftsfotos)
-- **Last Updated**: 2026-08-16
-- **Blockers**: None — nuliga-sync läuft produktiv; n8n "Sync Logic"-Node wurde mit dem Pokal-Bundle aktualisiert (vom User bestätigt)
+- **Phase**: deployed + automation; laufende Content-Pflege + Wartung der Sync-Automation
+- **Last Updated**: 2026-09-15 (Arbeit vom 2026-09-01)
+- **Blockers**: n8n "Sync Logic"-Node muss noch mit dem neuen jsCode bestückt werden (Bundle mit Frontmatter-Fix) — bis dahin schlägt der nächtliche Sync weiter mit `No frontmatter` fehl
 
 ## Tasks
 - [x] Analyze current homepage
@@ -59,6 +59,7 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [x] Pokalbaum-Feature: `/pokal/`-Seite + nuliga-sync schreibt `data/pokal.yaml` + Pokal-Ergebnisse (Heim/Auswärts) in Feli-Benachrichtigung (PR #21, 2026-06-13)
 - [x] Mixed U12 Mannschaftsfoto eingebunden (2026-06-18)
 - [x] Gemischte 1 Mannschaftsfoto eingebunden (2026-08-16)
+- [x] nuliga-sync Bugfix: Frontmatter ohne abschließenden Newline wird akzeptiert (Commit `c394833`, 2026-09-01)
 
 ## Backlog
 - [ ] DecapCMS Authentication — Auth-Provider für Cloudflare Pages (parked)
@@ -66,6 +67,8 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - [ ] Google Maps Embed mit korrektem Place-Pin (aktuell nur Koordinaten)
 - [ ] Mail-to-Homepage: Pushover-Fehlerbenachrichtigung als separater Error-Workflow
 - [ ] Mail-to-Homepage: Branch-Kollisionsvermeidung (Timestamp oder vorher löschen)
+- [ ] nuliga-sync: HTML-Fixtures in `tools/nuliga-sync/tests/fixtures/group-*.html` sind vom 2026-04-20 und passen nicht mehr zum Repo-Stand → 2 syncRunner-Tests schlagen vorbestehend fehl
+- [ ] Mail-to-Homepage: geschriebene Markdown-Dateien sollten immer mit Newline enden (Ursache des `No frontmatter`-Bugs)
 
 ## Neues Projekt: Getränkebuchungs-App
 - **Status:** Brainstorming abgeschlossen, Tablet-Typ muss noch geklärt werden (iPad vs Android)
@@ -81,6 +84,17 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - **Nächster Schritt:** In neuer Claude-Console im neuen Repo den Plan abarbeiten — Pfad: `cd ~/PycharmProjects && mkdir tcbw-social-tools && cd tcbw-social-tools && claude`. Erste Prompt: Plan + Spec lesen lassen und Tasks abarbeiten.
 
 ## Progress Log
+### 2026-09-01
+- **Bugfix nuliga-sync: `No frontmatter`** (Commit `c394833`, direkt auf `main` gepusht). Der n8n-Sync brach mit `Error: No frontmatter at applyTermineChanges` ab.
+  - **Root Cause:** Das Frontmatter-Regex `/^---\n([\s\S]*?)\n---\n([\s\S]*)$/` verlangt zwingend einen Newline **nach** dem schließenden `---`. `content/termine/_index.md` hat keinen Body, d.h. der Delimiter ist das letzte Byte — und die Datei hat ihren abschließenden Newline durch die Mail-to-Homepage-Automation verloren (Commits `01517c0`, `d7d3079`, `b8c65d0`). Nachweis: `git show HEAD~5:content/termine/_index.md` endet auf `---\n`, `HEAD` auf `---`.
+  - Warum der Fehler erst beim Schreiben kam: `syncRunner.js:111` liest das Frontmatter mit einem lockereren Regex (ohne Trailing-Newline-Zwang), deshalb lief der Sync bis `applyTermineChanges` durch.
+  - **Fix:** Newline und Body optional gemacht (`/^---\n([\s\S]*?)\n---(?:\n([\s\S]*))?$/`, `body = fmMatch[2] ?? ''`) — in `termineUpdater.js` **und** `mdReader.js` (identischer latenter Bug für die Mannschafts-Dateien).
+  - Regressionstest in `tests/termineUpdater.test.js` ergänzt; Bundle via `npm run bundle` neu gebaut und der `jsCode` in `doc/specs/n8n-nuliga-sync.json` aktualisiert.
+  - Die Content-Datei selbst blieb unverändert — der Writer schreibt `---\n` und heilt das beim nächsten Sync von allein.
+  - **Testlauf:** 86 Tests, 84 pass, 2 fail. Die 2 Failures (`no changes when fixtures match repo state`, `detects time change in one team`) sind **vorbestehend und unabhängig** — mit gestashtem Fix + reparierter Newline schlagen exakt dieselben zwei fehl. Ursache: die HTML-Fixtures stammen vom 2026-04-20 und passen nicht mehr zum aktuellen Repo-Stand (6 statt 1 Update).
+  - **Tooling-Pitfall:** `tools/nuliga-sync/dist/` steht in `.gitignore`, `dist/n8n-bundle.js` ist aber getrackt → `git add` verweigert, `git add -f` nötig.
+  - Der komplette Node-Inhalt (Header + `require`-Zeilen + Bundle + GitHub-/Fetch-Helper + `runSync`-Aufruf) wurde dem User ins Clipboard gelegt; das Einfügen in n8n steht noch aus.
+
 ### 2026-08-16
 - **Gemischte 1 Mannschaftsfoto** ergänzt (Commit `64587bf`, direkt auf `main` gepusht):
   - Original war Hochformat (3840×5120) — auf 4:3 gecroppt (`crop=3840:2880:0:1700`) und auf 1600×1200 skaliert, damit es zur Konvention der übrigen Teamfotos passt. Hochformat würde die Single-Page extrem lang machen, da `layouts/mannschaften/single.html` das Bild in voller Breite mit `height: auto` rendert.
@@ -207,7 +221,17 @@ Replace the outdated, insecure site with a modern, maintainable solution.
 - n8n Version 2.1.4 hat Einschränkungen (IMAP Node, Error Workflows) — Update erwägen?
 - Mannschaftsfoto **Herren 40** fehlt noch als einziges — beim Verein anfragen
 - Untracked im Repo-Root/Arbeitsverzeichnis liegen weiterhin `current_homepage/Wappen_TC_BW_Attendorn.png`, `current_homepage/wappen_cleaned.png`, `mockup/court-comparison.html`, `new_images/` — committen oder aufräumen?
+- n8n "Sync Logic"-Node: jsCode aus `doc/specs/n8n-nuliga-sync.json` eingefügt? (Stand Session-Ende: offen)
+- Sollen die stale HTML-Fixtures der nuliga-sync-Tests auf den aktuellen Repo-Stand gezogen werden, damit die Suite wieder grün ist?
 - **tcbw-social-tools: Email-Whitelist für Cloudflare Access** muss vom User festgelegt werden (Vorstand + Mannschaftsführer + Marketing). Initial mindestens: vorstand@tc-bw-attendorn.de + Bastian Gerlach + Felix Kersting + Paula Kersting
+
+## Files Modified (Session 2026-09-01)
+- `tools/nuliga-sync/src/termineUpdater.js` — Frontmatter-Regex: Trailing-Newline + Body optional
+- `tools/nuliga-sync/src/mdReader.js` — derselbe Fix (latenter Bug für Mannschafts-Dateien)
+- `tools/nuliga-sync/tests/termineUpdater.test.js` — Regressionstest für Frontmatter ohne Trailing-Newline
+- `tools/nuliga-sync/dist/n8n-bundle.js` — neu gebaut (`npm run bundle`, `git add -f` nötig)
+- `doc/specs/n8n-nuliga-sync.json` — eingebetteter `jsCode` des "Sync Logic"-Nodes aktualisiert
+- Commit: `c394833`
 
 ## Files Modified (Session 2026-08-16)
 - `static/images/mannschaften/gemischt-1.jpg` — NEU: Mannschaftsfoto Gemischte 1 (1600×1200, 513 KB)

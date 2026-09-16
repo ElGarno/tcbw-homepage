@@ -17,7 +17,7 @@ Current site: http://www.tc-bw-attendorn.de/
 - GitHub: ElGarno/tcbw-homepage
 
 ## Automation
-- **nuliga-sync** — n8n Cron (06:00 Berlin) scraped täglich liga.nu, erstellt Draft-PRs bei Änderungen. Logic in `tools/nuliga-sync/`. Spec: `doc/specs/2026-04-20-nuliga-sync-workflow.md`. Pflegt zusätzlich `data/pokal.yaml` (Pokal-Pfade beider Teams, gerendert unter `/pokal/`) und leitet Pokal-Ergebnisse (Heim+Auswärts) in `newResults` → Feli-Mail. Spec: `doc/specs/2026-06-13-pokalbaum-frontend-design.md`. **Bei Code-Änderungen in `tools/nuliga-sync/src/`:** `npm run bundle` und den `jsCode` des n8n-„Sync Logic"-Nodes neu einsetzen (Bundle ist auch in `doc/specs/n8n-nuliga-sync.json` eingebettet).
+- **nuliga-sync** — n8n Cron (06:00 Berlin) scraped täglich liga.nu, erstellt Draft-PRs bei Änderungen. Logic in `tools/nuliga-sync/`. Spec: `doc/specs/2026-04-20-nuliga-sync-workflow.md`. Pflegt zusätzlich `data/pokal.yaml` (Pokal-Pfade beider Teams, gerendert unter `/pokal/`) und leitet Pokal-Ergebnisse (Heim+Auswärts) in `newResults` → Feli-Mail. Spec: `doc/specs/2026-06-13-pokalbaum-frontend-design.md`. **Bei Code-Änderungen in `tools/nuliga-sync/src/`:** `npm run bundle` und den `jsCode` des n8n-„Sync Logic"-Nodes neu einsetzen (Bundle ist auch in `doc/specs/n8n-nuliga-sync.json` eingebettet — dort denselben Stand nachziehen). `dist/` steht in `.gitignore`, `dist/n8n-bundle.js` ist aber getrackt → zum Committen `git add -f` nötig.
 - **Mail-to-Homepage** — n8n liest GMX-Postfach, Claude API erzeugt Draft-PRs aus Mails. Spec: `doc/specs/2026-03-23-mail-to-homepage-workflow.md`.
 - **Daily Deploy** — n8n triggert Cloudflare-Rebuild um 06:30 Berlin. Spec: `doc/specs/2026-03-23-daily-deploy-cronjob.md`.
 
