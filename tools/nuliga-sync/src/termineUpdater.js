@@ -9,6 +9,8 @@ const LEAGUE_LABELS = {
   'gemischt-1': 'Bezirksklasse',
   'gemischt-2': 'Kreisklasse',
   'mixed-u12': 'Kreisklasse',
+  'damen-winter': 'Bezirksklasse (Winter)',
+  'herren-30-winter': 'Bezirksklasse (Winter)',
 };
 
 const TEAM_TITLES = {
@@ -19,6 +21,8 @@ const TEAM_TITLES = {
   'gemischt-1': 'Gemischt 1',
   'gemischt-2': 'Gemischt 2',
   'mixed-u12': 'Mixed U12',
+  'damen-winter': 'Damen Winter',
+  'herren-30-winter': 'Herren 30 Winter',
 };
 
 function detailFor(team) {

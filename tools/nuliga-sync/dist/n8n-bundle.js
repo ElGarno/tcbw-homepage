@@ -229,6 +229,8 @@ const LEAGUE_LABELS = {
   'gemischt-1': 'Bezirksklasse',
   'gemischt-2': 'Kreisklasse',
   'mixed-u12': 'Kreisklasse',
+  'damen-winter': 'Bezirksklasse (Winter)',
+  'herren-30-winter': 'Bezirksklasse (Winter)',
 };
 
 const TEAM_TITLES = {
@@ -239,6 +241,8 @@ const TEAM_TITLES = {
   'gemischt-1': 'Gemischt 1',
   'gemischt-2': 'Gemischt 2',
   'mixed-u12': 'Mixed U12',
+  'damen-winter': 'Damen Winter',
+  'herren-30-winter': 'Herren 30 Winter',
 };
 
 function detailFor(team) {
@@ -479,6 +483,9 @@ const TEAMS = [
   { kind: 'medenspiel', slug: 'gemischt-1', file: 'content/mannschaften/gemischt-1.md', group: '120', label: 'Gemischt 1' },
   { kind: 'medenspiel', slug: 'gemischt-2', file: 'content/mannschaften/gemischt-2.md', group: '129', label: 'Gemischt 2' },
   { kind: 'medenspiel', slug: 'mixed-u12',  file: 'content/mannschaften/mixed-u12.md',  group: '205', label: 'Mixed U12' },
+  // Winter 2026/27 (Herren 40 4er withdrew on 14.09.2026, not synced)
+  { kind: 'medenspiel', slug: 'damen-winter',     file: 'content/mannschaften/damen-winter.md',     group: '3',  label: 'Damen Winter',     championship: 'SW Winter 26/27' },
+  { kind: 'medenspiel', slug: 'herren-30-winter', file: 'content/mannschaften/herren-30-winter.md', group: '27', label: 'Herren 30 Winter', championship: 'SW Winter 26/27' },
 ];
 
 // Cup teams: each logical team plays a Hauptrunde (winner branch) and, after a
