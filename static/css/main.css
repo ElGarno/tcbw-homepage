@@ -2099,3 +2099,93 @@
   padding: 4px 12px; margin: 0 0 18px;
 }
 
+
+/* ── Season: winter (data-season set by static/js/season.js) ── */
+:root {
+  --winter-glow: rgba(255, 176, 80, 0.35);
+  --winter-gold: #ffcf7a;
+  --winter-btn: #f2a54a;
+  --winter-btn-hover: #f5b566;
+  --winter-btn-text: #3a2408;
+  --winter-snow: #ffffff;
+}
+
+.season-snow { display: none; }
+
+[data-season="winter"] .season-snow {
+  display: block;
+  position: absolute;
+  /* one tile taller than the box so the loop is seamless */
+  inset: -360px 0 0 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(2px 2px at 23px 41px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 97px 188px, #fff 50%, transparent 51%),
+    radial-gradient(2.5px 2.5px at 161px 72px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 233px 251px, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 128px 317px, #fff 50%, transparent 51%),
+    radial-gradient(2.5px 2.5px at 302px 139px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 341px 296px, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 57px 274px, #fff 50%, transparent 51%);
+  background-size: 360px 360px;
+  opacity: 0.8;
+  animation: season-snowfall 22s linear infinite;
+  will-change: transform;
+}
+
+[data-season="winter"] .season-snow--far {
+  inset: -280px 0 0 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 41px 22px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 119px 143px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 203px 61px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 251px 212px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 77px 251px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 172px 189px, #fff 50%, transparent 51%);
+  background-size: 280px 280px;
+  opacity: 0.5;
+  animation-name: season-snowfall-far;
+  animation-duration: 34s;
+}
+
+@keyframes season-snowfall { to { transform: translateY(360px); } }
+@keyframes season-snowfall-far { to { transform: translateY(280px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-season="winter"] .season-snow { display: none; }
+}
+
+/* Hero: snow bank with warm glow ("light from the clubhouse") */
+[data-season="winter"] .hero::before {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 105%, var(--winter-glow) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(58, 123, 213, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(107, 163, 235, 0.1) 0%, transparent 60%);
+}
+
+/* Snow drifts: overlapping low ellipses on a flat base */
+[data-season="winter"] .hero::after {
+  bottom: -1px;
+  height: 90px;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse 34% 75% at 12% 100%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 30% 55% at 46% 100%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 38% 90% at 84% 100%, var(--winter-snow) 98%, transparent 100%),
+    linear-gradient(to top, var(--winter-snow) 22px, transparent 22px);
+  filter: drop-shadow(0 -3px 10px rgba(255, 255, 255, 0.3));
+}
+
+@media (max-width: 768px) {
+  [data-season="winter"] .hero::after { height: 48px; }
+}
+
+[data-season="winter"] .hero-content { z-index: 3; }
+[data-season="winter"] .hero-eyebrow { color: var(--winter-gold); }
+
+[data-season="winter"] .hero .btn-primary {
+  background: var(--winter-btn);
+  color: var(--winter-btn-text);
+}
+[data-season="winter"] .hero .btn-primary:hover { background: var(--winter-btn-hover); }
