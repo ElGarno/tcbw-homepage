@@ -2279,3 +2279,14 @@
     radial-gradient(ellipse 34% 85% at 88% 0%, var(--winter-snow) 98%, transparent 100%),
     linear-gradient(to bottom, var(--winter-snow) 10px, transparent 10px);
 }
+
+/* Weihnachtsfeier: gold accent in winter (orange already means Pokal) */
+[data-season="winter"] .termin-item--xmas {
+  border-color: var(--winter-gold);
+  box-shadow: 0 0 0 1px var(--winter-gold), 0 6px 20px rgba(255, 176, 80, 0.18);
+  background: linear-gradient(135deg, #fffaf0 0%, var(--white) 60%);
+}
+[data-season="winter"] .termin-item--xmas .termin-title::after {
+  content: '\00a0\2605';
+  color: #e0a43a;
+}

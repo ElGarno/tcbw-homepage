@@ -43,7 +43,7 @@
       {{ end }}
       {{ range sort $upcoming "sortkey" "asc" }}
       {{ $d := time .date }}
-      <div class="termin-item reveal" data-category="{{ .category }}">
+      <div class="termin-item reveal{{ if strings.Contains (lower .title) "weihnacht" }} termin-item--xmas{{ end }}" data-category="{{ .category }}">
         <div class="termin-date-block">
           <p class="termin-day">{{ $d.Day }}</p>
           <p class="termin-month">{{ index (slice "" "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez") (int $d.Month) }}</p>
