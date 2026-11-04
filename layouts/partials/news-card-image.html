@@ -1,12 +1,14 @@
 {{/*
   Renders the image block inside a .news-card.
   Resolution order:
-    1. Page .Params.image (explicit override)
+    1. Page .Params.image (explicit override; a local path is skipped if the
+       file is missing under static/, e.g. a drawn SVG deleted in its PR)
     2. Page .Params.category → /images/news/category-<slug>.jpg
     3. Title placeholder (legacy gradient)
   Called with the Page as context, e.g. `{{ partial "news-card-image.html" . }}`.
 */}}
 {{ $img := .Params.image }}
+{{ if and $img (hasPrefix $img "/") (not (fileExists (printf "static%s" $img))) }}{{ $img = "" }}{{ end }}
 {{ if not $img }}
   {{ with .Params.category }}
     {{ $img = printf "/images/news/category-%s.jpg" . }}

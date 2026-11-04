@@ -5,6 +5,7 @@ description: "Wochentagkorrektur für die Jahreshauptversammlung 2026 – findet
 tags: ["Jahreshauptversammlung", "Korrektur"]
 quickinfo: true
 category: "event"
+image: "/images/news/gezeichnet/2026-04-14-korrektur-jahreshauptversammlung-2026.svg"
 ---
 
 Die Jahreshauptversammlung 2026 findet am **Mittwoch, 13. Mai 2026** um 19:00 Uhr im Clubhaus an der Burg statt (nicht am Freitag wie ursprünglich angekündigt).

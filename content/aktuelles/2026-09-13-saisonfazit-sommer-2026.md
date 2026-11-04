@@ -3,6 +3,7 @@ title: "Saisonfazit Sommer 2026"
 date: 2026-09-13
 description: "Die Meisterschaftssaison 2026 endete für unsere Teams mit durchwachsenen Ergebnissen."
 tags: ["Saisonfazit", "Meisterschaft", "Sommer 2026"]
+image: "/images/news/gezeichnet/2026-09-13-saisonfazit-sommer-2026.svg"
 ---
 
 Die Meisterschaftssaison Sommer 2026 ist beendet. Die Bilanz fällt in diesem Jahr leider eher durchwachsen aus.

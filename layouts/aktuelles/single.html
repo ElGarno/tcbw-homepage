@@ -21,9 +21,11 @@
 
   <div class="container" style="max-width: 760px;">
     {{ with .Params.image }}
+    {{ if or (not (hasPrefix . "/")) (fileExists (printf "static%s" .)) }}
     <div class="article-detail-image">
       <img src="{{ . }}" alt="{{ $.Title }}">
     </div>
+    {{ end }}
     {{ end }}
 
     <div class="article-detail-content">

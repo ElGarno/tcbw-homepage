@@ -3,6 +3,7 @@ title: "Großes Schleifchenturnier am 12. September"
 date: 2026-08-21
 description: "Einladung zum Mixed-Doppel-Turnier des TC Blau-Weiß Attendorn mit allen Infos zu Ablauf, Startgeld und Verpflegung"
 tags: ["Turnier", "Mixed", "Doppel", "Vereinsveranstaltung"]
+image: "/images/news/gezeichnet/2026-08-21-schleifchenturnier-details.svg"
 ---
 
 Wir laden alle Tennisfreunde – egal ob Halbprofi, Anfänger, Mitglied oder Gast – zu unserem Schleifchenturnier ein. Der Spaß steht dabei im Vordergrund.

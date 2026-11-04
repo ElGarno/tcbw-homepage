@@ -4,6 +4,7 @@ date: 2026-04-06
 description: "Nach dem Arbeitseinsatz werden die Plätze vom Platzbauer instandgesetzt. Alle Mitglieder sind zum Walzen eingeladen."
 tags: ["Plätze", "Arbeitseinsatz", "Sommer"]
 category: "platz"
+image: "/images/news/gezeichnet/2026-04-06-platzinstandhaltung-sommer-2026.svg"
 ---
 
 Der Arbeitseinsatz am 28. März fand bei regnerischen Bedingungen mit geringer Beteiligung statt. Das Mindestziel wurde erreicht.
