@@ -2331,4 +2331,5 @@
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2);
 }
 [data-season="april"] .april-banner-more { font-weight: 500; text-decoration: underline; }
-[data-season="april"] body { padding-bottom: 64px; }
+/* room for the banner (up to 3 lines on narrow phones) so footer legal links stay reachable */
+[data-season="april"] body:has(.april-banner) { padding-bottom: 130px; }
