@@ -1562,8 +1562,11 @@
     }
 
     @media (max-width: 768px) {
+      /* wide tables scroll inside their box instead of widening the page */
       table {
         font-size: 0.8rem;
+        display: block;
+        overflow-x: auto;
       }
 
       thead th,
