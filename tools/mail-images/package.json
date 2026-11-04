@@ -1,0 +1,12 @@
+{
+  "name": "mail-images",
+  "version": "0.1.0",
+  "description": "Drawn SVG post images for the Mail-to-Homepage n8n workflow",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
