@@ -82,3 +82,14 @@ test('syncWorkflow wires the draw nodes idempotently', () => {
   assert.ok(!merge.includes("$('Antwort verarbeiten')"));
   assert.deepEqual(syncWorkflow(JSON.parse(JSON.stringify(once))), once);
 });
+
+test('Bilder einfuegen reads text after a leading thinking block', () => {
+  const thinking = { json: { content: [{ type: 'thinking', thinking: '' },
+    { type: 'text', text: '<g><circle cx="255" cy="100" r="9" fill="#fff"/></g>' }] } };
+  const out = einfuegen(PARSED, auftraege(PARSED), [thinking, thinking]);
+  assert.equal(out.files.length, 4);
+});
+
+test('draw request leaves room for thinking', () => {
+  assert.ok(auftraege(PARSED)[0].json.request.max_tokens >= 16000);
+});

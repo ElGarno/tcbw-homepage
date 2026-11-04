@@ -9,7 +9,9 @@ var files = parsed.files.map(function (f) { return Object.assign({}, f); });
 var rows = [];
 jobs.forEach(function (job, i) {
   var res = inputs[i] ? inputs[i].json : {};
-  var text = (res && res.content && res.content[0] && res.content[0].text) || '';
+  // thinking blocks may precede the answer, so join all text blocks
+  var text = ((res && res.content) || []).filter(function (b) { return b.type === 'text'; })
+    .map(function (b) { return b.text; }).join('');
   var post = files.filter(function (f) { return f.path === job.json.postPath; })[0];
   var svg = post ? renderSvg(text, job.json.idPrefix) : null;
   if (svg) {

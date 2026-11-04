@@ -111,3 +111,23 @@ test('buildDrawRequest truncates long bodies', () => {
   assert.ok(req.messages[0].content.split('x').length - 1 <= 3000);
   assert.ok(!req.system.includes('<example>'));
 });
+
+test('sanitize drops duplicate attributes', () => {
+  const out = d.sanitizeMotif('<g><rect fill="#fff" fill="#000" width="1"/></g>', 'p');
+  assert.equal(out.match(/fill=/g).length, 1);
+});
+
+test('sanitize drops values containing <', () => {
+  const out = d.sanitizeMotif('<g><path d="M0 0 < 1" fill="#fff"/></g>', 'p');
+  assert.ok(!out.includes('<  1') && !out.includes('M0 0 <'));
+});
+
+test('extractMotif keeps defs placed before the group', () => {
+  const m = d.extractMotif('<defs><linearGradient id="a"/></defs><g><rect fill="url(#a)"/></g>');
+  assert.ok(m.includes('linearGradient') && m.includes('<rect'));
+  assert.ok(d.sanitizeMotif(m, 'p').includes('id="p-a"'));
+});
+
+test('extractMotif skips a <g> mentioned in prose', () => {
+  assert.equal(d.extractMotif('Here is the <g> element:\n<g><circle r="2"/></g>'), '<g><circle r="2"/></g>');
+});

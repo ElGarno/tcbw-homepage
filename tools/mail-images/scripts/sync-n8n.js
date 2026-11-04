@@ -36,7 +36,7 @@ function drawNodes() {
         authentication: 'predefinedCredentialType', nodeCredentialType: 'anthropicApi',
         sendHeaders: true, headerParameters: { parameters: [{ name: 'anthropic-version', value: '2023-06-01' }] },
         sendBody: true, specifyBody: 'json', jsonBody: '={{ JSON.stringify($json.request) }}',
-        options: { timeout: 120000 } },
+        options: { timeout: 300000 } },
       id: 'bild-zeichnen', name: 'Bild zeichnen', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2,
       position: [1630, 100], retryOnFail: true, maxTries: 2, onError: 'continueRegularOutput',
       credentials: ANTHROPIC_CREDENTIAL },

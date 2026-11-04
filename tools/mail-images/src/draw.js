@@ -25,34 +25,45 @@ var TEMPLATE_HEAD =
   '<g stroke="#fff" stroke-opacity=".12" stroke-width="2" fill="none"><rect x="60" y="25" width="390" height="150"/><path d="M255 25 V175 M60 45 H450 M60 155 H450 M157 45 V155 M352 45 V155 M157 100 H352"/></g>\n' +
   '<ellipse cx="255" cy="110" rx="170" ry="90" fill="url(#tpl-glow)"/>\n';
 
-// Returns the outermost <g>...</g> from model output (prose and code fences ignored).
+// End index of the balanced <g> group starting at `start`, or -1.
+function groupEnd(text, start) {
+  var re = /<(\/?)g(?=[\s>\/])[^>]*?(\/?)>/g, depth = 0, m;
+  re.lastIndex = start;
+  while ((m = re.exec(text)) !== null) {
+    if (m[2] === '/') { if (depth === 0) return re.lastIndex; continue; }
+    depth += m[1] === '/' ? -1 : 1;
+    if (depth === 0) return re.lastIndex;
+  }
+  return -1;
+}
+
+// Returns the first balanced <g>...</g> from model output (prose, code fences and a
+// stray "<g>" mentioned in prose are skipped). A <defs> block directly before the
+// group is pulled inside, so gradient references keep working.
 function extractMotif(text) {
   if (!text) return null;
-  var re = /<(\/?)g(?=[\s>\/])[^>]*?(\/?)>/g;
-  var start = -1, depth = 0, m;
+  var re = /<g(?=[\s>\/])/g, m;
   while ((m = re.exec(text)) !== null) {
-    var closing = m[1] === '/', selfClosing = m[2] === '/';
-    if (start === -1) {
-      if (closing) continue;
-      start = m.index;
-      if (selfClosing) return m[0];
-      depth = 1;
-      continue;
+    var end = groupEnd(text, m.index);
+    if (end === -1) continue;
+    var defsEnd = text.lastIndexOf('</defs>', m.index);
+    if (defsEnd !== -1 && !text.slice(defsEnd + 7, m.index).trim()) {
+      return '<g>' + text.slice(text.lastIndexOf('<defs', defsEnd), end) + '</g>';
     }
-    if (selfClosing) continue;
-    depth += closing ? -1 : 1;
-    if (depth === 0) return text.slice(start, re.lastIndex);
+    return text.slice(m.index, end);
   }
   return null;
 }
 
 function cleanAttributes(raw, idPrefix) {
-  var out = [];
+  var out = [], seen = {};
   var re = /([a-zA-Z:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g, m;
   while ((m = re.exec(raw)) !== null) {
     var name = m[1], value = m[2] !== undefined ? m[2] : m[3];
-    if (ALLOWED_ATTRIBUTES.indexOf(name) === -1) continue;
-    if (/["&]/.test(value)) continue;
+    // duplicates or a raw < would make the SVG malformed (broken image in <img>)
+    if (ALLOWED_ATTRIBUTES.indexOf(name) === -1 || seen[name]) continue;
+    if (/["&<]/.test(value)) continue;
+    seen[name] = true;
     if (name === 'id') {
       if (!/^[A-Za-z0-9_-]+$/.test(value)) continue;
       value = idPrefix + '-' + value;
@@ -145,7 +156,7 @@ function buildDrawRequest(post, systemPrompt, examples) {
     '\n\n' + String(post.body || '').slice(0, MAX_BODY_CHARS);
   return {
     model: DRAW_MODEL,
-    max_tokens: 4000,
+    max_tokens: 16000, // headroom in case the model thinks before answering
     system: system,
     messages: [{ role: 'user', content: content }],
   };
