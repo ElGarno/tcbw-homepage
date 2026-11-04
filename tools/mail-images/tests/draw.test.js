@@ -94,3 +94,20 @@ test('addImageToFrontMatter inserts once', () => {
 test('addPrRows inserts rows before the footer', () => {
   assert.equal(d.addPrRows('T\n| a |\n\n---\nfooter', ['| b |']), 'T\n| a |\n| b |\n\n---\nfooter');
 });
+
+test('buildDrawRequest targets Sonnet with prompt and examples', () => {
+  const req = d.buildDrawRequest({ title: 'Sommerfest', description: 'Grillen am Platz', body: 'Text' },
+    'SYSTEM', ['<g>a</g>', '<g>b</g>']);
+  assert.equal(req.model, 'claude-sonnet-5-5');
+  assert.equal(d.DRAW_MODEL, 'claude-sonnet-5-5');
+  assert.ok(req.system.startsWith('SYSTEM'));
+  assert.equal(req.system.match(/<example>/g).length, 2);
+  assert.ok(req.messages[0].content.includes('Sommerfest'));
+  assert.ok(req.messages[0].content.includes('Grillen am Platz'));
+});
+
+test('buildDrawRequest truncates long bodies', () => {
+  const req = d.buildDrawRequest({ title: 'T', description: 'D', body: 'x'.repeat(10000) }, 'S', []);
+  assert.ok(req.messages[0].content.split('x').length - 1 <= 3000);
+  assert.ok(!req.system.includes('<example>'));
+});

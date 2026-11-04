@@ -12,6 +12,8 @@ var ALLOWED_ATTRIBUTES = ['id', 'd', 'cx', 'cy', 'r', 'rx', 'ry', 'fx', 'fy', 'x
   'gradientTransform'];
 
 var MAX_SVG_LENGTH = 8192;
+var DRAW_MODEL = 'claude-sonnet-5-5';
+var MAX_BODY_CHARS = 3000;
 
 var TEMPLATE_HEAD =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 200" width="510" height="200">\n' +
@@ -134,11 +136,27 @@ function addPrRows(prBody, rows) {
   return prBody.slice(0, idx) + '\n' + rows.join('\n') + prBody.slice(idx);
 }
 
+// Anthropic Messages API request body for one post.
+function buildDrawRequest(post, systemPrompt, examples) {
+  var system = systemPrompt + (examples || []).map(function (e) {
+    return '\n\n<example>\n' + e.trim() + '\n</example>';
+  }).join('');
+  var content = 'Title: ' + (post.title || '') + '\nDescription: ' + (post.description || '') +
+    '\n\n' + String(post.body || '').slice(0, MAX_BODY_CHARS);
+  return {
+    model: DRAW_MODEL,
+    max_tokens: 4000,
+    system: system,
+    messages: [{ role: 'user', content: content }],
+  };
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     ALLOWED_ELEMENTS: ALLOWED_ELEMENTS, ALLOWED_ATTRIBUTES: ALLOWED_ATTRIBUTES,
     extractMotif: extractMotif, sanitizeMotif: sanitizeMotif, wrapSvg: wrapSvg,
     renderSvg: renderSvg, imagePaths: imagePaths,
     addImageToFrontMatter: addImageToFrontMatter, addPrRows: addPrRows,
+    buildDrawRequest: buildDrawRequest, DRAW_MODEL: DRAW_MODEL,
   };
 }
