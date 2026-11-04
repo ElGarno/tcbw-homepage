@@ -201,6 +201,29 @@ appends new events (skipping duplicates), sorts by date, and writes back.
 - PR body: summary table listing all created files with type and title
 - Created as **Draft** — does not auto-merge
 
+### 6. Drawn Post Images
+
+Every generated post (beitrag and quickinfo) gets a drawn SVG motif
+(design: `docs/superpowers/specs/2026-11-04-beitragsbilder-design.md`).
+
+Antwort verarbeiten -> **Bild-Auftraege** (Code) -> **Bild noetig?** (IF) ->
+**Bild zeichnen** (HTTP, Anthropic Messages API, `claude-sonnet-5-5`) ->
+**Bilder einfuegen** (Code) -> Termine laden. Without posts, the IF skips the
+API call. "Termine zusammenfuehren" reads its input from "Bilder einfuegen".
+
+- Output: `static/images/news/gezeichnet/<post>.svg`, `image:` line in the
+  post, a `bild` row in the PR body.
+- The model only draws the motif; background, court lines and glow come from
+  a fixed template. An allow-list sanitiser strips anything executable.
+- A failed or unusable drawing never fails the run: the post gets no image
+  and the PR body says "kein Bild". A bad image is removed by deleting the
+  SVG in the PR; the site then falls back to the category photo or
+  placeholder.
+- Code: `tools/mail-images/` (tests: `npm test`), prompt:
+  `doc/specs/n8n-mail-to-homepage-draw-prompt.md`. After changes run
+  `node tools/mail-images/scripts/sync-n8n.js` and paste the jsCode of
+  "Bild-Auftraege" and "Bilder einfuegen" into n8n.
+
 ## Example
 
 **Input:** Vorstand-Mail from March 2026 with winter reviews, summer outlook,
