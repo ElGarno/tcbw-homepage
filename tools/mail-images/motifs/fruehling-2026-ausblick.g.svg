@@ -1,0 +1,12 @@
+<g>
+<g stroke="#dceafb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M185 61 V129 M175 69 L185 79 L195 69 M175 121 L185 111 L195 121"/>
+<path transform="rotate(60 185 95)" d="M185 61 V129 M175 69 L185 79 L195 69 M175 121 L185 111 L195 121"/>
+<path transform="rotate(120 185 95)" d="M185 61 V129 M175 69 L185 79 L195 69 M175 121 L185 111 L195 121"/>
+</g>
+<circle cx="325" cy="95" r="26" fill="#dceafb"/>
+<path d="M325 61 V51 M325 129 V139 M291 95 H281 M359 95 H369 M301 71 L294 64 M349 71 L356 64 M301 119 L294 126 M349 119 L356 126" stroke="#a8ccf5" stroke-width="4" stroke-linecap="round"/>
+<path d="M215 150 Q255 176 292 150" stroke="#6ba3eb" stroke-width="4" stroke-linecap="round" fill="none"/>
+<polygon points="296,142 300,158 284,154" fill="#6ba3eb"/>
+<g transform="translate(255 95)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+</g>

@@ -1,0 +1,13 @@
+<g>
+<polygon points="255,28 261,42 276,43 264,52 268,67 255,59 242,67 246,52 234,43 249,42" fill="#dceafb"/>
+<rect x="180" y="130" width="50" height="40" rx="3" fill="#a8ccf5"/>
+<rect x="230" y="110" width="50" height="60" rx="3" fill="#dceafb"/>
+<rect x="280" y="145" width="50" height="25" rx="3" fill="#6ba3eb"/>
+<circle cx="255" cy="138" r="9" fill="#1e56a0"/>
+<circle cx="205" cy="150" r="8" fill="#3a7bd5"/>
+<circle cx="305" cy="158" r="6" fill="#3a7bd5"/>
+<rect x="160" y="170" width="190" height="4" rx="2" fill="#3a7bd5"/>
+<g transform="translate(255 92)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+<g transform="translate(205 114) scale(.88)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+<g transform="translate(305 130) scale(.82)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+</g>

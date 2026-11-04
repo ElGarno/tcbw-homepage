@@ -1,0 +1,14 @@
+<g>
+<g transform="rotate(35 240 100)">
+<ellipse cx="240" cy="70" rx="38" ry="50" fill="#1e56a0" stroke="#fff" stroke-width="6"/>
+<path d="M225 27 V113 M240 23 V117 M255 27 V113 M205 50 H275 M203 70 H277 M205 90 H275" stroke="#a8ccf5" stroke-width="1.5"/>
+<path d="M226 116 L240 135 L254 116" stroke="#fff" stroke-width="6" stroke-linejoin="round" fill="none"/>
+<rect x="234" y="133" width="12" height="50" rx="4" fill="#fff"/>
+<rect x="233" y="158" width="14" height="25" rx="4" fill="#dceafb"/>
+<path d="M240 142 L226 170 L234 168 Z M240 142 L254 170 L246 168 Z" fill="#3a7bd5"/>
+<path d="M240 142 C214 122 206 158 240 142 Z M240 142 C266 122 274 158 240 142 Z" fill="#6ba3eb"/>
+<circle cx="240" cy="142" r="5" fill="#3a7bd5"/>
+</g>
+<g transform="translate(318 148)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+<g transform="translate(352 120) scale(.82)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+</g>

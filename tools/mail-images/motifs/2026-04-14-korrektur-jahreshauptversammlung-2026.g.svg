@@ -1,0 +1,23 @@
+<g>
+<rect x="132" y="102" width="8" height="68" rx="2" fill="#3a7bd5"/>
+<rect x="132" y="138" width="36" height="7" rx="2" fill="#3a7bd5"/>
+<rect x="160" y="145" width="6" height="25" fill="#3a7bd5"/>
+<rect x="370" y="102" width="8" height="68" rx="2" fill="#3a7bd5"/>
+<rect x="342" y="138" width="36" height="7" rx="2" fill="#3a7bd5"/>
+<rect x="344" y="145" width="6" height="25" fill="#3a7bd5"/>
+<rect x="165" y="122" width="180" height="10" rx="3" fill="#dceafb"/>
+<rect x="180" y="132" width="8" height="38" fill="#a8ccf5"/>
+<rect x="322" y="132" width="8" height="38" fill="#a8ccf5"/>
+<g transform="rotate(-6 250 75)">
+<rect x="218" y="28" width="64" height="84" rx="4" fill="#fff"/>
+<rect x="228" y="42" width="44" height="4" rx="2" fill="#a8ccf5"/>
+<rect x="228" y="54" width="40" height="4" rx="2" fill="#a8ccf5"/>
+<rect x="228" y="66" width="44" height="4" rx="2" fill="#a8ccf5"/>
+<rect x="228" y="78" width="28" height="4" rx="2" fill="#a8ccf5"/>
+<path d="M232 96 L242 104 L262 88" stroke="#3a7bd5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</g>
+<g transform="rotate(35 305 75)">
+<rect x="300" y="35" width="10" height="60" rx="3" fill="#6ba3eb"/>
+<polygon points="300,95 310,95 305,108" fill="#dceafb"/>
+</g>
+</g>

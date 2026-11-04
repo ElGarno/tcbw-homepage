@@ -1,0 +1,15 @@
+<g>
+<path d="M140 170 H380" stroke="#6ba3eb" stroke-width="3" stroke-linecap="round"/>
+<polygon points="150,148 262,148 276,166 136,166" fill="#6ba3eb"/>
+<path d="M170 148 L163 166 M190 148 L187 166 M210 148 L210 166 M230 148 L233 166 M250 148 L256 166 M143 157 H269" stroke="#a8ccf5" stroke-width="2"/>
+<path d="M152 148 L206 96 L260 148" stroke="#fff" stroke-width="3" fill="none"/>
+<path d="M190 96 H222" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+<path d="M305 128 L276 104" stroke="#dceafb" stroke-width="8" stroke-linecap="round"/>
+<ellipse cx="272" cy="100" rx="9" ry="6" fill="#fff" transform="rotate(-40 272 100)"/>
+<path d="M314 112 Q333 80 352 112" stroke="#fff" stroke-width="6" fill="none"/>
+<rect x="300" y="110" width="62" height="58" rx="9" fill="#dceafb"/>
+<rect x="300" y="124" width="62" height="6" fill="#a8ccf5"/>
+<ellipse cx="262" cy="116" rx="3" ry="5" fill="#a8ccf5"/>
+<ellipse cx="254" cy="128" rx="3" ry="5" fill="#a8ccf5"/>
+<ellipse cx="266" cy="134" rx="3" ry="5" fill="#a8ccf5"/>
+</g>

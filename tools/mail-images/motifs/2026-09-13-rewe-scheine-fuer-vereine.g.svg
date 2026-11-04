@@ -1,0 +1,15 @@
+<g>
+<defs><linearGradient id="cart" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dceafb"/></linearGradient></defs>
+<g transform="translate(0 -18)">
+<g transform="rotate(-14 230 70)"><rect x="205" y="45" width="56" height="34" rx="4" fill="#fff"/><rect x="211" y="51" width="44" height="6" rx="2" fill="#1e56a0"/><rect x="211" y="62" width="28" height="4" rx="2" fill="#a8ccf5"/></g>
+<g transform="rotate(10 290 64)"><rect x="262" y="44" width="56" height="34" rx="4" fill="#fff"/><rect x="268" y="50" width="44" height="6" rx="2" fill="#1e56a0"/><rect x="268" y="61" width="28" height="4" rx="2" fill="#a8ccf5"/></g>
+<g transform="translate(215 98)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+<g transform="translate(252 92)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+<g transform="translate(290 98)"><circle r="17" fill="#fff"/><path d="M-15 -8 q15 8 0 17 M15 -8 q-15 8 0 17" stroke="#3a7bd5" stroke-width="2.5" fill="none"/></g>
+</g>
+<path d="M175 105 L330 105 L312 150 L192 150 Z" fill="url(#cart)"/>
+<path d="M190 120 H322 M196 135 H316" stroke="#a8ccf5" stroke-width="3"/>
+<path d="M175 105 L160 78 H138" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<path d="M192 150 L200 160 H310" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle cx="210" cy="170" r="9" fill="#fff"/><circle cx="300" cy="170" r="9" fill="#fff"/>
+</g>
