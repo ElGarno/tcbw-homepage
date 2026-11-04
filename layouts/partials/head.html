@@ -2,7 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>{{ readFile "static/js/season.js" | safeJS }}</script>
 <title>{{ if .IsHome }}{{ .Site.Title }} — {{ .Site.Params.tagline }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{ with .Params.robots }}<meta name="robots" content="{{ . }}">
+{{ end }}<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">

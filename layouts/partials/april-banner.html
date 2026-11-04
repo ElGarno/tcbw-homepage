@@ -1,0 +1,11 @@
+{{/*
+  April fool banner. Always rendered (except on legal/signup pages) and only
+  shown via CSS when <html data-season="april"> (see static/js/season.js).
+*/}}
+{{ $skip := slice "/seiten/impressum/" "/seiten/datenschutz/" "/verein/anmeldung/" "/aprilscherz/" }}
+{{ if not (in $skip .RelPermalink) }}
+<a href="/aprilscherz/" class="april-banner">
+  <span>Nach <span data-years-since="{{ site.Params.founded }}">95</span> Jahren: Aus Blau-Weiss wird Rot-Weiss</span>
+  <span class="april-banner-more">Mehr erfahren &rarr;</span>
+</a>
+{{ end }}
