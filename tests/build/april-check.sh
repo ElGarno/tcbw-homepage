@@ -8,6 +8,7 @@ chk "reveal page noindex"           "grep -q 'name=\"robots\" content=\"noindex\
 chk "not in aktuelles list"         "! grep -q 'neue Farben' $P/aktuelles/index.html"
 chk "not in sitemap"                "! grep -q aprilscherz $P/sitemap.xml"
 chk "banner on homepage"            "grep -q 'class=\"april-banner\"' $P/index.html"
+chk "hero title has april name"     "grep -q 'class=\"april-name\">Rot</span>' $P/index.html"
 chk "banner on team page"           "grep -q 'class=\"april-banner\"' $P/mannschaften/herren-40/index.html"
 chk "no banner on impressum"        "! grep -q 'class=\"april-banner\"' $P/seiten/impressum/index.html"
 chk "no banner on datenschutz"      "! grep -q 'class=\"april-banner\"' $P/seiten/datenschutz/index.html"

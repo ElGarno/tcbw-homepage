@@ -2294,6 +2294,11 @@
 /* ── Season: april (1 April only) — Blau-Weiss becomes Rot-Weiss ── */
 .april-banner { display: none; }
 
+/* Hero title reads "Rot-Weiss" on 1 April */
+.april-name { display: none; }
+[data-season="april"] .april-name { display: inline; }
+[data-season="april"] .normal-name { display: none; }
+
 [data-season="april"] {
   --blue-900: #2a0a0e;
   --blue-800: #400f15;
