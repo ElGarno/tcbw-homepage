@@ -385,6 +385,11 @@
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
     }
 
+    .btn-primary--solid {
+      background: var(--blue-600);
+      color: var(--white);
+    }
+
     .btn-outline {
       background: transparent;
       color: var(--white);
@@ -2184,11 +2189,16 @@
 [data-season="winter"] .hero-content { z-index: 3; }
 [data-season="winter"] .hero-eyebrow { color: var(--winter-gold); }
 
-[data-season="winter"] .hero .btn-primary {
+/* Primary actions turn warm orange site-wide */
+[data-season="winter"] .btn-primary,
+[data-season="winter"] .nav-cta,
+[data-season="winter"] .signup-cta__button {
   background: var(--winter-btn);
   color: var(--winter-btn-text);
 }
-[data-season="winter"] .hero .btn-primary:hover { background: var(--winter-btn-hover); }
+[data-season="winter"] .btn-primary:hover,
+[data-season="winter"] .nav-cta:hover,
+[data-season="winter"] .signup-cta__button:hover { background: var(--winter-btn-hover); }
 
 /* Page-wide light snowfall: sparse, light-blue flakes so they read on white */
 [data-season="winter"] .season-snow--page {
