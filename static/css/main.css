@@ -2189,3 +2189,83 @@
   color: var(--winter-btn-text);
 }
 [data-season="winter"] .hero .btn-primary:hover { background: var(--winter-btn-hover); }
+
+/* Page-wide light snowfall: sparse, light-blue flakes so they read on white */
+[data-season="winter"] .season-snow--page {
+  position: fixed;
+  inset: -400px 0 0 0;
+  z-index: 90; /* below .nav (100) */
+  background-image:
+    radial-gradient(2.5px 2.5px at 61px 83px, var(--blue-200) 50%, transparent 51%),
+    radial-gradient(2px 2px at 287px 241px, var(--blue-100) 50%, transparent 51%),
+    radial-gradient(3px 3px at 173px 352px, var(--blue-200) 50%, transparent 51%);
+  background-size: 400px 400px;
+  opacity: 0.7;
+  animation-name: season-snowfall-page;
+  animation-duration: 40s;
+}
+@keyframes season-snowfall-page { to { transform: translateY(400px); } }
+
+/* Snow cap on the crest */
+.nav-logo-crest { position: relative; display: inline-flex; flex-shrink: 0; }
+[data-season="winter"] .nav-logo-crest::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: -7px;
+  height: 11px;
+  background: linear-gradient(to bottom, #fff 55%, var(--blue-50));
+  border-radius: 50% 50% 35% 35% / 100% 100% 45% 45%;
+  box-shadow: 0 1px 3px rgba(10, 22, 40, 0.35), inset 0 -1px 0 var(--blue-100);
+  pointer-events: none;
+}
+
+/* Article header: scaled-down Winterabend */
+[data-season="winter"] .article-detail-header {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 115%, var(--winter-glow) 0%, transparent 70%),
+    var(--blue-900);
+  padding-bottom: 72px;
+}
+[data-season="winter"] .article-detail-header > .container { position: relative; z-index: 3; }
+[data-season="winter"] .article-detail-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 40px;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse 34% 75% at 12% 100%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 30% 55% at 46% 100%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 38% 90% at 84% 100%, var(--winter-snow) 98%, transparent 100%),
+    linear-gradient(to top, var(--winter-snow) 10px, transparent 10px);
+}
+
+/* Footer: snow lying along its top edge, warm glow from below */
+[data-season="winter"] .footer {
+  position: relative;
+  overflow: hidden;
+  padding-top: 96px;
+  background:
+    radial-gradient(ellipse 50% 60% at 50% 115%, var(--winter-glow) 0%, transparent 70%),
+    var(--blue-900);
+}
+[data-season="winter"] .footer > .container { position: relative; z-index: 1; }
+[data-season="winter"] .footer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 44px;
+  background:
+    radial-gradient(ellipse 36% 80% at 18% 0%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 30% 60% at 55% 0%, var(--winter-snow) 98%, transparent 100%),
+    radial-gradient(ellipse 34% 85% at 88% 0%, var(--winter-snow) 98%, transparent 100%),
+    linear-gradient(to bottom, var(--winter-snow) 10px, transparent 10px);
+}
