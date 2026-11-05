@@ -4,6 +4,8 @@ league: "Bezirksklasse"
 weight: 80
 captain: "Franz Carina"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+Winter+26%2F27&group=3"
+image: "/images/mannschaften/damen-winter.svg"
+image_alt: "Gezeichnete Tennisball-Figuren als Mannschaft Damen Winter des TC Blau-Weiss Attendorn"
 ---
 
 Damen 4er Mannschaft in der Bezirksklasse (Gr. 003), Saison Winter 2026/27.

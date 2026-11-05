@@ -4,6 +4,8 @@ league: "Bezirksklasse"
 weight: 90
 captain: "Gerlach Bastian"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+Winter+26%2F27&group=27"
+image: "/images/mannschaften/herren-30-winter.svg"
+image_alt: "Gezeichnete Tennisball-Figuren als Mannschaft Herren 30 Winter des TC Blau-Weiss Attendorn"
 ---
 
 Herren 30 4er Mannschaft in der Bezirksklasse (Gr. 027), Saison Winter 2026/27.

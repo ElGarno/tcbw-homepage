@@ -4,6 +4,8 @@ league: "Südwestfalenliga"
 weight: 30
 captain: "Heimes Carsten"
 liga_url: "https://wtv.liga.nu/cgi-bin/WebObjects/nuLigaTENDE.woa/wa/groupPage?championship=SW+2026&group=77"
+image: "/images/mannschaften/herren-40.svg"
+image_alt: "Gezeichnete Tennisball-Figuren als Mannschaft Herren 40 des TC Blau-Weiss Attendorn"
 ---
 
 Herren 40 6er Mannschaft in der Südwestfalenliga (Gr. 077), Saison Sommer 2026.
