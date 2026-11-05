@@ -219,4 +219,9 @@ events:
     category: "medenspiel"
     team: "damen-winter"
     opponent: "TC Siegen 2"
+  - title: "Wintertraining in der Halle startet"
+    date: 2026-12-01
+    time: "18:00 Uhr"
+    detail: "Trainings­betrieb jeden Donnerstag von 18 bis 20 Uhr. Bälle und Netze stellt der Verein. Plätze begrenzt auf 16 Spieler. Anmeldung bei Jens bis 25. November erforderlich."
+    category: "event"
 ---
